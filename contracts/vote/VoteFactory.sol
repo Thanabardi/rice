@@ -13,10 +13,6 @@ contract VoteFactory {
     }
 
     function createVoteSession() public {
-
-    }
-
-    function getVoteSession(uint _voteId) view public returns (uint){
-        
+        // create a new vote session
     }
 }
