@@ -3,9 +3,9 @@ pragma solidity ^0.8.0;
 import "../Token.sol";
 
 contract VoteExchange {
-    mapping(address => uint) voteExchange;
+    mapping(address => uint) public voteExchange;
     address public owner;
-    address public tokenAddress;
+    RICE public token;
     
     enum ExchangeState {OPENED, CLOSED}
     ExchangeState public status;
@@ -13,17 +13,24 @@ contract VoteExchange {
     constructor (address _tokenAddress) {
         owner = msg.sender;
         status = ExchangeState.CLOSED;
-        tokenAddress = _tokenAddress;
+        token = RICE(_tokenAddress);
     }
 
-    function deposit() payable public {
+    function deposit(uint _amount) payable public {
         // exchange for vote by deposit RICE when exchange is opened
-        require(status == ExchangeState.OPENED);
+        require(status == ExchangeState.OPENED, "Not open");
+        require(_amount > 0, "You need to deposit at least some token");
+        
+        token.approve(msg.sender, _amount);
+
+        token.transferFrom(msg.sender, address(this), _amount);
+        voteExchange[msg.sender] += _amount;
     }
 
     function withdraw(uint _amount) payable public {
         // withdraw deposited RICE when exchage is opened
-        require(status == ExchangeState.OPENED);
+        require(status == ExchangeState.OPENED, "Not open");
+        
     }
 
     function closeExchange() public {

@@ -15,24 +15,36 @@ describe("VoteExchange contract", function () {
     });
 
     it("has correct initialized attributes", async function () {
-        expect(await voteExchange.tokenAddress()).to.equal(token.address);
+        expect(await voteExchange.token()).to.equal(token.address);
         expect(await voteExchange.owner()).to.equal(owner.address);
     });
 
     it("update correctly when deposit token", async function () {
+        // TODO: fix ERC20 insufficient bug
+
+        const initialBalance = 10000;
+        const depositAmount = 3000;
+
+        await token.transfer(accounts[1].address, initialBalance);
+        expect(await token.balanceOf(accounts[1].address)).to.equal(initialBalance);
+
+        await voteExchange.openExchange();
         
+        await voteExchange.connect(accounts[1]).deposit(depositAmount);
+        console.log(await voteExchange.voteExchange(accounts[1].address));
     });
 
     it("update correctly when withdraw token", async function () {
-
+        // TODO: add test case
     });
 
-    it("can be opened by owner and when opened everyone can deposit or withdraw", async function() {
-
-    });
-
-    it("can be closed by owner and when closed no one can deposit or withdraw", async function () {
-
+    it("can be opened and closed by owner", async function() {
+        // 0 means opened
+        await voteExchange.openExchange();
+        expect(await voteExchange.status()).to.equal(0);
+        // 1 means closed
+        await voteExchange.closeExchange();
+        expect(await voteExchange.status()).to.equal(1);
     });
 
     it("can't be opened or closed by someone not owner", async function() {
