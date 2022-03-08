@@ -1,6 +1,7 @@
 pragma solidity ^0.8.0;
 
 import "../Token.sol";
+import "hardhat/console.sol";
 
 contract VoteExchange {
     mapping(address => uint) public voteExchange;
@@ -21,8 +22,6 @@ contract VoteExchange {
         require(status == ExchangeState.OPENED, "Not open");
         require(_amount > 0, "You need to deposit at least some token");
         
-        token.approve(msg.sender, _amount);
-
         token.transferFrom(msg.sender, address(this), _amount);
         voteExchange[msg.sender] += _amount;
     }

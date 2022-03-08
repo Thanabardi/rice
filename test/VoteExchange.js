@@ -7,6 +7,7 @@ describe("VoteExchange contract", function () {
     beforeEach(async function () {
         accounts = await ethers.getSigners();
         owner = accounts[0];
+        
         const Token = await ethers.getContractFactory("RICE");
         token = await Token.deploy("RICE", "RICE");
 
@@ -26,12 +27,19 @@ describe("VoteExchange contract", function () {
         const depositAmount = 3000;
 
         await token.transfer(accounts[1].address, initialBalance);
+        console.log(await token.balanceOf(accounts[1].address));
         expect(await token.balanceOf(accounts[1].address)).to.equal(initialBalance);
 
         await voteExchange.openExchange();
         
+        // note: this line refers to maximum token we can use to specified contract
+        await token.connect(accounts[1]).approve(voteExchange.address, depositAmount);
+
         await voteExchange.connect(accounts[1]).deposit(depositAmount);
-        console.log(await voteExchange.voteExchange(accounts[1].address));
+        
+        expect(await token.balanceOf(accounts[1].address)).to.equal(initialBalance - depositAmount);
+        expect(await token.balanceOf(voteExchange.address)).to.equal(depositAmount);
+        expect(await voteExchange.voteExchange(accounts[1].address)).to.equal(depositAmount);
     });
 
     it("update correctly when withdraw token", async function () {
