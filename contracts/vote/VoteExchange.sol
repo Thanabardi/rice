@@ -1,7 +1,6 @@
 pragma solidity ^0.8.0;
 
 import "../Token.sol";
-import "hardhat/console.sol";
 
 contract VoteExchange {
     mapping(address => uint) public voteExchange;
@@ -29,7 +28,10 @@ contract VoteExchange {
     function withdraw(uint _amount) payable public {
         // withdraw deposited RICE when exchage is opened
         require(status == ExchangeState.OPENED, "Not open");
-        
+        require(voteExchange[msg.sender] >= _amount, "Not enough token to withdraw");
+
+        token.transfer(msg.sender, _amount);
+        voteExchange[msg.sender] -= _amount;
     }
 
     function closeExchange() public {

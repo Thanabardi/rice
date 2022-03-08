@@ -3,6 +3,7 @@ const { ethers } = require("hardhat");
 
 describe("VoteExchange contract", function () {
     let accounts, owner, token, voteExchange;
+    const zeroExtension = "000000000000000000";
 
     beforeEach(async function () {
         accounts = await ethers.getSigners();
@@ -21,13 +22,11 @@ describe("VoteExchange contract", function () {
     });
 
     it("update correctly when deposit token", async function () {
-        // TODO: fix ERC20 insufficient bug
-
-        const initialBalance = 10000;
-        const depositAmount = 3000;
+        const initialBalance = "10000" + zeroExtension;
+        const depositAmount = "3000" + zeroExtension;
+        const remainBalance = "7000" + zeroExtension;
 
         await token.transfer(accounts[1].address, initialBalance);
-        console.log(await token.balanceOf(accounts[1].address));
         expect(await token.balanceOf(accounts[1].address)).to.equal(initialBalance);
 
         await voteExchange.openExchange();
@@ -37,13 +36,37 @@ describe("VoteExchange contract", function () {
 
         await voteExchange.connect(accounts[1]).deposit(depositAmount);
         
-        expect(await token.balanceOf(accounts[1].address)).to.equal(initialBalance - depositAmount);
+        expect(await token.balanceOf(accounts[1].address)).to.equal(remainBalance);
         expect(await token.balanceOf(voteExchange.address)).to.equal(depositAmount);
         expect(await voteExchange.voteExchange(accounts[1].address)).to.equal(depositAmount);
     });
 
     it("update correctly when withdraw token", async function () {
-        // TODO: add test case
+        const initialBalance = "10000" + zeroExtension;
+        const withdrawAmount = "3000" + zeroExtension;
+        const remainBalance = "7000" + zeroExtension;
+        
+        await voteExchange.openExchange();
+        await token.transfer(accounts[1].address, initialBalance);
+        await token.connect(accounts[1]).approve(voteExchange.address, initialBalance);
+        await voteExchange.connect(accounts[1]).deposit(initialBalance);
+
+        await voteExchange.connect(accounts[1]).withdraw(withdrawAmount);
+        expect(await token.balanceOf(accounts[1].address)).to.equal(withdrawAmount);
+        expect(await token.balanceOf(voteExchange.address)).to.equal(remainBalance);
+        expect(await voteExchange.voteExchange(accounts[1].address)).to.equal(remainBalance);
+    });
+
+    it("can't withdraw when there is not enough token", async function () {
+        const initialBalance = "10000" + zeroExtension;
+        const withdrawAmount = "10001" + zeroExtension;
+        
+        await voteExchange.openExchange();
+        await token.transfer(accounts[1].address, initialBalance);
+        await token.connect(accounts[1]).approve(voteExchange.address, initialBalance);
+        await voteExchange.connect(accounts[1]).deposit(initialBalance);
+
+        await expect(voteExchange.connect(accounts[1]).withdraw(withdrawAmount)).to.be.revertedWith("Not enough token to withdraw");
     });
 
     it("can be opened and closed by owner", async function() {
