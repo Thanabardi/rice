@@ -1,6 +1,7 @@
 pragma solidity ^0.8.0;
 
 import "../Token.sol";
+import "hardhat/console.sol";
 
 contract VoteExchange {
     mapping(address => uint) public voteExchange;
@@ -35,12 +36,12 @@ contract VoteExchange {
     }
 
     function closeExchange() public {
-        require(msg.sender == owner, "Not owner");
+        require(tx.origin == owner, "Not owner");
         status = ExchangeState.CLOSED;
     }
 
     function openExchange() public {
-        require(msg.sender == owner, "Not owner");
+        require(tx.origin == owner, "Not owner");
         status = ExchangeState.OPENED;
     }
 }
