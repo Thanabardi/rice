@@ -1,7 +1,6 @@
 pragma solidity ^0.8.0;
 
 import "./VoteExchange.sol";
-import "hardhat/console.sol";
 
 contract VoteSession {
     uint public voteId;
@@ -14,7 +13,7 @@ contract VoteSession {
     voteState public status;
 
     constructor (uint _voteId, address _voteExchangeAddress) {
-        owner = msg.sender;
+        owner = tx.origin;
         voteId = _voteId;
         status = voteState.STARTED;
         voteExchange = VoteExchange(_voteExchangeAddress);

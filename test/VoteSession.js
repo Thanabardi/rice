@@ -1,13 +1,11 @@
-const { toBeEmpty, toBeEmptyDOMElement } = require("@testing-library/jest-dom/dist/matchers");
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
-const { Contract } = require("hardhat/internal/hardhat-network/stack-traces/model");
 
 describe("VoteSession contract", function () {
     let accounts, owner, token, voteExchange, voteSession, twitterId;
     let voteId = 1;
     const zeroExtension = "000000000000000000";
-    let initialBalance = "1000" + zeroExtension; // 150 votes
+    let initialBalance = "1000" + zeroExtension; // 1000 votes
 
     beforeEach(async function () {
         twitterId = "tester";
