@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
 import '../assets/ShowUser.css';
 
-const ShowAccount = ({ accountName }) => {
+const ShowAccount = ({ accountProfile }) => {
 	const [userPopup, setUserPopup] = useState(false);
 
   function redirect() {
-    window.open(`https://twitter.com/${accountName}`, `_blank`);
+    window.open(`https://twitter.com/i/user/${accountProfile[0]}`, `_blank`);
+  }
+
+  function followerFormatter(follower) {
+    // format raw int number into form of thousand and million
+    if (follower > 999 && follower < 1000000){
+      return (follower/1000).toFixed(1) + 'K'; 
+    }else if (follower > 1000000){
+      return (follower/1000000).toFixed(1) + 'M';  
+    }else if (follower < 900){
+      return follower
+    }
   }
 
   return (
@@ -16,16 +26,18 @@ const ShowAccount = ({ accountName }) => {
         className='show-button'
         onMouseEnter={e => {setUserPopup(true)}}	
         onMouseLeave={e => {setUserPopup(false)}}
-        onClick={e => redirect() }>@{accountName}</button>
+        // redirect to account profile
+        onClick={e => redirect() }>@{accountProfile[2]}</button>
       {userPopup && 
         <div className='show-popup'>
-          <img src='https://picsum.photos/150' style={{borderRadius: "100%"}}/>
-          <p style={{fontSize: "25px", lineHeight: "10px", fontWeight: "bolder"}}>{accountName}</p>
-          <p style={{fontSize: "15px", lineHeight: "0", color: "rgb(255, 255, 255, 0.5)"}}>@{accountName}</p>
-          {/* <div style={{justifyContent: "space-around", display: "flex"}}>
-            <div>117 Following</div>
-            <div>1.4M Followers</div>
-          </div> */}
+          {/* show user profile picture */}
+          <img src={accountProfile[4]} alt="Account Profile" style={{borderRadius: "100%", width: "200px"}}/>
+          {/* show user name */}
+          <p style={{fontSize: "25px", lineHeight: "10px", fontWeight: "bolder"}}>{accountProfile[1]}</p>
+          {/* show user screen name */}
+          <p style={{fontSize: "16px", lineHeight: "0", color: "rgb(255, 255, 255, 0.5)"}}>@{accountProfile[2]}</p>
+          {/* show Followers count */}
+          <div style={{fontSize: "14px", color: "rgb(255, 255, 255, 0.5)"}}> {followerFormatter(accountProfile[3])} Followers</div>
         </div>
       }
     </div>

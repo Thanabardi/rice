@@ -2,5 +2,42 @@
     border: none;
 	background-color: rgb(240, 240, 240);
 	padding: 10px;
-	border-radius: 10px;
+	border-radius: 5px;
+	width: 200px;
+}
+
+.search-popup {
+	max-height: 360px;
+	/* overflow-x: hidden; */
+	/* position: absolute; */
+}
+
+.search-table{
+	color: white;
+	background-color: rgb(13,17,23);
+	line-height: 1;
+	border-radius: 5px;
+	min-width: 220px;
+	border-collapse: collapse;
+	
+}
+
+.search-table-td{
+	padding: 10px;
+	font-size: 10px;
+}
+
+.search-button{
+	/* width: 100%; */
+	border: none;
+	background: none;
+	text-decoration: none;
+	padding: 0;
+	color: white;
+	font-size: 15px;
+}
+
+.search-button:hover {
+	color: rgb(240, 201, 29);
+	cursor: pointer;
 }

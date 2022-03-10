@@ -11,6 +11,7 @@
 	padding: 10px;
 	font-weight: 500;
 	border-bottom: 1px solid #ddd;
+	vertical-align: top;
 }
 
 /* tr:nth-child(even) {background-color: #f2f2f2;} */
@@ -19,7 +20,7 @@
 	background-color: rgb(230, 230, 230);
 }
 
-.button-select{
+.vote-select-button{
 	/* width: 100%; */
 	border: none;
 	background: none;
@@ -30,12 +31,12 @@
 	font-size: 15px;
 }
 
-.button-select:hover {
+.vote-select-button:hover {
 	color: rgb(240, 113, 29);
 	cursor: pointer;
 }
 
-.button-vote{
+.vote-button{
 	/* width: 100%; */
 	border: none;
 	background: none;
@@ -47,7 +48,7 @@
 	font-size: 20px;
 }
 
-.button-vote:hover {
+.vote-button:hover {
 	color: rgb(16, 116, 54);
 	cursor: pointer;
 }
