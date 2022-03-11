@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import ShowUser from './ShowUser'
@@ -8,33 +8,43 @@ import '../assets/UserSearch.css';
 const Home = (props) => {
 	const bearerToken = process.env.REACT_APP_TWITTER_API_KEY
 	
-  let [inputs, setInputs] = useState({});
+  let [inputs, setInputs] = useState({account: ""});
 	let [twitterAccount, setTwitterAccount] = useState([]); //list of account object from search
+
+  useEffect(() => {
+    console.log(inputs.account)
+		const timer = setTimeout(() => {
+			handleSearch(inputs.account) 	// call search API on user input after 100 ms
+		}, 100);
+		return () => clearTimeout(timer);
+  }, [inputs.account]);
 
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     setInputs(values => ({...values, [name]: value}))
-		
-		handleSearch(event)	// call search API on user input
   }
 
-  async function handleSearch(event) {
+	function clearSearch(event) {
 		event.preventDefault();
-		if (inputs.account !== "" && typeof inputs.account !== "undefined") {
-			await axios.get(`/1.1/users/search.json?q=${inputs.account.replace("/", "")}`, {
+		setTwitterAccount([]) //clear search result
+	}
+
+  async function handleSearch(accountName) {
+		if (accountName !== "") {
+			await axios.get(`/1.1/users/search.json?q=${accountName.replace("/", "")}`, {
 				"headers": {
 					'Authorization': `Bearer ${bearerToken}`
 				}
 			})
-				.then(response => {
-					// console.log(response.data)
-					setTwitterAccount(response.data) //update search result
-				})
-				.catch(error => {
-					window.alert(error)
-					// console.log(error)
-				})
+			.then(response => {
+				// console.log(response.data)
+				setTwitterAccount(response.data) //update search result
+			})
+			.catch(error => {
+				window.alert(error)
+				// console.log(error)
+			})
 		} else {
 			setTwitterAccount([]) //clear search result
 		}
@@ -48,7 +58,7 @@ const Home = (props) => {
   return (
     <div>
 			{/* user input form */}
-			<form onSubmit={handleSearch}>
+			<form onSubmit={clearSearch}>
 				<input
 					className="search-input"
 					type="text" 
