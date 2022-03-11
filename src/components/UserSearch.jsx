@@ -12,10 +12,10 @@ const Home = (props) => {
 	let [twitterAccount, setTwitterAccount] = useState([]); //list of account object from search
 
   useEffect(() => {
-    console.log(inputs.account)
+    // console.log(inputs.account)
 		const timer = setTimeout(() => {
-			handleSearch(inputs.account) 	// call search API on user input after 100 ms
-		}, 100);
+			handleSearch(inputs.account) 	// call search API on user input after 400 ms
+		}, 400);
 		return () => clearTimeout(timer);
   }, [inputs.account]);
 
@@ -25,13 +25,13 @@ const Home = (props) => {
     setInputs(values => ({...values, [name]: value}))
   }
 
-	function clearSearch(event) {
+	function handleSubmit(event) {
 		event.preventDefault();
-		setTwitterAccount([]) //clear search result
+		handleSearch(inputs.account)
 	}
 
   async function handleSearch(accountName) {
-		if (accountName !== "") {
+		if (accountName !== "" && accountName !== "/") {
 			await axios.get(`/1.1/users/search.json?q=${accountName.replace("/", "")}`, {
 				"headers": {
 					'Authorization': `Bearer ${bearerToken}`
@@ -58,7 +58,7 @@ const Home = (props) => {
   return (
     <div>
 			{/* user input form */}
-			<form onSubmit={clearSearch}>
+			<form onSubmit={handleSubmit}>
 				<input
 					className="search-input"
 					type="text" 
@@ -87,7 +87,7 @@ const Home = (props) => {
 												<button className='search-button' value={account} onClick={() => addCandidate(account)}>{account.name}</button>
 											</div>
 											{/* account screen name that show the account details on mouse hover */}
-											<div><ShowUser accountProfile={[account.id, account.name, account.screen_name, account.followers_count, profile_image]} /></div>
+											<div><ShowUser accountProfile={[account.id_str, account.name, account.screen_name, account.followers_count, profile_image]} /></div>
 										</td>
 									</tr>	
 								);
