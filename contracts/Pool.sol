@@ -77,4 +77,30 @@ contract Pool {
         token1amount -= _amountToken1;
         walletToken1[msg.sender] -= _amountToken1;
     }
+
+    function swap0to1(uint256 _amountToken0, uint256 _amountToken1)
+        public
+        payable
+    {
+        require(getToken1Amount() > _amountToken1);
+
+        token0.transferFrom(msg.sender, address(this), _amountToken0);
+        token1.transfer(msg.sender, _amountToken1);
+
+        token0amount += _amountToken0;
+        token1amount -= _amountToken1;
+    }
+
+    function swap1to0(uint256 _amountToken1, uint256 _amountToken0)
+        public
+        payable
+    {
+        require(getToken0Amount() > _amountToken0);
+
+        token1.transferFrom(msg.sender, address(this), _amountToken1);
+        token0.transfer(msg.sender, _amountToken0);
+
+        token0amount -= _amountToken0;
+        token1amount += _amountToken1;
+    }
 }

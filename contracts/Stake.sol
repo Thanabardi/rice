@@ -21,11 +21,22 @@ contract Stake {
             "Put some amount to stake"
         );
         require(
-            poolFactory.getPoolAddress(_token0, _token1) != address(0),
+            poolFactory.getPoolAddress(_token0, _token1) != address(0) ||
+                poolFactory.getPoolAddress(_token1, _token0) != address(0),
             "Selected Pools not exist!"
         );
 
-        Pool selectedPool = Pool(poolFactory.getPoolAddress(_token0, _token1));
+        Pool selectedPool;
+
+        if (poolFactory.getPoolAddress(_token0, _token1) != address(0)) {
+            selectedPool = Pool(poolFactory.getPoolAddress(_token0, _token1));
+        } else {
+            selectedPool = Pool(poolFactory.getPoolAddress(_token1, _token0));
+            uint256 temp0 = amountToken0;
+            uint256 temp1 = amountToken1;
+            amountToken1 = temp0;
+            amountToken0 = temp1;
+        }
 
         uint256 token0needed = selectedPool.token0NeedForStake(amountToken1);
         if (token0needed <= amountToken0) {
@@ -48,12 +59,18 @@ contract Stake {
             "Percent must in between 1-100!!"
         );
         require(
-            poolFactory.getPoolAddress(_token0, _token1) != address(0),
+            poolFactory.getPoolAddress(_token0, _token1) != address(0) ||
+                poolFactory.getPoolAddress(_token1, _token0) != address(0),
             "Selected Pools not exist!"
         );
 
-        Pool selectedPool = Pool(poolFactory.getPoolAddress(_token0, _token1));
+        Pool selectedPool;
 
+        if (poolFactory.getPoolAddress(_token0, _token1) != address(0)) {
+            selectedPool = Pool(poolFactory.getPoolAddress(_token0, _token1));
+        } else {
+            selectedPool = Pool(poolFactory.getPoolAddress(_token1, _token0));
+        }
         selectedPool.drainPool(percent);
     }
 }

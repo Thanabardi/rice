@@ -10,12 +10,12 @@ contract PoolFactory {
         public
     {
         require(
-            address(pools[_token0][_token1]) != address(0),
+            address(pools[_token0][_token1]) == address(0) &&
+                address(pools[_token1][_token0]) == address(0),
             "Pool already Exist"
         );
         Pool poolAddress = new Pool(_token0, _token1);
         pools[_token0][_token1] = poolAddress;
-        pools[_token1][_token0] = poolAddress;
     }
 
     function getPool(address _token0, address _token1)
