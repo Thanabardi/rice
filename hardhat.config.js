@@ -10,7 +10,7 @@ module.exports = {
   networks: {
     hardhat: {},
     mumbai: {
-      url: [`${ALCHEMY}`],
+      url: `${ALCHEMY}`,
       accounts: [`0x${WALLET_PRIVATE_KEY}`]
     }
   },
