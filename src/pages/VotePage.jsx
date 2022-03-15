@@ -5,7 +5,7 @@ import axios from 'axios';
 import UserSearch from '../components/UserSearch'
 import ShowUser from '../components/ShowUser'
 
-import '../assets/Vote.css';
+import '../assets/VotePage.css';
 
 const Vote = () => {
 	const bearerToken = process.env.REACT_APP_TWITTER_API_KEY
