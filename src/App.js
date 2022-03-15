@@ -1,11 +1,16 @@
-import logo from './logo.svg';
+import { Navigate, Route, Routes } from 'react-router-dom'
+
+// import logo from './logo.svg';
 import './App.css';
 import { ethers } from 'ethers'
 import Web3Modal from 'web3modal'
 
+import SwapPage from './pages/SwapPage'
+import Vote from './pages/Vote'
+
 import PoolFactory from './artifacts/contracts/PoolFactory.sol/PoolFactory.json'
 import Stake from './artifacts/contracts/Stake.sol/Stake.json'
-import Test from './artifacts/contracts/Test.sol/Test.json'
+// import Test from './artifacts/contracts/Test.sol/Test.json'
 import RICE from './artifacts/contracts/Token.sol/RICE.json'
 import WMATIC from './artifacts/contracts/WMatic.sol/WMATIC.json'
 import Swap from './artifacts/contracts/Swap.sol/Swap.json'
@@ -17,6 +22,7 @@ const poolFactoryAddress = 'address'
 const stakeAddress = 'address'
 const swapAddress = 'address'
 const wMaticAddress ='address'
+
 
 
 function App() {
@@ -270,6 +276,11 @@ function App() {
 
 
       </header>
+      <Routes>
+        <Route path="/swap" element={<SwapPage />} />
+        <Route path="/vote" element={<Vote />} />
+        <Route path="*" element={<Navigate to="swap" />} />
+      </Routes>
     </div>
   );
 }
