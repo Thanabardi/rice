@@ -8,11 +8,8 @@ module.exports = {
     artifacts: './src/artifacts',
   },
   networks: {
-    hardhat: {
-     chainId: 1337
-    },
     mumbai: {
-      url: [`${ALCHEMY}`],
+      url: `${ALCHEMY}`,
       accounts: [`0x${WALLET_PRIVATE_KEY}`]
     }
   },
