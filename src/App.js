@@ -1,7 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
 import { ethers } from 'ethers'
-import Web3Modal from 'web3modal'
 
 import PoolFactory from './artifacts/contracts/PoolFactory.sol/PoolFactory.json'
 import Stake from './artifacts/contracts/Stake.sol/Stake.json'
@@ -12,11 +11,12 @@ import Swap from './artifacts/contracts/Swap.sol/Swap.json'
 
 
 
-const tokenAddress = 'address'
-const poolFactoryAddress = 'address'
-const stakeAddress = 'address'
-const swapAddress = 'address'
-const wMaticAddress ='address'
+
+const tokenAddress = '0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346'
+const poolFactoryAddress = '0x09A2CE5ED1Bb3bB9072da66dc4d8F9A279867dea'
+const stakeAddress = '0x496Fc628dA06ca41845cF9aB9e9b36668b58b39d'
+const swapAddress = '0x9DDe8618a3713aE483E4976Ae8427A040d9f931B'
+const wMaticAddress ='0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'
 
 
 function App() {
