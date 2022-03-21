@@ -5,7 +5,8 @@ import "./VoteExchange.sol";
 contract VoteSession {
     uint public voteId;
     mapping(address => uint) public voteMap;
-    mapping(string => uint) public riceParticipants;
+    mapping(string => uint) public candidate;
+    string[] public candidateName;
     VoteExchange public voteExchange;
     address public owner;
     
@@ -29,7 +30,10 @@ contract VoteSession {
             "Not have enough vote"
         );
 
-        riceParticipants[_twitterId] += _amount;
+        if(candidate[_twitterId] == 0) {
+            candidateName.push(_twitterId);
+        }
+        candidate[_twitterId] += _amount;
         voteMap[msg.sender] += _amount;
     }
 
@@ -43,5 +47,12 @@ contract VoteSession {
         require(tx.origin == owner, "Not owner");
         status = voteState.ENDED;
         voteExchange.openExchange();
+
+        // TODO: add random method to find the NFT winner
+    }
+
+    function getCandidateName() public view returns (string[] memory) {
+        // return the array of candidate names as an object
+        return candidateName;
     }
 }
