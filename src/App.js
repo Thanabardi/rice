@@ -1,10 +1,15 @@
-import logo from './logo.svg';
+import { Navigate, Route, Routes } from 'react-router-dom'
+
+// import logo from './logo.svg';
 import './App.css';
 import { ethers } from 'ethers'
 
+import SwapPage from './pages/SwapPage'
+import Vote from './pages/Vote'
+
 import PoolFactory from './artifacts/contracts/PoolFactory.sol/PoolFactory.json'
 import Stake from './artifacts/contracts/Stake.sol/Stake.json'
-import Test from './artifacts/contracts/Test.sol/Test.json'
+// import Test from './artifacts/contracts/Test.sol/Test.json'
 import RICE from './artifacts/contracts/Token.sol/RICE.json'
 import WMATIC from './artifacts/contracts/WMatic.sol/WMATIC.json'
 import Swap from './artifacts/contracts/Swap.sol/Swap.json'
@@ -17,6 +22,7 @@ const poolFactoryAddress = '0x09A2CE5ED1Bb3bB9072da66dc4d8F9A279867dea'
 const stakeAddress = '0x496Fc628dA06ca41845cF9aB9e9b36668b58b39d'
 const swapAddress = '0x9DDe8618a3713aE483E4976Ae8427A040d9f931B'
 const wMaticAddress ='0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'
+
 
 
 function App() {
@@ -270,6 +276,11 @@ function App() {
 
 
       </header>
+      <Routes>
+        <Route path="/swap" element={<SwapPage />} />
+        <Route path="/vote" element={<Vote />} />
+        <Route path="*" element={<Navigate to="swap" />} />
+      </Routes>
     </div>
   );
 }

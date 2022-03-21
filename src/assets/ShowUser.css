@@ -1,0 +1,24 @@
+.show-button{
+	border: none;
+	background: none;
+	text-decoration: none;
+	padding: 0;
+	color: rgb(29,155,240);
+}
+
+.show-button:hover {
+	color: rgba(29, 156, 240, 0.5);
+	cursor: pointer;
+}
+
+.show-popup {
+	color: white;
+	border-radius: 10px;
+	background-color: rgb(13,17,23);
+	padding: 20px;
+	text-align: center;
+	position: absolute;
+	min-width: 220px;
+	display: inline-block;
+	margin-left: 20px;
+}

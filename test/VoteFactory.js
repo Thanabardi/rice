@@ -61,7 +61,7 @@ describe("VoteFactory contract", function () {
 
         for(let i=0; i<9; i++) {
             await voteSession.connect(accounts[i]).vote(100, twitterIds[i]);
-            expect(await voteSession.riceParticipants(twitterIds[i])).to.equal(100);
+            expect(await voteSession.candidate(twitterIds[i])).to.equal(100);
         }
     });
 

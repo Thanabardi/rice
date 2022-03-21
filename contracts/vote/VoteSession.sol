@@ -6,7 +6,8 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 contract VoteSession is VRFConsumerBase {
     uint256 public voteId;
     mapping(address => uint256) public voteMap;
-    mapping(string => uint256) public riceParticipants;
+    mapping(string => uint) public candidate;
+    string[] public candidateName;
     VoteExchange public voteExchange;
     address public owner;
 
@@ -55,7 +56,10 @@ contract VoteSession is VRFConsumerBase {
             "Not have enough vote"
         );
 
-        riceParticipants[_twitterId] += _amount;
+        if(candidate[_twitterId] == 0) {
+            candidateName.push(_twitterId);
+        }
+        candidate[_twitterId] += _amount;
         voteMap[msg.sender] += _amount;
         //random
         for (uint256 i = 0; i < _amount; i++) {
@@ -77,6 +81,13 @@ contract VoteSession is VRFConsumerBase {
         bytes32 requestID = requestRandomness(keyhash, fee);
 
         voteExchange.openExchange();
+
+        // TODO: add random method to find the NFT winner
+    }
+
+    function getCandidateName() public view returns (string[] memory) {
+        // return the array of candidate names as an object
+        return candidateName;
     }
 
     function fulfillRandomness(bytes32 requestId, uint256 _randomness)
