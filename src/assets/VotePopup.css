@@ -1,0 +1,91 @@
+.vote-popup-button{
+	/* width: 100%; */
+	border: none;
+	background: rgb(123, 182, 97);
+	text-decoration: none;
+	padding: 0;
+	/* margin: 50px 0 100px 0; */
+	color: white;
+	font-size: 20px;
+	width: 7%;
+	border-radius: 18px;
+	padding: 4px;
+	margin-top: 10px;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.vote-popup-button:hover {
+	color: rgb(16, 116, 54);
+	cursor: pointer;
+}
+
+.vote-popup-button-con{
+	/* width: 100%; */
+	border: none;
+	background: rgb(123, 182, 97);
+	text-decoration: none;
+	padding: 0;
+	/* margin: 50px 0 100px 0; */
+	color: white;
+	font-size: 20px;
+	width: 30%;
+	border-radius: 18px;
+	padding: 4px;
+	margin-top: 10px;
+}
+
+.vote-popup-button-con:hover {
+	color: rgb(16, 116, 54);
+	cursor: pointer;
+}
+
+.vote-popup-button-can{
+	/* width: 100%; */
+	border: none;
+	background: rgb(165, 165, 165);
+	text-decoration: none;
+	padding: 0;
+	/* margin: 50px 0 100px 0; */
+	color: white;
+	font-size: 20px;
+	width: 30%;
+	border-radius: 18px;
+	padding: 4px;
+	margin-top: 10px;
+}
+
+.vote-popup-button-can:hover {
+	color: rgb(0, 0, 0);
+	cursor: pointer;
+}
+
+.vote-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.vote-popup-div {
+	background-color: white;
+  position: absolute;
+	padding: 20px;
+	min-width: 20%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+	/* margin: auto; */
+	border-radius: 18px;
+	margin-bottom: 20px;
+}
+
+.vote-popup-input {
+  border: none;
+	background-color: rgb(240, 240, 240);
+	padding: 10px;
+	border-radius: 5px;
+	width: 60%;
+  margin: 10px 10px 20px;
+}

@@ -1,13 +1,8 @@
-body {
-    font-family: Tahoma;
-    font-size: 20px;
-}
-
-img {
+/* img {
     max-width: 25px;
     border-radius: 50%;
     height: auto;
-}
+} */
 
 selectCoin {
     display: flex;
@@ -15,7 +10,7 @@ selectCoin {
     justify-content: space-between;
 }
 
-input[type=submit] {
+/* input[type=submit] {
     width: 100%;
     background-color: #4CAF50;
     color: white;
@@ -38,4 +33,4 @@ input[type=text], select {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-}
+} */

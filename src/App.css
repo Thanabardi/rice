@@ -1,3 +1,10 @@
+body {
+  font-family: Tahoma;
+  font-size: 20px;
+  background: radial-gradient(farthest-side at 50% 0%,rgb(253, 253, 203) 0%, rgb(241, 241, 229) 50%);
+  background-attachment: fixed;
+}
+
 .App {
   text-align: center;
 }
@@ -27,62 +34,6 @@
 .App-link {
   color: #61dafb;
 }
-
-.topnav {
-  display: flex;
-  flex-flow: row nowrap;
-  border-radius: 80px;
-  padding: 8px 12px;
-  justify-content: center;
-  overflow: hidden;
-  width: 19%;
-  background-color: #28b883;
-  margin-top: 1.5%;
-}
-
-.topnav div {
-  cursor: pointer;
-  float: center;
-  color: black;
-  text-align: center;
-  padding: 14px 18px;
-  text-decoration: none;
-  font-size: 17px;
-  border-radius: 20px;
-  background-color: #91f0cd;
-}
-
-.topnav div:hover{
-  background-color: #91f0cd;
-  color: #91f0cd;
-}
-/* .topnav {
-  overflow: hidden;
-  background-color: #333;
-}
-
-.topnav a {
-  float: center;
-  color: #ffffff;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
-
-.topnav a:hover {
-  background-color: #28b883;
-  color: white;
-}
-
-.topnav a.active {
-  background-color: #04AA6D;
-  color: white;
-}
-
-.topnav a.focus {
-  background-color: #04AA6D;
-} */
 
 @keyframes App-logo-spin {
   from {
