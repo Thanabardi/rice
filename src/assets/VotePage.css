@@ -1,17 +1,38 @@
+.vote {
+	margin-top: 2%;
+	margin-left: auto;
+	margin-right: auto;
+	padding-bottom: 10%;
+	border-radius: 18px;
+	margin-bottom: 3%;
+}
+
+.vote-div {
+	background-color: white;
+	padding: 20px;
+	width: 20%;
+	margin: auto;
+	border-radius: 18px;
+	margin-bottom: 20px;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
 .vote-table {
 	margin: auto;
-	margin-top: 5%;
 	border-collapse: collapse;
-	/* min-width: 20%; */
+	min-width: 100%;
 }
 
 .vote-td {
-	/* width: 50%; */
 	text-align: left;
 	padding: 10px;
 	font-weight: 500;
 	border-bottom: 1px solid #ddd;
 	vertical-align: top;
+}
+
+.vote-td:first-child{
+	width: 50px;
 }
 
 /* tr:nth-child(even) {background-color: #f2f2f2;} */
@@ -33,22 +54,5 @@
 
 .vote-select-button:hover {
 	color: rgb(240, 113, 29);
-	cursor: pointer;
-}
-
-.vote-button{
-	/* width: 100%; */
-	border: none;
-	background: none;
-	text-decoration: none;
-	padding: 0;
-	margin-top: 50px;
-	color: rgb(15, 153, 68);
-	font-weight: bold;
-	font-size: 20px;
-}
-
-.vote-button:hover {
-	color: rgb(16, 116, 54);
 	cursor: pointer;
 }

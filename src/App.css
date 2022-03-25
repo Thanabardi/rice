@@ -1,3 +1,10 @@
+body {
+  font-family: Tahoma;
+  font-size: 20px;
+  background: radial-gradient(farthest-side at 50% 0%,rgb(253, 253, 203) 0%, rgb(241, 241, 229) 50%);
+  background-attachment: fixed;
+}
+
 .App {
   text-align: center;
 }
