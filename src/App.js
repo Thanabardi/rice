@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes, Link } from 'react-router-dom'
+import { Navigate, Route, Routes, Link,useNavigate } from 'react-router-dom'
 
 import './App.css';
 
@@ -8,12 +8,19 @@ import VotePage from './pages/VotePage'
 import AdminPage from './pages/AdminPage'
 
 function App() {
+  const path_rice = localStorage.state;
+  const navigate = useNavigate();
+
   return (
     <div className="App">
-      <Link to={'/swap'}>swap</Link>
-      <Link to={'/stake'}>stake</Link>
-      <Link to={'/vote'}>vote</Link>
-      <Link to={'/admin'}>admin</Link>
+      <center>
+      <div className='topnav'>
+        <div onClick={()=>{localStorage.state="swap";  navigate('/swap')}} style={{backgroundColor:path_rice==="swap"?'#55d6a7':'white'}}>swap</div>
+        <div onClick={()=>{localStorage.state="stake"; navigate('/stake')}} style={{backgroundColor:path_rice==="stake"?'#55d6a7':'white'}}>stake</div>
+        <div onClick={()=>{localStorage.state="vote"; navigate('/vote')}} style={{backgroundColor:path_rice==="vote"?'#55d6a7':'white'}}>vote</div>
+        <div onClick={()=>{localStorage.state="admin"; navigate('/admin')}} style={{backgroundColor:path_rice==="admin"?'#55d6a7':'white'}}>admin</div>
+      </div>
+      </center>
       <Routes>
         <Route path="/swap" element={<SwapPage />} />
         <Route path="/stake" element={<StakePage />} />

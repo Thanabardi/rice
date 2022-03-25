@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ethers } from 'ethers'
 import WMATIC from '../artifacts/contracts/WMatic.sol/WMATIC.json'
 import Swap from '../artifacts/contracts/Swap.sol/Swap.json'
-
-
+import matic from '../assets/images/matic.png';
+import rice from '../assets/images/rice.jpg';
 import '../assets/SwapPage.css';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 const SwapPage = () => {
-  const swapAddress = 'address'
+  const swapAddress = '0x9DDe8618a3713aE483E4976Ae8427A040d9f931B'
 
+  // TODO: change address Rice and Matic
+  const coinOption  = [
+    {value: "Matic address", label: "Matic", img:matic},
+    {value: "Rice address", label: "Rice", img:rice}
+  ]
   async function requestAccount() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
   }
@@ -49,7 +59,7 @@ const SwapPage = () => {
       console.log({ provider })
       const contract = new ethers.Contract(swapAddress, Swap.abi, provider)
       try {
-        const data = await contract.getTokenOdds(e.target[0].value,e.target[1].value,  e.target[2].value*100000 + "0000000000000",)
+        const data = await contract.getTokenOdds(coinState1, coinState2,  e.target[2].value*100000 + "0000000000000",)
 
         console.log('Total: ', data)
       } catch (err) {
@@ -58,23 +68,76 @@ const SwapPage = () => {
     }  
   }
 
-  
+  const [coinState1, setState1] = useState("");
+  const [coinState2, setState2] = useState("");
+  const [amountState, setAmountState] = useState("");
+
+  const handleChange1 = (event) => {
+    setState1(event.target.value);
+    console.log(event.target.value)
+  };
+
+  const handleChange2 = (event) => {
+    setState2(event.target.value);
+    console.log(event.target.value)
+  };
+
+  const handleChange3 = (event) => {
+    // TODO: set CalculateCoin
+    setAmountState(event.target.value);
+    console.log(event.target.value)
+  };
+
   return (
     <div className='swap'>
-      GetOdds
-      <form onSubmit={onGetOdds}>
-        <input placeholder='Swap from (token address)'></input><br/>
-        <input placeholder='To (token address)'></input><br/>
-        <input placeholder='amount token' type='number' step=".0001"></input><br/>
+      Swap
+      <center>
+        <Box sx={{ maxWidth: 120 }}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">COIN</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={coinState1}
+              label="Coin"
+              onChange={handleChange1}
+            >
+              <MenuItem value={coinOption[0].value}>Matic <img src={coinOption[0].img}/></MenuItem>
+              <MenuItem value={coinOption[1].value}>Rice <img src={coinOption[1].img}/></MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </center>
+      <center>
+        <Box sx={{ maxWidth: 120 }}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">COIN</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={coinState2}
+              label="Coin"
+              onChange={handleChange2}
+            >
+              <MenuItem value={coinOption[0].value}>Matic <img src={coinOption[0].img}/></MenuItem>
+              <MenuItem value={coinOption[1].value}>Rice <img src={coinOption[1].img}/></MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </center>
+      <form onSubmit={onSwap}>
+        <input type="hidden" value={coinState1} disabled={coinState1===""}></input>
+        <input type="hidden" value={coinState2} disabled={coinState1===""}></input>
+        <input placeholder='amount token' type='number' step=".0001" onChange={handleChange3}></input><br/>
 
         <button>submit</button>
       </form>
-      Swap
-      <form onSubmit={onSwap}>
-        <input placeholder='Swap from (token address)'></input><br/>
-        <input placeholder='To (token address)'></input><br/>
-        <input placeholder='amount token' type='number' step=".0001"></input><br/>
-
+      GetOdds
+      <form onSubmit={onGetOdds}>
+        <input type="hidden" value={coinState1} disabled={coinState1===""}></input>
+        <input type="hidden" value={coinState2} disabled={coinState1===""}></input>
+        {/* TODO: set value and render coin */}
+        <input placeholder='amount token' type='number' step=".0001" disabled="true"></input><br/>
         <button>submit</button>
       </form>
     </div>
