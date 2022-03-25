@@ -1,5 +1,6 @@
 pragma solidity ^0.8.0;
 
+import "../nft/RiceNFT.sol";
 import "./VoteExchange.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 
@@ -17,6 +18,9 @@ contract VoteSession is VRFConsumerBase {
     bytes32 public keyhash;
     address public winner;
 
+    // nft
+    RiceNFT public nftContract;
+
     enum voteState {
         STARTED,
         ENDED
@@ -29,7 +33,8 @@ contract VoteSession is VRFConsumerBase {
         address _coordinator,
         address _link,
         bytes32 _hash,
-        uint256 _fee
+        uint256 _fee,
+        address _nftAddress
     ) public VRFConsumerBase(_coordinator, _link) {
         //random
         keyhash = _hash;
@@ -41,6 +46,9 @@ contract VoteSession is VRFConsumerBase {
         voteExchange.closeExchange();
         fee = _fee;
         keyhash = _hash;
+
+        // nft
+        nftContract = RiceNFT(_nftAddress);
     }
 
     function vote(uint256 _amount, string memory _twitterId) public {
@@ -72,7 +80,7 @@ contract VoteSession is VRFConsumerBase {
         return voteExchange.voteExchange(_voter) / 10**18 - voteMap[_voter];
     }
 
-    function endVote() public {
+    function endVote() public returns (address){
         // end the vote session for owner or out of time
         require(tx.origin == owner, "Not owner");
         status = voteState.ENDED;
@@ -82,7 +90,11 @@ contract VoteSession is VRFConsumerBase {
 
         voteExchange.openExchange();
 
-        // TODO: add random method to find the NFT winner
+        nftContract.openNFT();
+
+        // TODO: find the NFT winners
+
+        return winner;
     }
 
     function getCandidateName() public view returns (string[] memory) {
