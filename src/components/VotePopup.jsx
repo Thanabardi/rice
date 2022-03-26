@@ -1,10 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { ethers } from 'ethers'
+
 
 import '../assets/VotePopup.css';
+import getSessionAddress from '../utils/FetchVoteSession';
+import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
+import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
+
+const factoryAddress = "0x7C1CC7d5B1BBAD6d059aeed8621dD0c7A62740Ba"
 
 const VotePopup = ({ voteAccount }) => {
+  
 	const [votePopup, setUserPopup] = useState(false);
   let [inputs, setInputs] = useState({account: ""});
+
+  async function requestAccount() {
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+  }
+
+
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -17,6 +31,8 @@ const VotePopup = ({ voteAccount }) => {
     }
   }
 
+ 
+
   function followerFormatter(follower) {
     // format raw int number into form of thousand and million
     if (follower > 999 && follower < 1000000){
@@ -28,10 +44,25 @@ const VotePopup = ({ voteAccount }) => {
     }
   }
 
+  async function onVote(amount,twitterId){
+
+    if (typeof window.ethereum !== 'undefined') {
+      await requestAccount()
+      const sessionAddress = getSessionAddress(factoryAddress)
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        console.log({ provider })
+        const signer = provider.getSigner()
+     
+        const contract = new ethers.Contract(sessionAddress, voteSession.abi, signer)
+        const transaction = contract.vote(amount,twitterId)
+    }
+}
+
   function vote() {
     if (inputs.rice > 0) {
       if (window.confirm(`Vote ${voteAccount.name} (@${voteAccount.screen_name}) for ${inputs.rice} Rice?`) == true) {
-        console.log(`voted user ID ${voteAccount.id_str} with ${inputs.rice}`)
+        console.log(`voted user ID ${voteAccount.id} with ${inputs.rice}`)
+        onVote(inputs.rice,voteAccount.id)
         setInputs("")
         setUserPopup(false)
       }

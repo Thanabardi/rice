@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+import { ethers } from 'ethers'
+
+
 import axios from 'axios';
 
 import UserSearch from '../components/UserSearch'
@@ -7,6 +10,11 @@ import ShowUser from '../components/ShowUser'
 import VotePopup from '../components/VotePopup'
 
 import '../assets/VotePage.css';
+import getSessionAddress from '../utils/FetchVoteSession';
+import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
+import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
+
+const factoryAddress = "0x7C1CC7d5B1BBAD6d059aeed8621dD0c7A62740Ba"
 
 const Vote = () => {
 	const bearerToken = process.env.REACT_APP_TWITTER_API_KEY
@@ -15,11 +23,50 @@ const Vote = () => {
 	let [newCandidateList, setNewCandidateList] = useState([]) //list of new candidate id
 	let [candidateList, setCandidateList] = useState([]) // list candidate details(id, name, screen name, followers, profile image)
 	let [select, setSelect] = useState({}) // a candidate that user selected
+	let [voteAmount, setVoteAmount] = useState("0") 
 
   useEffect(() => {
 		// create candidate details list from candidate id
 		getAccountProfile(candidateIDs)
+		getCandidateList()
+		onfetchVote()
   }, []);
+
+  async function getCandidateList(){
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+      console.log({ provider })
+      const sessionAddress = getSessionAddress(factoryAddress)
+      const contract = new ethers.Contract(factoryAddress, voteFactory.abi, provider)
+        const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
+        try{
+            const data = await contractVote.getCandidateName()
+            console.log('There is twitter ID: ',data)
+        }catch (err) {
+        console.log("Error: ", err)
+    }
+}  
+
+  }
+
+  async function onfetchVote(){
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      console.log({ provider })
+      const signer = provider.getSigner();
+      const sessionAddress = getSessionAddress(factoryAddress)
+        const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
+        try{
+            const data = await contractVote.remainingVote(signer.getAddress())
+            console.log('amount of vote left: ',data._hex)
+			// fix this to decimal
+            setVoteAmount(data._hex)
+        }catch (err) {
+        console.log("Error: ", err)
+    }
+  }
+}  
+
 
 	async function getAccountProfile() {
  		await axios.get(`/1.1/users/lookup.json?user_id=${candidateIDs.toString()}`, {
@@ -53,6 +100,7 @@ const Vote = () => {
 
   return (
 		<div className='vote'>
+			{voteAmount}
 			<div style={{padding: "20px", fontSize: "30px"}}>Vote</div>
 			<div className='vote-div'>
 				<table className='vote-table'>
