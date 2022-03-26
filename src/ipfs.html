@@ -11,7 +11,9 @@
   <script type="text/javascript">
     function upload() {  
       const reader = new FileReader();
+      console.log(reader.result)
       reader.onloadend = function() {
+        console.log(reader.result)
         const ipfs = window.IpfsApi('localhost', 5001) // Connect to IPFS
         const buf = buffer.Buffer(reader.result) // Convert data into buffer
         ipfs.files.add(buf, (err, result) => { // Upload buffer to IPFS
