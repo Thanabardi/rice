@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
+import checkMetaMask from '../utils/CheckMetaMask';
+
 import '../assets/CallMetaMask.css';
 
-const MetaMask = ({}) => {
+const MetaMask = () => {
   let [status, setStatus] = useState(checkMetaMask())
-
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setStatus(checkMetaMask())
@@ -20,23 +22,9 @@ const MetaMask = ({}) => {
     return accounts
 	}
 
-  function checkMetaMask() {
-		// console.log("check MetaMask",window.ethereum)
-		if (typeof window.ethereum !== 'undefined') {
-			if (window.ethereum.selectedAddress === null) {
-        console.log("null",window.ethereum)
-        return "Connect MetaMask"
-
-			} else {
-        return "Connected"
-      }
-		} else {
-      return "Install MetaMask"
-		}
-	}
-
   function handleSelect(status) {
     if (status === "Connect MetaMask") {
+      console.log("thiss")
       callMetaMask().then(()=>{window.location.reload()})
     } else if (status === "Install MetaMask") {
       window.open(`https://metamask.io/`, `_blank`);

@@ -17,6 +17,19 @@
 	cursor: pointer;
 }
 
+.vote-popup-button-dis{
+	/* width: 100%; */
+	border: none;
+	background: rgb(123, 182, 97);
+	text-decoration: none;
+	padding: 4px 20px 4px 20px;
+	color: white;
+	font-size: 20px;
+	border-radius: 18px;
+	margin-top: 10px;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
 .vote-popup-button-can{
 	/* width: 100%; */
 	border: none;

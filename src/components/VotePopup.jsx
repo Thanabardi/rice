@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers'
 
-
 import '../assets/VotePopup.css';
 import getSessionAddress from '../utils/FetchVoteSession';
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
+
+import checkMetaMask from '../utils/CheckMetaMask';
+import { isDisabled } from '@testing-library/user-event/dist/utils';
 
 const factoryAddress = "0x434Cbdedc7A8069C5F2426C617C3858Bc88014d3"
 
@@ -17,7 +19,6 @@ const VotePopup = ({ voteAccount }) => {
   async function requestAccount() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
   }
-
 
 
   const handleChange = (event) => {
@@ -75,11 +76,12 @@ const VotePopup = ({ voteAccount }) => {
   return (
     <div>
       <button
-        className='vote-popup-button-con'
+        className={checkMetaMask() === "Connected" ? 'vote-popup-button-con':'vote-popup-button-dis'}
         // show confirm popup
         onClick={e => {
-          if (voteAccount.id !== undefined) { setUserPopup(true) } 
-          else {window.alert(`Please select your candidate.`)}}}>Vote</button>
+          if (checkMetaMask() === "Connected")
+            if (voteAccount.id !== undefined) { setUserPopup(true) } 
+            else {window.alert(`Please select your candidate.`)}}}>Vote</button>
       {votePopup &&
         <div className='vote-popup'>
           <div className='vote-popup-div'>

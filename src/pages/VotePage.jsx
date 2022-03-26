@@ -11,6 +11,7 @@ import VotePopup from '../components/VotePopup'
 
 import '../assets/VotePage.css';
 import getSessionAddress from '../utils/FetchVoteSession';
+import checkMetaMask from '../utils/CheckMetaMask';
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
@@ -195,19 +196,6 @@ const Vote = () => {
 		}
 	}
 
-	function checkMetaMask() {
-		// console.log("check MetaMask",window.ethereum)
-		if (typeof window.ethereum !== 'undefined') {
-			if (window.ethereum.selectedAddress === null) {
-        return "Connect"
-			} else {
-        return "Connected"
-      }
-		} else {
-      return "Install"
-		}
-	}
-
   return (
 		<div className='vote'>
 			<div className='vote-inform'>
@@ -221,7 +209,7 @@ const Vote = () => {
 					<div>{award && "Wins "+ award}</div>
 				</div>
 			</div>
-			{ checkMetaMask() === "Connected" && <div>
+			{ checkMetaMask() !== "Install MetaMask" && <div>
 				<div style={{padding: "20px", fontSize: "30px"}}>Vote</div>
 				<div className='vote-div'>
 					<table className='vote-table'>

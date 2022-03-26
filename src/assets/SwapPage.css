@@ -1,83 +1,96 @@
-.swapInterface img {
-    max-width: 25px;
-    border-radius: 50%;
-    height: auto;
-}
-
-.imageChange{
-    max-width: 25px;
-    border-radius: 50%;
-    height: auto;
-}
-.selectCoin {
-    display: flex;
-    justify-content: center;
-    justify-content: space-between;
-}
-
-.swapSelect {
-    margin-left: -300px;
-}
-  
-.input-item {
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: rgb(179, 187, 136);
-    height: 120px;
-    width: 482px;
-    border-radius: 15px;
-}
-
-.swap {
-    margin-top: 1.5%;
-    font-size: 50px;
-    font-family: Tahoma;
-    background-color: white;
-    border-radius: 15px;
-    width: 525px;
-    height: 550px;
-    margin-left: auto;
-    margin-right: auto;
-}
-.swapInner {
-    margin: 30px 100px;
-    margin-left: 150px;
-}
-
-.swapInput {
-    width: 500px;
-    padding: 45px 20px;
-    margin: 8px 10px;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 16px;
-    box-sizing: border-box;
-    font-size: 35px;
-    font-family: Tahoma;
-}
-
-.swapSummit {
-    margin-left: auto;
-    margin-right: auto;
-    background-color: rgb(101, 112, 36);
-    height: 120px;
-    width: 482px;
-    border-radius: 15px;
-    cursor: pointer;
-    margin-top: 10%;
-    font-size: 35px;
-    font-family: Tahoma;
-    color: white;
-}
-
-.swapSummit :disabled{
-    pointer-events: none;
-    background-color: transparent;
-}
-.Alert {
+.swap-alert {
     font-family: Tahoma;
     color: red;
     font-size: 20px;
     margin-top: -160px;
+}
+
+.swap-inform {
+	background: radial-gradient(circle at 50%, rgb(20, 20, 40), rgb(20, 20, 40) 75%, rgb(199, 199, 199) 78%, rgb(20, 20, 40) 90%);
+	color: rgb(255, 255, 255);
+	line-height: 30px;
+	padding: 20px;
+	display: inline-block;
+	min-width: 25%;
+    margin-top: 2%;
+	border-radius: 18px;
+	margin-bottom: 20px;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.swap {
+	margin-top: 2%;
+	margin-left: auto;
+	margin-right: auto;
+    background-color: white;
+    display: inline-block;
+    min-width: 25%;
+    height: 100%;
+	border-radius: 18px;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.swap-div {
+    background-color: rgba(0, 0, 0, 0.05);
+    display: flex;
+    width: 93%;
+	padding: 2%;
+	border-radius: 15px;
+    margin: 5px;
+}
+
+.swap-input {
+    border: none;
+	background: none;
+	padding: 10px;
+    border-radius: 18px;
+	width: 200%;
+    font-size: 20px;
+}
+.swap-input:focus {
+    outline: none;
+}
+
+.swap-img {
+    max-width: 25px;
+    border-radius: 100%;
+}
+
+.swap-button{
+    background: rgb(123, 182, 97);
+    text-decoration: none;
+    width: 95%;
+    height: 50px;
+    color: white;
+    border: none;
+    margin: 10px;
+    font-size: 17px;
+    border-radius: 18px;
+    margin-top: 10px;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.swap-button:hover {
+    color: rgb(150, 90, 62);
+	background: rgb(255, 237, 121);
+	cursor: pointer;
+}
+
+.swap-button-dis{
+    background: rgb(123, 182, 97);
+    text-decoration: none;
+    width: 95%;
+    height: 50px;
+    color: white;
+    border: none;
+    margin: 10px;
+    font-size: 17px;
+    border-radius: 18px;
+    margin-top: 10px;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.swap-button :disabled{
+    pointer-events: none;
+    background-color: transparent;
 }
