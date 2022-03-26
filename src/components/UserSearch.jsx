@@ -31,7 +31,7 @@ const Home = (props) => {
 	}
 
   async function handleSearch(accountName) {
-		if (accountName !== "" && accountName !== "/") {
+		if (accountName !== "" && accountName !== "/" && accountName !== undefined) {
 			await axios.get(`/1.1/users/search.json?q=${accountName.replace("/", "")}`, {
 				"headers": {
 					'Authorization': `Bearer ${bearerToken}`
@@ -53,6 +53,7 @@ const Home = (props) => {
 	function addCandidate(account) {
 		props.sendData(account);
 		setTwitterAccount([])
+		setInputs('')
 	}
 
   return (
@@ -61,8 +62,8 @@ const Home = (props) => {
 			<form onSubmit={handleSubmit}>
 				<input
 					className="search-input"
-					type="text" 
-					name="account" 
+					type="search"
+					name="account"
 					placeholder="Twitter Account Name"
 					value={inputs.account || ""} 
 					onChange={handleChange}
@@ -79,15 +80,18 @@ const Home = (props) => {
 								return (
 									<tr key={index}>
 										{/* profile image */}
-										<td className="search-table-td"><img src={profile_image} 
-											alt="Account Profile" style={{borderRadius: "100%", width: "50px"}}/></td>
-										<td>
+										<td className="search-table-td">
+											<img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}}/>
+										</td>
+										<td className="search-table-td">
 											{/* account name that add into a candidate list when user click*/}
 											<div style={{fontSize: "15px", color: "white"}}>
 												<button className='search-button' value={account} onClick={() => addCandidate(account)}>{account.name}</button>
 											</div>
 											{/* account screen name that show the account details on mouse hover */}
-											<div><ShowUser accountProfile={[account.id_str, account.name, account.screen_name, account.followers_count, profile_image]} /></div>
+											<div style={{bottom: "10px"}}>
+												<ShowUser accountProfile={[account.id_str, account.name, account.screen_name, account.followers_count, profile_image]} />
+											</div>
 										</td>
 									</tr>	
 								);

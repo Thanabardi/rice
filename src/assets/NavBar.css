@@ -1,0 +1,62 @@
+.nav-bar {
+  margin: auto;
+  display: flex;
+  border-radius: 16px;
+  padding: 2px;
+  overflow: hidden;
+  width: 15%;
+  background-color: white;
+  margin-top: 1%;
+  justify-content: space-between;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-bar div {
+  cursor: pointer;
+  color: rgb(75, 75, 75);
+  text-align: center;
+  padding: 8px 12px;
+  font-size: 17px;
+  border-radius: 15px;
+}
+
+.nav-bar div:hover {
+  color: black;
+}
+
+.nav-select {
+  background-color: rgb(240, 240, 240);
+  font-weight: 600;
+}
+
+.nav-not-select {
+  background-color: white;
+}
+
+/* .nav-bar {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.nav-bar a {
+  float: center;
+  color: #ffffff;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.nav-bar a:hover {
+  background-color: #28b883;
+  color: white;
+}
+
+.nav-bar a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+.nav-bar a.focus {
+  background-color: #04AA6D;
+} */
