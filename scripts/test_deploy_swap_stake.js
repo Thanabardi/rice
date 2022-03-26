@@ -2,8 +2,6 @@ const hre = require("hardhat");
 
 async function main() {
   const [deployer] = await hre.ethers.getSigners();
-  const MONEYBALL = 
-  '0x97dD004De376C47d230d15811bE5A2F88093Cb46';
 
   console.log(
     "Deploying contracts with the account:",
@@ -16,17 +14,20 @@ async function main() {
      const PoolFactory = await hre.ethers.getContractFactory("PoolFactory");
      const poolFactory = await PoolFactory.deploy();
 
+     const MoneyBall = await hre.ethers.getContractFactory("MoneyBall");
+     const moneyBall = await MoneyBall.deploy();
 
-//   await token.deployed();
      await poolFactory.deployed();
+     await moneyBall.deployed();
 
 //   console.log("Token deployed to:", token.address);
      console.log("PoolFactory deployed to:", poolFactory.address);
+     console.log("MoneyBall deployed to:", moneyBall.address);
 
      const Stake = await hre.ethers.getContractFactory("Stake");
      const stake = await Stake.deploy(poolFactory.address);
      const Swap = await hre.ethers.getContractFactory("Swap");
-     const swap = await Swap.deploy(poolFactory.address,MONEYBALL);
+     const swap = await Swap.deploy(poolFactory.address,moneyBall.address);
 
      await stake.deployed();
      await swap.deployed();

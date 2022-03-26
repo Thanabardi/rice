@@ -48,14 +48,14 @@ describe("VoteSession contract", function () {
         await expect(voteSession.connect(accounts[1]).vote(0, twitterId)).to.be.revertedWith("Vote must be at least 1 and at most 100");
 
         expect(await voteSession.voteMap(accounts[1].address)).to.equal(0);
-        expect(await voteSession.riceParticipants(twitterId)).to.equal(0);
+        expect(await voteSession.candidate(twitterId)).to.equal(0);
     });
 
     it("can't vote using more than 100 votes", async function () {
         await expect(voteSession.connect(accounts[1]).vote(101, twitterId)).to.be.revertedWith("Vote must be at least 1 and at most 100");
 
         expect(await voteSession.voteMap(accounts[1].address)).to.equal(0);
-        expect(await voteSession.riceParticipants(twitterId)).to.equal(0); 
+        expect(await voteSession.candidate(twitterId)).to.equal(0); 
     });
 
     it("can't vote when vote session is ended", async function () {
@@ -64,13 +64,13 @@ describe("VoteSession contract", function () {
         await expect(voteSession.connect(accounts[1]).vote(100, twitterId)).to.be.revertedWith("Vote session already ended");
 
         expect(await voteSession.voteMap(accounts[1].address)).to.equal(0);
-        expect(await voteSession.riceParticipants(twitterId)).to.equal(0); 
+        expect(await voteSession.candidate(twitterId)).to.equal(0); 
     });
 
     it("update vote correctly", async function () {
         await voteSession.connect(accounts[1]).vote(100, twitterId);
         expect(await voteSession.voteMap(accounts[1].address)).to.equal(100);
-        expect(await voteSession.riceParticipants(twitterId)).to.equal(100); 
+        expect(await voteSession.candidate(twitterId)).to.equal(100); 
     });
 
     it("can't vote with not enough vote", async function () {
@@ -90,7 +90,7 @@ describe("VoteSession contract", function () {
         await expect(newVoteSession.connect(accounts[2]).vote(51, twitterId)).to.be.revertedWith("Not have enough vote");
         
         expect(await newVoteSession.voteMap(accounts[2].address)).to.equal(0);
-        expect(await newVoteSession.riceParticipants(twitterId)).to.equal(0); 
+        expect(await newVoteSession.candidate(twitterId)).to.equal(0); 
     });
 
     it("show right remaining vote", async function () {
@@ -106,5 +106,26 @@ describe("VoteSession contract", function () {
 
     it("end the vote only by owner", async function () {
         await expect(voteSession.connect(accounts[1]).endVote()).to.be.revertedWith("Not owner");
+    });
+
+    it("add candidate name when new name is voted", async function() {
+        const voteAmount = 50;
+        const cadidates = ["a", "b"];
+        let recordedCandidates;
+
+        // vote for a
+        await voteSession.connect(accounts[1]).vote(voteAmount, cadidates[0]);
+        recordedCandidates = await voteSession.getCandidateName();
+        expect(JSON.stringify(cadidates.slice(0, 1))).to.equal(JSON.stringify(recordedCandidates));
+
+        // vote for b
+        await voteSession.connect(accounts[1]).vote(voteAmount, cadidates[1]);
+        recordedCandidates = await voteSession.getCandidateName();
+        expect(JSON.stringify(cadidates)).to.equal(JSON.stringify(recordedCandidates));
+
+        // vote for a again, shouldn't add a in candidate name again
+        await voteSession.connect(accounts[1]).vote(voteAmount, cadidates[0]);
+        recordedCandidates = await voteSession.getCandidateName();
+        expect(JSON.stringify(cadidates)).to.equal(JSON.stringify(recordedCandidates));
     });
 });

@@ -7,6 +7,7 @@ import StakePage from './pages/StakePage'
 import VotePage from './pages/VotePage'
 import AdminPage from './pages/AdminPage'
 
+
 import NavBar from './components/NavBar'
 
 function App() {
