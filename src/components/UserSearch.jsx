@@ -78,15 +78,15 @@ const Home = (props) => {
 							{twitterAccount.filter(account => account.followers_count >= 1000).slice(0, 5).map((account, index) => {
 								const profile_image = account.profile_image_url_https.replace("_normal", "")
 								return (
-									<tr key={index}>
+									// add account when user click
+									<tr key={index} className="search-user-tr" onClick={() => addCandidate(account)}>
 										{/* profile image */}
 										<td className="search-table-td">
 											<img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}}/>
 										</td>
 										<td className="search-table-td">
-											{/* account name that add into a candidate list when user click*/}
-											<div style={{fontSize: "15px", color: "white"}}>
-												<button className='search-button' value={account} onClick={() => addCandidate(account)}>{account.name}</button>
+											{/* account name */}
+											<div style={{fontSize: "18px"}}>{account.name}
 											</div>
 											{/* account screen name that show the account details on mouse hover */}
 											<div style={{bottom: "10px"}}>

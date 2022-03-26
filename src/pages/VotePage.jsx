@@ -22,19 +22,21 @@ const Vote = () => {
   }, []);
 
 	async function getAccountProfile() {
- 		await axios.get(`/1.1/users/lookup.json?user_id=${candidateIDs.toString()}`, {
-			"headers": {
-				'Authorization': `Bearer ${bearerToken}`
-			}
-		})
-		.then(response => {
-			// console.log(response.data)
-			setCandidateList(response.data)
-		})
-		.catch(error => {
-			window.alert(error)
-			// console.log(error)
-		})
+		if (candidateIDs.length > 0) {
+			await axios.get(`/1.1/users/lookup.json?user_id=${candidateIDs.toString()}`, {
+				"headers": {
+					'Authorization': `Bearer ${bearerToken}`
+				}
+			})
+			.then(response => {
+				// console.log(response.data)
+				setCandidateList(response.data)
+			})
+			.catch(error => {
+				window.alert(error)
+				// console.log(error)
+			})
+		}
   }
 
 	function addCandidate(account) {
@@ -51,31 +53,31 @@ const Vote = () => {
 		}
 	}
 
+	function handleSelect(candidate) {
+		if (candidate !== select) {
+			setSelect(candidate)
+		} else {
+			setSelect({})
+		}
+	}
+
   return (
 		<div className='vote'>
 			<div style={{padding: "20px", fontSize: "30px"}}>Vote</div>
 			<div className='vote-div'>
 				<table className='vote-table'>
-					{/* <thead >
-						<tr><td colSpan="2" style={{fontSize: "25px", fontWeight: "bold", textAlign: "center"}}>Vote</td></tr>
-					</thead> */}
 					<tbody>
 						{candidateList.map((candidate, index) => {
 							const profile_image = candidate.profile_image_url_https.replace("_normal", "")
 							return (
-								<tr key={index} className={candidate.id_str === select.id_str ? "select" : "table"}>
-									<td className='vote-td'><img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}} 
-										onClick={() => setSelect(candidate)} className='vote-select-button'/></td>
-									<td className='vote-td' ><button className='vote-select-button' value={candidate} 
-										onClick={() => setSelect(candidate)}>{candidate.name}</button>
+								<tr key={index} className={candidate.id_str === select.id_str ? "vote-select" : "vote-tr"} 
+									onClick={() => handleSelect(candidate)}>
+									<td className='vote-td'><img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}} /></td>
+									<td className='vote-td' >{candidate.name}
 									<ShowUser accountProfile={[candidate.id_str, candidate.name, candidate.screen_name, candidate.followers_count, profile_image]} /></td>
 								</tr>
 							);
 						})}
-						{/* <tr style={{lineHeight: "50px"}}>
-							<td className='vote-td' style={{borderBottom: "0px"}}>Other:</td>
-							<td className='vote-td' style={{borderBottom: "0px"}}><UserSearch sendData={addCandidate} /></td>
-						</tr> */}
 					</tbody>
 				</table>
 			</div>
@@ -86,11 +88,10 @@ const Vote = () => {
 						{newCandidateList.map((candidate, index) => {
 							const profile_image = candidate.profile_image_url_https.replace("_normal", "")
 							return (
-								<tr key={index} className={candidate.id_str === select.id_str ? "select" : "table"}>
-									<td className='vote-td'><img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}} 
-										onClick={() => setSelect(candidate)} className='vote-select-button'/></td>
-									<td className='vote-td' ><button className='vote-select-button' value={candidate} 
-										onClick={() => setSelect(candidate)}>{candidate.name}</button>
+								<tr key={index} className={candidate.id_str === select.id_str ? "vote-select" : "vote-tr"} 
+									onClick={() => handleSelect(candidate)}>
+									<td className='vote-td'><img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}} /></td>
+									<td className='vote-td' >{candidate.name}
 									<ShowUser accountProfile={[candidate.id_str, candidate.name, candidate.screen_name, candidate.followers_count, profile_image]} /></td>
 								</tr>
 							);

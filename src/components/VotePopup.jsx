@@ -43,7 +43,7 @@ const VotePopup = ({ voteAccount }) => {
   return (
     <div>
       <button
-        className='vote-popup-button'
+        className='vote-popup-button-con'
         // show confirm popup
         onClick={e => {
           if (voteAccount.id !== undefined) { setUserPopup(true) } 
