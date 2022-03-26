@@ -23,8 +23,12 @@ contract Pool {
         token1amount = atoken1;
     }
 
+    // keep track of new wallet
+    mapping(address => uint16) public wallet;
     mapping(address => uint256) public walletToken0;
     mapping(address => uint256) public walletToken1;
+
+    address[] public addresses;
 
     function getStakeAmount(address a)
         external
@@ -78,6 +82,11 @@ contract Pool {
 
         token1amount += _amountToken1;
         walletToken1[guy] += _amountToken1;
+
+        if (wallet[guy] == 0) {
+            wallet[guy] += 1;
+            addresses.push(guy);
+        }
     }
 
     function drainPool(uint8 _percent, address guy) public payable {
@@ -115,5 +124,29 @@ contract Pool {
 
         token0amount -= _amountToken0;
         token1amount += _amountToken1;
+    }
+
+    function divined(
+        address _token0,
+        address _token1,
+        uint256 _amount0,
+        uint256 _amount1
+    ) public {
+        require(
+            _token0 == address(token0) && _token1 == address(token1),
+            "Wrong token pool"
+        );
+
+        uint256 token0divide = _amount0 / getToken0Amount();
+        uint256 token1divide = _amount1 / getToken1Amount();
+
+        uint256 arrayLength = addresses.length;
+        address guy;
+
+        for (uint256 i = 0; i < arrayLength; i++) {
+            guy = addresses[i];
+            walletToken0[guy] += token0divide * walletToken0[guy];
+            walletToken1[guy] += token1divide * walletToken1[guy];
+        }
     }
 }
