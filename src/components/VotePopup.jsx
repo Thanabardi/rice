@@ -7,7 +7,7 @@ import getSessionAddress from '../utils/FetchVoteSession';
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
-const factoryAddress = "0x7Dfbea4e09C899343B6C1b615Ff107a905FcBd77"
+const factoryAddress = "0x434Cbdedc7A8069C5F2426C617C3858Bc88014d3"
 
 const VotePopup = ({ voteAccount }) => {
   
@@ -45,17 +45,18 @@ const VotePopup = ({ voteAccount }) => {
   }
 
   async function onVote(amount,twitterId){
-
     if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
       const sessionAddress = getSessionAddress(factoryAddress)
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner()
-     
-        const contract = new ethers.Contract(sessionAddress, voteSession.abi, signer)
-        const transaction = contract.vote(amount,twitterId)
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner()
+    
+      const contract = new ethers.Contract(sessionAddress, voteSession.abi, signer)
+      const transaction = contract.vote(amount,twitterId).then(()=>{const timer = setTimeout(() => {
+        window.location.reload()
+      }, 8000);})
     }
-}
+  }
 
   async function vote() {
     if (inputs.rice > 0) {
@@ -100,7 +101,7 @@ const VotePopup = ({ voteAccount }) => {
               min="1"
               max="100"
               name="rice" 
-              placeholder="Amount"
+              placeholder="Input amount with maximum 100"
               value={inputs.rice || ""} 
               onChange={handleChange}
             /> Rice

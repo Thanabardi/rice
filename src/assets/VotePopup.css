@@ -8,6 +8,7 @@
 	font-size: 20px;
 	border-radius: 18px;
 	margin-top: 10px;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .vote-popup-button-con:hover {
@@ -27,6 +28,7 @@
 	border-radius: 18px;
 	padding: 4px 20px 4px 20px;
 	margin-top: 10px;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .vote-popup-button-can:hover {

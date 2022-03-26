@@ -12,8 +12,8 @@ import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
 
-const exchangeAddress = "0x735bF360270EB4F34EF4D00F5CC5c3850C4f48dC"
-const factoryAddress = "0x7Dfbea4e09C899343B6C1b615Ff107a905FcBd77"
+const exchangeAddress = "0x965D83c58c06CE1C011d036e63Be3D1bBabdB3cb"
+const factoryAddress = "0x434Cbdedc7A8069C5F2426C617C3858Bc88014d3"
 const tokenAddress = '0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346'
 
 const AdminPage = () => {
@@ -203,13 +203,13 @@ getSessionAddress
 
 deposit
 <form onSubmit={onDeposit}>
-    <input type='number' min='1' max='100' placeholder='amount 1-100' required/>
+    <input type='number' min='1' placeholder='amount 1-100' required/>
    <button type='submit'> deposit</button>
 </form>
 
 withdraw
 <form onSubmit={onWithdraw}>
-    <input type='number' min='1' max='100' placeholder='amount 1-100' required/>
+    <input type='number' min='1' placeholder='amount 1-100' required/>
    <button type='submit'> withdraw</button>
 </form>
 

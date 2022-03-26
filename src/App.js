@@ -9,11 +9,13 @@ import AdminPage from './pages/AdminPage'
 
 
 import NavBar from './components/NavBar'
+import CallMetaMask from './components/CallMetaMask'
 
 function App() {
   return (
     <div className="App">
       <NavBar />
+      <CallMetaMask />
       <Routes>
         <Route path="/swap" element={<SwapPage />} />
         <Route path="/stake" element={<StakePage />} />

@@ -5,11 +5,11 @@ import Swap from '../artifacts/contracts/Swap.sol/Swap.json'
 import matic from '../assets/images/matic.png';
 import rice from '../assets/images/rice.jpg';
 import '../assets/SwapPage.css';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+// import Box from '@mui/material/Box';
+// import InputLabel from '@mui/material/InputLabel';
+// import MenuItem from '@mui/material/MenuItem';
+// import FormControl from '@mui/material/FormControl';
+// import Select from '@mui/material/Select';
 
 const SwapPage = () => {
   const swapAddress = '0x9DDe8618a3713aE483E4976Ae8427A040d9f931B'
@@ -92,7 +92,7 @@ const SwapPage = () => {
     <div className='swap'>
       Swap
       <center>
-        <Box sx={{ maxWidth: 120 }}>
+        {/* <Box sx={{ maxWidth: 120 }}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">COIN</InputLabel>
             <Select
@@ -106,10 +106,10 @@ const SwapPage = () => {
               <MenuItem value={coinOption[1].value}>Rice <img src={coinOption[1].img}/></MenuItem>
             </Select>
           </FormControl>
-        </Box>
+        </Box> */}
       </center>
       <center>
-        <Box sx={{ maxWidth: 120 }}>
+        {/* <Box sx={{ maxWidth: 120 }}>
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">COIN</InputLabel>
             <Select
@@ -123,7 +123,7 @@ const SwapPage = () => {
               <MenuItem value={coinOption[1].value}>Rice <img src={coinOption[1].img}/></MenuItem>
             </Select>
           </FormControl>
-        </Box>
+        </Box> */}
       </center>
       <form onSubmit={onSwap}>
         <input type="hidden" value={coinState1} disabled={coinState1===""}></input>
