@@ -14,7 +14,7 @@ import getSessionAddress from '../utils/FetchVoteSession';
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
-const factoryAddress = "0x1E6DCc18F3678193B0ff01ffe3169A74b4aE9127"
+const factoryAddress = "0x7Dfbea4e09C899343B6C1b615Ff107a905FcBd77"
 
 const Vote = () => {
 	const bearerToken = process.env.REACT_APP_TWITTER_API_KEY
@@ -74,14 +74,14 @@ const Vote = () => {
   async function findAward(){
 	if (typeof window.ethereum !== 'undefined') {
 		const provider = new ethers.providers.Web3Provider(window.ethereum)
-		console.log({ provider })
 		const signer = provider.getSigner();
 		const sessionAddress = getSessionAddress(factoryAddress)
 		  const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
 		  try{
-			  const data = await contractVote.winner()
-			  console.log('award: ',data)
-			  setAward(data)
+			  const aw = await contractVote.award()
+			  setAward(aw)
+			  const win = await contractVote.winner()
+			  setWinner(win)
 		  }catch (err) {
 		  console.log("Error: ", err)
 	  }
@@ -91,13 +91,11 @@ const Vote = () => {
   async function getCandidateList(){
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
-      console.log({ provider })
       const sessionAddress = getSessionAddress(factoryAddress)
       const contract = new ethers.Contract(factoryAddress, voteFactory.abi, provider)
         const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
         try{
             await contractVote.getCandidateName().then((data)=>{
-				console.log('There is twitter ID: ',data)
 				setCandidateID(data)
 				getAccountProfile(data)
 			})
@@ -112,13 +110,11 @@ const Vote = () => {
   async function onfetchStatus(){
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
-      console.log({ provider })
       const signer = provider.getSigner();
       const sessionAddress = getSessionAddress(factoryAddress)
         const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
         try{
             const data = await contractVote.status()
-            console.log('status: ',data)
 			if (data == 1){
 					findAward()
 				// setTimeout(function () {
@@ -135,13 +131,11 @@ const Vote = () => {
   async function onfetchVote(){
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
-      console.log({ provider })
       const signer = provider.getSigner();
       const sessionAddress = getSessionAddress(factoryAddress)
         const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
         try{
             const data = await contractVote.remainingVote(signer.getAddress())
-            console.log('amount of vote left: ',data._hex)
 			// fix this to decimal
             setVoteAmount(parseInt(data._hex,16))
         }catch (err) {
@@ -184,9 +178,10 @@ const Vote = () => {
 
   return (
 		<div className='vote'>
-			{!award && "RICE: "+ voteAmount}
+			{!award && "RICE: "+ voteAmount}<br/>
 			{!award && "Session is on going"}<br/>
 			{award && "Session is ended!!"}<br/>
+			{award && "Winner is: "+ winner}<br/>
 			{award && "Award is: "+ award}<br/>
 			<div style={{padding: "20px", fontSize: "30px"}}>Vote</div>
 			<div className='vote-div'>

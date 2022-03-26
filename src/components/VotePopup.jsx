@@ -7,7 +7,7 @@ import getSessionAddress from '../utils/FetchVoteSession';
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
-const factoryAddress = "0x1E6DCc18F3678193B0ff01ffe3169A74b4aE9127"
+const factoryAddress = "0x7Dfbea4e09C899343B6C1b615Ff107a905FcBd77"
 
 const VotePopup = ({ voteAccount }) => {
   
@@ -50,7 +50,6 @@ const VotePopup = ({ voteAccount }) => {
       await requestAccount()
       const sessionAddress = getSessionAddress(factoryAddress)
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider })
         const signer = provider.getSigner()
      
         const contract = new ethers.Contract(sessionAddress, voteSession.abi, signer)
@@ -64,7 +63,6 @@ const VotePopup = ({ voteAccount }) => {
         console.log(`voted user ID ${voteAccount.id_str} with ${inputs.rice}`)
         let account = voteAccount.id_str
         if (account !== '') onVote(inputs.rice,account.toString())
-        console.log(account)
         setInputs("")
         setUserPopup(false)
       }

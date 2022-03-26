@@ -12,8 +12,8 @@ import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
 
-const exchangeAddress = "0x182ACe23Ee4d49387B5fb322E857E6d4BF38A921"
-const factoryAddress = "0x1E6DCc18F3678193B0ff01ffe3169A74b4aE9127"
+const exchangeAddress = "0x735bF360270EB4F34EF4D00F5CC5c3850C4f48dC"
+const factoryAddress = "0x7Dfbea4e09C899343B6C1b615Ff107a905FcBd77"
 const tokenAddress = '0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346'
 
 const AdminPage = () => {

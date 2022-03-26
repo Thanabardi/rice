@@ -6,7 +6,7 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 contract VoteSession is VRFConsumerBase {
     uint256 public voteId;
     mapping(address => uint256) public voteMap;
-    mapping(string => uint) public candidate;
+    mapping(string => uint256) public candidate;
     string[] public candidateName;
     VoteExchange public voteExchange;
     address public owner;
@@ -15,7 +15,10 @@ contract VoteSession is VRFConsumerBase {
     address[] public votePool;
     uint256 public fee;
     bytes32 public keyhash;
-    address public winner;
+    //people who have most vote
+    string public winner;
+    //people who get NFT as award
+    address public award;
 
     enum voteState {
         STARTED,
@@ -56,7 +59,7 @@ contract VoteSession is VRFConsumerBase {
             "Not have enough vote"
         );
 
-        if(candidate[_twitterId] == 0) {
+        if (candidate[_twitterId] == 0) {
             candidateName.push(_twitterId);
         }
         candidate[_twitterId] += _amount;
@@ -81,6 +84,16 @@ contract VoteSession is VRFConsumerBase {
         bytes32 requestID = requestRandomness(keyhash, fee);
 
         voteExchange.openExchange();
+        uint256 mostVote = 0;
+        string memory tempWinner;
+        for (uint256 i = 0; i < candidateName.length; i++) {
+            string memory temp = candidateName[i];
+            if (mostVote < candidate[temp]) {
+                mostVote = candidate[temp];
+                tempWinner = temp;
+            }
+        }
+        winner = tempWinner;
 
         // TODO: add random method to find the NFT winner
     }
@@ -98,6 +111,6 @@ contract VoteSession is VRFConsumerBase {
         require(_randomness > 0, "not found");
 
         uint256 indexOfWinner = _randomness % votePool.length;
-        winner = votePool[indexOfWinner];
+        award = votePool[indexOfWinner];
     }
 }
