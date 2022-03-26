@@ -14,7 +14,7 @@ import getSessionAddress from '../utils/FetchVoteSession';
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
-const factoryAddress = "0x7Dfbea4e09C899343B6C1b615Ff107a905FcBd77"
+const factoryAddress = "0x434Cbdedc7A8069C5F2426C617C3858Bc88014d3"
 
 const Vote = () => {
 	const bearerToken = process.env.REACT_APP_TWITTER_API_KEY

@@ -10,16 +10,16 @@ import getSessionAddress from '../utils/FetchVoteSession';
 import voteExchange from '../artifacts/contracts/vote/VoteExchange.sol/VoteExchange.json'
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
+import h2d from '../utils/H2D';
 
 
-const exchangeAddress = "0x735bF360270EB4F34EF4D00F5CC5c3850C4f48dC"
-const factoryAddress = "0x7Dfbea4e09C899343B6C1b615Ff107a905FcBd77"
+const exchangeAddress = "0x965D83c58c06CE1C011d036e63Be3D1bBabdB3cb"
+const factoryAddress = "0x434Cbdedc7A8069C5F2426C617C3858Bc88014d3"
 const tokenAddress = '0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346'
+const poolFactoryAddress = '0x4D03044Ee7f8f228a7A9D1C6f33d361C08CfBD61'
+  const wMaticAddress ='0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'
 
 const AdminPage = () => {
-  // const tokenAddress = 'address'
-  const poolFactoryAddress = 'address'
-  const wMaticAddress ='address'
 
   async function requestAccount() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -32,9 +32,9 @@ const AdminPage = () => {
       console.log({ provider })
       const contract = new ethers.Contract(poolFactoryAddress, PoolFactory.abi, provider)
       try {
-        const data = await contract.getTotalAmountInPool(e.target[0].value,e.target[1].value)
+        const data = await contract.getTotalAmountInPool(tokenAddress,wMaticAddress)
 
-        console.log('Total: ',data[0],data[1])
+        console.log('RICE: ',h2d(data[0]._hex)/10**18,'wMatic: ',h2d(data[1]._hex))
       } catch (err) {
         console.log("Error: ", err)
       }
@@ -141,7 +141,6 @@ function onGetSessionAddress(e){
 
   async function createPool(e){
     e.preventDefault();
-    console.log("going to create pool with token0 address ",e.target[0].value," and token1 address ", e.target[1].value)
     if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -149,18 +148,18 @@ function onGetSessionAddress(e){
         const signer = provider.getSigner()
      
       const rice = new ethers.Contract(tokenAddress, RICE.abi, signer)
-      await rice.approve(poolFactoryAddress, '10000000000000000000')
+      await rice.approve(poolFactoryAddress, '500000000000000000000000')
 
       const wMatic = new ethers.Contract(wMaticAddress, WMATIC.abi, signer)
-      await wMatic.approve(poolFactoryAddress, '10000000000000000')
+      await wMatic.approve(poolFactoryAddress, '5000000000000000000')
 
       setTimeout(function () {
         const contract = new ethers.Contract(poolFactoryAddress, PoolFactory.abi, signer)
         const transaction = contract.createNewPool(
-              e.target[0].value, //rice
-              e.target[1].value, // matic
-              '10000000000000000000',
-              '10000000000000000')
+          tokenAddress, //rice
+          wMaticAddress, // matic
+              '500000000000000000000000',
+              '5000000000000000000')
       }, 20000);
     }
   }
@@ -170,15 +169,11 @@ function onGetSessionAddress(e){
       ADMIN's THING
       <form onSubmit={createPool}>
         create pool<br/>
-        <input placeholder='address token0'></input><br/>
-        <input placeholder='address token1'></input><br/>
 
         <button>submit</button>
       </form>
       <form onSubmit={fetchPool}>
           fetch pool<br/>
-          <input placeholder='address token0'></input><br/>
-          <input placeholder='address token1'></input><br/>
 
           <button>submit</button>
         </form>
@@ -201,17 +196,6 @@ getSessionAddress
 </form>
 
 
-deposit
-<form onSubmit={onDeposit}>
-    <input type='number' min='1' max='100' placeholder='amount 1-100' required/>
-   <button type='submit'> deposit</button>
-</form>
-
-withdraw
-<form onSubmit={onWithdraw}>
-    <input type='number' min='1' max='100' placeholder='amount 1-100' required/>
-   <button type='submit'> withdraw</button>
-</form>
 
 
 <form onSubmit={onCreateSession}>
@@ -219,12 +203,6 @@ withdraw
     <button type='submit'> create vote session</button>
 </form>
 
-<form onSubmit={onVote}>
-
-    <input type='number' min='1' max='100' placeholder='amount 1-100' required/>
-    <input type='text' required placeholder='twitter'/>
-   <button type='submit'> vote</button>
-</form>
 
     </div>
   );
