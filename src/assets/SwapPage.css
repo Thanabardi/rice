@@ -1,36 +1,83 @@
-/* img {
+.swapInterface img {
     max-width: 25px;
     border-radius: 50%;
     height: auto;
-} */
+}
 
-selectCoin {
+.imageChange{
+    max-width: 25px;
+    border-radius: 50%;
+    height: auto;
+}
+.selectCoin {
     display: flex;
     justify-content: center;
     justify-content: space-between;
 }
 
-/* input[type=submit] {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.swapSelect {
+    margin-left: -300px;
+}
+  
+.input-item {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(179, 187, 136);
+    height: 120px;
+    width: 482px;
+    border-radius: 15px;
 }
 
-input[type=submit]:hover {
-    background-color: #45a049;
+.swap {
+    margin-top: 1.5%;
+    font-size: 50px;
+    font-family: Tahoma;
+    background-color: white;
+    border-radius: 15px;
+    width: 525px;
+    height: 550px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.swapInner {
+    margin: 30px 100px;
+    margin-left: 150px;
 }
 
-input[type=text], select {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
+.swapInput {
+    width: 500px;
+    padding: 45px 20px;
+    margin: 8px 10px;
     display: inline-block;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 16px;
     box-sizing: border-box;
-} */
+    font-size: 35px;
+    font-family: Tahoma;
+}
+
+.swapSummit {
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(101, 112, 36);
+    height: 120px;
+    width: 482px;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-top: 10%;
+    font-size: 35px;
+    font-family: Tahoma;
+    color: white;
+}
+
+.swapSummit :disabled{
+    pointer-events: none;
+    background-color: transparent;
+}
+.Alert {
+    font-family: Tahoma;
+    color: red;
+    font-size: 20px;
+    margin-top: -160px;
+}
