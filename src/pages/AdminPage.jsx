@@ -12,8 +12,8 @@ import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
 
-const exchangeAddress = "0xA668F28E30179e4D4400efFFC19fa4f85004e687"
-const factoryAddress = "0x7C1CC7d5B1BBAD6d059aeed8621dD0c7A62740Ba"
+const exchangeAddress = "0x182ACe23Ee4d49387B5fb322E857E6d4BF38A921"
+const factoryAddress = "0x1E6DCc18F3678193B0ff01ffe3169A74b4aE9127"
 const tokenAddress = '0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346'
 
 const AdminPage = () => {
@@ -84,6 +84,8 @@ async function onEndVote(e){
 }
 
 
+
+
 async function onDeposit(e){
   e.preventDefault()
   if (typeof window.ethereum !== 'undefined') {
@@ -127,6 +129,14 @@ async function onOpen(e){
         const contract = new ethers.Contract(exchangeAddress, voteExchange.abi, signer)
         const transaction = contract.openExchange()
     }
+}
+
+function onGetSessionAddress(e){
+  e.preventDefault()
+  getSessionAddress(factoryAddress).then((data)=>{
+    console.log(data)
+  })
+  
 }
 
   async function createPool(e){
@@ -185,6 +195,11 @@ EndVote
 <form onSubmit={onEndVote}>
    <button type='submit'> End</button>
 </form>
+getSessionAddress
+<form onSubmit={onGetSessionAddress}>
+   <button type='submit'> get</button>
+</form>
+
 
 deposit
 <form onSubmit={onDeposit}>

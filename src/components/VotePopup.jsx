@@ -7,7 +7,7 @@ import getSessionAddress from '../utils/FetchVoteSession';
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
-const factoryAddress = "0x7C1CC7d5B1BBAD6d059aeed8621dD0c7A62740Ba"
+const factoryAddress = "0x1E6DCc18F3678193B0ff01ffe3169A74b4aE9127"
 
 const VotePopup = ({ voteAccount }) => {
   
@@ -58,11 +58,13 @@ const VotePopup = ({ voteAccount }) => {
     }
 }
 
-  function vote() {
+  async function vote() {
     if (inputs.rice > 0) {
       if (window.confirm(`Vote ${voteAccount.name} (@${voteAccount.screen_name}) for ${inputs.rice} Rice?`) == true) {
-        console.log(`voted user ID ${voteAccount.id} with ${inputs.rice}`)
-        onVote(inputs.rice,voteAccount.id)
+        console.log(`voted user ID ${voteAccount.id_str} with ${inputs.rice}`)
+        let account = voteAccount.id_str
+        if (account !== '') onVote(inputs.rice,account.toString())
+        console.log(account)
         setInputs("")
         setUserPopup(false)
       }
