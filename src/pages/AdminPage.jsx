@@ -4,7 +4,8 @@ import RICE from '../artifacts/contracts/Token.sol/RICE.json'
 import WMATIC from '../artifacts/contracts/WMatic.sol/WMATIC.json'
 import PoolFactory from '../artifacts/contracts/PoolFactory.sol/PoolFactory.json'
 
-import '../assets/SwapPage.css';
+import '../assets/Admin.css';
+// import '../assets/SwapPage.css';
 import getSessionAddress from '../utils/FetchVoteSession';
 
 import voteExchange from '../artifacts/contracts/vote/VoteExchange.sol/VoteExchange.json'
@@ -170,12 +171,12 @@ function onGetSessionAddress(e){
       <form onSubmit={createPool}>
         create pool<br/>
 
-        <button>submit</button>
+        <button className='adminSubmit'>submit</button>
       </form>
       <form onSubmit={fetchPool}>
           fetch pool<br/>
 
-          <button>submit</button>
+          <button className='adminSubmit'>submit</button>
         </form>
 
 
@@ -183,7 +184,7 @@ function onGetSessionAddress(e){
 
 Open
 <form onSubmit={onOpen}>
-   <button type='submit'> Open</button>
+   <button type='submit' className='adminSubmit'> Open</button>
 </form>
 
 EndVote

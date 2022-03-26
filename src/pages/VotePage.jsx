@@ -190,7 +190,7 @@ const Vote = () => {
 						<tr><td colSpan="2" style={{fontSize: "25px", fontWeight: "bold", textAlign: "center"}}>Vote</td></tr>
 					</thead> */}
 					<tbody>
-						{candidateList.map((candidate, index) => {
+						{candidateList &&  candidateList.map((candidate, index) => {
 							const profile_image = candidate.profile_image_url_https.replace("_normal", "")
 							return (
 								<tr key={index} className={candidate.id_str === select.id_str ? "select" : "table"}>
@@ -213,7 +213,7 @@ const Vote = () => {
 			<div className='vote-div'>
 				<table className='vote-table'>
 					<tbody>
-						{newCandidateList.map((candidate, index) => {
+						{newCandidateList && newCandidateList.map((candidate, index) => {
 							const profile_image = candidate.profile_image_url_https.replace("_normal", "")
 							return (
 								<tr key={index} className={candidate.id_str === select.id_str ? "select" : "table"}>
