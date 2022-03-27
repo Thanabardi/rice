@@ -14,7 +14,7 @@ import Select from '@mui/material/Select';
 import '../assets/SwapPage.css';
 
 import matic from '../assets/images/matic.png';
-import rice from '../assets/images/rice.jpg';
+import rice from '../assets/images/rice.png';
 
 const SwapPage = () => {
   const swapAddress = '0x9DDe8618a3713aE483E4976Ae8427A040d9f931B'
@@ -185,7 +185,7 @@ const SwapPage = () => {
             </div>
           </div>
           <button className={amountHex==="0x00" || status !== "Connected" ? 'swap-button-dis':'swap-button'} id="Summit" 
-            disabled={amountHex==="0x00" || status !== "Connected"?true :false}>Enter amount</button>
+            disabled={amountHex==="0x00" || status !== "Connected"?true :false}>Wrap</button>
         </form>
         <p className='swap-alert' id="Alert"></p>
       </div>}

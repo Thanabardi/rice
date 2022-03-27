@@ -91,7 +91,7 @@ const VotePopup = ({ voteAccount }) => {
               min="1"
               max="100"
               name="rice" 
-              placeholder="Input amount with maximum 100"
+              placeholder="Amount 1-100"
               value={inputs.rice || ""} 
               onChange={handleChange}
             /> Rice
