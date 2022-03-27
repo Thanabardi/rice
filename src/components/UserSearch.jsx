@@ -6,7 +6,6 @@ import ShowUser from './ShowUser'
 import '../assets/UserSearch.css';
 
 const Home = (props) => {
-	const bearerToken = process.env.REACT_APP_TWITTER_API_KEY
 	
   let [inputs, setInputs] = useState({account: ""});
 	let [twitterAccount, setTwitterAccount] = useState([]); //list of account object from search
@@ -32,11 +31,8 @@ const Home = (props) => {
 
   async function handleSearch(accountName) {
 		if (accountName !== "" && accountName !== "/" && accountName !== undefined) {
-			await axios.get(`/1.1/users/search.json?q=${accountName.replace("/", "")}`, {
-				"headers": {
-					'Authorization': `Bearer ${bearerToken}`
-				}
-			})
+			await axios.get(`https:/limitless-escarpment-03632.herokuapp.com/handle-search/${accountName.replace("/", "")}`
+				)
 			.then(response => {
 				// console.log(response.data)
 				setTwitterAccount(response.data) //update search result
@@ -49,6 +45,7 @@ const Home = (props) => {
 			setTwitterAccount([]) //clear search result
 		}
   }
+
 
 	function addCandidate(account) {
 		props.sendData(account);
@@ -75,8 +72,8 @@ const Home = (props) => {
 					<table className="search-table">
 						<tbody>
 							{/* filter out best 5 account with followers >= 1000 */}
-							{twitterAccount.filter(account => account.followers_count >= 1000).slice(0, 5).map((account, index) => {
-								const profile_image = account.profile_image_url_https.replace("_normal", "")
+								{twitterAccount!== [] && twitterAccount.filter(account => account.followers_count >= 1000).slice(0, 5).map((account, index) => {
+									const profile_image = account.profile_image_url_https.replace("_normal", "")
 								return (
 									// add account when user click
 									<tr key={index} className="search-user-tr" onClick={() => addCandidate(account)}>

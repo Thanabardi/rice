@@ -17,12 +17,11 @@ import followerFormatter from '../utils/FollowerFormat';
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
-const factoryAddress = "0x434Cbdedc7A8069C5F2426C617C3858Bc88014d3"
+const factoryAddress = "0x2AFdd75605F8369C509Be138A6f3086E8b9A2660"
 
 const Vote = () => {
-	const bearerToken = process.env.REACT_APP_TWITTER_API_KEY
 
-	let [candidateIDs, setCandidateID] = useState([]) //list of candidate id
+	let [candidateIDs, setCandidateID] = useState(["."]) //list of candidate id
 	let [newCandidateList, setNewCandidateList] = useState([]) //list of new candidate id
 	let [candidateList, setCandidateList] = useState([]) // list candidate details(id, name, screen name, followers, profile image)
 	let [select, setSelect] = useState({}) // a candidate that user selected
@@ -115,6 +114,7 @@ const Vote = () => {
 					getAccountProfile(data)
 				})
       } catch (err) {
+
         console.log("Error: ", err)
     	}
 		}  
@@ -156,25 +156,39 @@ const Vote = () => {
 		}
 	}  
 
+// async function testTwitter(e) {
+// 	e.preventDefault()
+// 	console.log(e.target[0].value)
+// 	 await axios.get(`http://localhost:9000/get-account-profile/${e.target[0].value}`, {
+// 		"headers": {
+// 			'Authorization': `Bearer ${bearerToken}`
+// 		}
+// 	})
+// 	.then(response => {
+// 		console.log(response.data)
+// 		// setCandidateList(response.data)
+// 	})
+// 	.catch(error => {
+// 		window.alert(error)
+// 		console.log(error)
+// 	})
+// }
+
 
 	async function getAccountProfile(IDs) {
 		console.log(IDs)
-		if (IDs.length > 0) {
-			await axios.get(`/1.1/users/lookup.json?user_id=${IDs}`, {
-				"headers": {
-					'Authorization': `Bearer ${bearerToken}`
-				}
-			})
-			.then(response => {
-				// console.log(response.data)
-				setCandidateList(response.data)
-			})
-			.catch(error => {
-				window.alert(error)
-				// console.log(error)
-			})
-		}
+ 		await axios.get(`https://limitless-escarpment-03632.herokuapp.com/get-account-profile/${IDs}`
+		)
+		.then(response => {
+			// console.log(response.data)
+			setCandidateList(response.data)
+		})
+		.catch(error => {
+			window.alert(error)
+			// console.log(error)
+		})
   }
+
 
 	function addCandidate(account) {
 		// console.log(account)
@@ -210,6 +224,7 @@ const Vote = () => {
 
   return (
 		<div className='vote'>
+
 			<div className='vote-inform'>
 				<div style={{fontSize: "30px"}}>
 					{(!award & checkMetaMask() === "Connected") ? <div>You have {voteAmount} RICE</div>:<div />}
@@ -238,6 +253,7 @@ const Vote = () => {
 						<div style={{fontSize: "20px"}}>Award Goes To</div>
 						<div style={{textShadow: "10px 0px 10px black", fontSize: "15px"}}>{award}</div>
 					</div>}
+
 				</div>
 			</div>
 			{ checkMetaMask() !== "Install MetaMask" || award && <div>

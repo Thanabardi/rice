@@ -2,6 +2,8 @@ pragma solidity ^0.8.0;
 
 import "./VoteExchange.sol";
 import "./VoteSession.sol";
+import "../nft/RiceNFT.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract VoteFactory {
     mapping(uint256 => VoteSession) public voteSessions;
@@ -15,12 +17,16 @@ contract VoteFactory {
     uint256 public fee;
     bytes32 public keyhash;
 
+    // nft
+    RiceNFT public nftContract;
+
     constructor(
         address _voteExchangeAddress,
         address _coordinator,
         address _link,
         uint256 _fee,
-        bytes32 _keyhash
+        bytes32 _keyhash,
+        address _nftAddress
     ) {
         owner = msg.sender;
         voteId = 0;
@@ -31,6 +37,9 @@ contract VoteFactory {
         link = _link;
         fee = _fee;
         keyhash = _keyhash;
+
+        // nft
+        nftContract = RiceNFT(_nftAddress);
     }
 
     function createVoteSession() public {
@@ -53,7 +62,8 @@ contract VoteFactory {
             coordinator,
             link,
             keyhash,
-            fee
+            fee,
+            address(nftContract)
         );
     }
 
