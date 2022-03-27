@@ -10,7 +10,7 @@ import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession
 import PoolFactory from '../artifacts/contracts/PoolFactory.sol/PoolFactory.json'
 import Pool from '../artifacts/contracts/Pool.sol/Pool.json'
 
-import '../assets/SwapPage.css';
+import '../assets/StakePage.css';
 import h2d from '../utils/H2D';
 
 import matic from '../assets/images/matic.png';
@@ -215,58 +215,51 @@ async function getToken0Need(e){
 }
 } 
 
-
-
-
-
-
   return (
-    <div>
-        
-
-
-
-      
-      Stake
-      <form onSubmit={onStake}>
-        <img src={matic} style={{width:"30px"}}></img>
-        <input placeholder='amount token0' type='number' onChange={getToken0Need} step=".0001"></input><br/>
-        <img src={rice} style={{width:"30px"}}></img>
-        <input placeholder='amount token1' type='number' step=".0001"></input><br/>
-        <button>submit</button>
-      </form>     
-      Matic:{amountMatic}<br/>
-      Rice:{amountRice}<br/>
-      
-      <form onSubmit={unstake}>
-        unstake<br/>
-        <input placeholder='percent' type='number' min='1' max='100'></input>%<br/>
-        <button>submit</button>
+    <div className='stake-inform'>
+      <div className='stake'>
+        <p style={{padding: "20px", fontSize: "30px"}}>Stake</p>
+        <form onSubmit={onStake}>
+          <div className='stake-input-img'>
+            <img className='stake-img' src={matic} style={{width:"30px"}}></img>
+            <input className='stake-input' placeholder='amount token0' type='number' onChange={getToken0Need} step=".0001"></input>
+          </div>
+          <div className='stake-input-img'>
+            <img className='stake-img' src={rice} style={{width:"30px"}}></img>
+            <input className='stake-input' placeholder='amount token1' type='number' step=".0001" disabled></input>
+          </div>
+          <button className='stake-button'>submit</button>
         </form>
-
-
-
-    <div className='stake'>
-     
+      </div>
+      <div className='stake'>
+        <div className='stake-p'>
+          <p style={{padding: "5px", fontSize: "30px"}}>Matic: {amountMatic}</p>
+          <p style={{padding: "5px", fontSize: "30px"}}>Rice: {amountRice}</p>
+        </div>
+        
+        <form onSubmit={unstake}>
+          <p style={{padding: "20px", fontSize: "30px"}}>Unstake</p>
+          <input className='stake-input' placeholder='percent' type='number' min='1' max='100'></input>%<br/>
+          <button className='stake-button'>submit</button>
+        </form>
+      </div>
+      <div className='stake'>
+        <div className='rice-stake'>
+          <h2>RICE - STAKE</h2>
+            <p style={{padding: "20px", fontSize: "30px"}}>Current Rice: {voteAmount}</p>
+            <p style={{padding: "5px", fontSize: "30px"}}>deposit</p>
+          <form onSubmit={onDeposit}>
+              <input className='stake-input' type='number' min='1' max='100' placeholder='amount 1-100' required/>
+            <button className='stake-button' type='submit'> deposit</button>
+          </form>
+        </div>
+          <p style={{padding: "5px", fontSize: "30px"}}>withdraw</p>
+          <form onSubmit={onWithdraw}>
+              <input className='stake-input' type='number' min='1' max='100' placeholder='amount 1-100' required/>
+            <button className='stake-button' type='submit'> withdraw</button>
+          </form>
+      </div>
     </div>
-    <div className='rice-stake'>
-      <h2>RICE - STAKE</h2>
-      Current Rice: {voteAmount}<br/>
-
-      deposit
-<form onSubmit={onDeposit}>
-    <input type='number' min='1' max='100' placeholder='amount 1-100' required/>
-   <button type='submit'> deposit</button>
-</form>
-
-withdraw
-<form onSubmit={onWithdraw}>
-    <input type='number' min='1' max='100' placeholder='amount 1-100' required/>
-   <button type='submit'> withdraw</button>
-</form>
-
-    </div>
-</div>
 
 
   );
