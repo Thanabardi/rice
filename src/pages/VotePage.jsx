@@ -19,7 +19,7 @@ const factoryAddress = "0x434Cbdedc7A8069C5F2426C617C3858Bc88014d3"
 const Vote = () => {
 	const bearerToken = process.env.REACT_APP_TWITTER_API_KEY
 
-	let [candidateIDs, setCandidateID] = useState(["44196397"]) //list of candidate id
+	let [candidateIDs, setCandidateID] = useState(["."]) //list of candidate id
 	let [newCandidateList, setNewCandidateList] = useState([]) //list of new candidate id
 	let [candidateList, setCandidateList] = useState([]) // list candidate details(id, name, screen name, followers, profile image)
 	let [select, setSelect] = useState({}) // a candidate that user selected
@@ -185,10 +185,8 @@ const Vote = () => {
 			<div style={{padding: "20px", fontSize: "30px"}}>Vote</div>
 			<div className='vote-div'>
 				<table className='vote-table'>
-					{/* <thead >
-						<tr><td colSpan="2" style={{fontSize: "25px", fontWeight: "bold", textAlign: "center"}}>Vote</td></tr>
-					</thead> */}
-					<tbody>
+					
+					{/* <tbody>
 						{candidateList.length!==0 &&  candidateList.map((candidate, index) => {
 							const profile_image = candidate.profile_image_url_https.replace("_normal", "")
 							return (
@@ -201,17 +199,14 @@ const Vote = () => {
 								</tr>
 							);
 						})}
-						{/* <tr style={{lineHeight: "50px"}}>
-							<td className='vote-td' style={{borderBottom: "0px"}}>Other:</td>
-							<td className='vote-td' style={{borderBottom: "0px"}}><UserSearch sendData={addCandidate} /></td>
-						</tr> */}
-					</tbody>
+						
+					</tbody> */}
 				</table>
 			</div>
 			<div style={{padding: "20px", fontSize: "20px"}}>Add Your New Candidate</div>
 			<div className='vote-div'>
 				<table className='vote-table'>
-					<tbody>
+					{/* <tbody>
 						{
 							newCandidateList.map((candidate, index) => {
 							const profile_image = candidate.profile_image_url_https.replace("_normal", "")
@@ -225,7 +220,7 @@ const Vote = () => {
 								</tr>
 							);
 						})}
-					</tbody>
+					</tbody> */}
 				</table>
 				<div style={{paddingTop: newCandidateList.length > 0 ? "20px": "0"}}>
 					<UserSearch sendData={addCandidate} />
