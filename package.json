@@ -1,4 +1,5 @@
 {
+  "homepage": "http:skdue-ethernals.github.io/rice",
   "name": "rice",
   "version": "0.1.0",
   "private": true,
@@ -24,6 +25,8 @@
     "web3modal": "^1.9.5"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -51,6 +54,7 @@
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "ethereum-waffle": "^3.4.0",
+    "gh-pages": "^3.2.3",
     "hardhat": "^2.9.0"
   }
 }
