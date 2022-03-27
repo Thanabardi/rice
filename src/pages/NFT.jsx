@@ -3,19 +3,20 @@ import React, { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import riceNFT from '../artifacts/contracts/nft/RiceNFT.sol/RiceNFT.json'
 
+
+import '../assets/NFT.css';
 const nftAddress = "0xbcEE5365B749cd4A0c25DBecCAA6a840D12fCC9D"
 
+
 const NFT = () => {
-
-    const [image, setImage] = useState(null)
-
-    useEffect(() => {
-		// create candidate details list from candidate id
-		fetchNftList(2)
-		
-
+  const [image, setImage] = useState()
+  const [name, setName] = useState()
+  const [description, setDescription] = useState()
+  const [owner, setOwner] = useState()
+  useEffect(() => {
+  // create candidate details list from candidate id
+  fetchNftList(2)
   }, []);
-
 
 
   async function fetchNftList(number){
@@ -25,21 +26,21 @@ const NFT = () => {
       const contract = new ethers.Contract(nftAddress, riceNFT.abi, provider)
       try {
         let data = await contract.ownerOf(number)
-        console.log('owner: ',data)
+        // console.log('owner: ',data)
+        setOwner(data)
         let url = await contract.tokenURI(number)
-        console.log('award: ',url)
-        
-  
-      fetch(url).then(res => res.json())
-      .then((out) =>{
-        // console.log('Checkout this JSON! ', out)
-        setImage(out.image)
-        console.log(out.name)
-        console.log(out.description)
-      }
-        )
-     
-        .catch(err => console.log(err));
+        // console.log('award: ',url)
+
+        fetch(url).then(res => res.json())
+        .then((out) =>{
+          // console.log('Checkout this JSON! ', out)
+          // console.log(out.name)
+          // console.log(out.description)
+          setImage(out.image)
+          setName(out.name)
+          setDescription(out.description)
+        })
+          .catch(err => console.log(err));
       } catch (err) {
         console.log("Error: ", err)
         setImage()
@@ -52,27 +53,27 @@ const NFT = () => {
       fetchNftList(e.target[0].value)
   }
 
-
-
-
   return (
-    <div>NFT
-
-
-<form onSubmit={onFetch}>
-          fetch nft list<br/>
-            <input type="number" min="1"/>
-          <button className='adminSubmit'>fetch list</button>
+    <div className='nft'>
+      <div className='nft-div'>
+        <form onSubmit={onFetch}>
+          <div style={{paddingBottom: "20px", fontSize: "25px"}}>Search NFT</div>
+          <input type="search" min="1" placeholder='NFT ID' className='nft-input'/>
+          {/* <button className='nft-button-con'>Search</button> */}
         </form>
-
-        <img src={image} alt="preview image" /> 
-
-
+      </div>
+      {image ?
+      <div>
+        <div className='nft-name'>{name}</div>
+        <div className='nft-div-img'>
+          <img className='nft-img' src={image} alt="preview image" /> 
+        </div>
+        <div>
+          <div className='nft-des'>"{description}"</div>
+          <div className='nft-owner'>-Own by {owner}-</div>
+        </div>
+      </div>:<div className='nft-alert'>NFT Not found</div>}
     </div>
-
-
-
-
   )
 }
 

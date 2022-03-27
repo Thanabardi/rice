@@ -20,6 +20,7 @@ const Home = (props) => {
 
   const handleChange = (event) => {
     const name = event.target.name;
+
 	const value = event.target.value.replace(/[^A-Za-z]/ig, '')
     setInputs(values => ({...values, [name]: value}))
 	
