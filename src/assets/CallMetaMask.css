@@ -1,0 +1,35 @@
+.metamask-button-dis{
+	background: rgb(123, 182, 97);
+	text-decoration: none;
+	padding: 10px 20px 10px 20px;
+	color: white;
+  border: 2px solid white;
+	font-size: 17px;
+	border-radius: 18px;
+	margin-top: 10px;
+  position: absolute;
+  top: 1%;
+  right: 2%;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.metamask-button-dis:hover {
+  color: rgb(150, 90, 62);
+	background: rgb(255, 237, 121);
+	cursor: pointer;
+}
+
+.metamask-button-con{
+  color: rgb(150, 90, 62);
+	background: rgb(255, 237, 121);
+	text-decoration: none;
+	padding: 10px 20px 10px 20px;
+  border: 2px solid white;
+	font-size: 17px;
+	border-radius: 18px;
+	margin-top: 10px;
+  position: absolute;
+  top: 1%;
+  right: 2%;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}

@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers'
 
-
 import '../assets/VotePopup.css';
 import getSessionAddress from '../utils/FetchVoteSession';
+import followerFormatter from '../utils/FollowerFormat';
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
+import checkMetaMask from '../utils/CheckMetaMask';
+import { isDisabled } from '@testing-library/user-event/dist/utils';
+
 const factoryAddress = "0x2AFdd75605F8369C509Be138A6f3086E8b9A2660"
+
 
 const VotePopup = ({ voteAccount }) => {
   
@@ -17,7 +21,6 @@ const VotePopup = ({ voteAccount }) => {
   async function requestAccount() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
   }
-
 
 
   const handleChange = (event) => {
@@ -31,33 +34,19 @@ const VotePopup = ({ voteAccount }) => {
     }
   }
 
- 
-
-  function followerFormatter(follower) {
-    // format raw int number into form of thousand and million
-    if (follower > 999 && follower < 1000000){
-      return (follower/1000).toFixed(1) + 'K'; 
-    }else if (follower > 1000000){
-      return (follower/1000000).toFixed(1) + 'M';  
-    }else if (follower < 900){
-      return follower
-    }
-  }
-
   async function onVote(amount,twitterId){
-
     if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
       const sessionAddress = getSessionAddress(factoryAddress)
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner()
-     
-        const contract = new ethers.Contract(sessionAddress, voteSession.abi, signer)
-        const transaction = contract.vote(amount,twitterId).then(()=>{const timer = setTimeout(() => {
-          window.location.reload()
-        }, 8000);})
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner()
+    
+      const contract = new ethers.Contract(sessionAddress, voteSession.abi, signer)
+      const transaction = contract.vote(amount,twitterId).then(()=>{const timer = setTimeout(() => {
+        window.location.reload()
+      }, 8000);})
     }
-}
+  }
 
   async function vote() {
     if (inputs.rice > 0) {
@@ -76,11 +65,12 @@ const VotePopup = ({ voteAccount }) => {
   return (
     <div>
       <button
-        className='vote-popup-button'
+        className={checkMetaMask() === "Connected" ? 'vote-popup-button-con':'vote-popup-button-dis'}
         // show confirm popup
         onClick={e => {
-          if (voteAccount.id !== undefined) { setUserPopup(true) } 
-          else {window.alert(`Please select your candidate.`)}}}>Vote</button>
+          if (checkMetaMask() === "Connected")
+            if (voteAccount.id !== undefined) { setUserPopup(true) } 
+            else {window.alert(`Please select your candidate.`)}}}>Vote</button>
       {votePopup &&
         <div className='vote-popup'>
           <div className='vote-popup-div'>
@@ -102,7 +92,7 @@ const VotePopup = ({ voteAccount }) => {
               min="1"
               max="100"
               name="rice" 
-              placeholder="Amount"
+              placeholder="Amount 1-100"
               value={inputs.rice || ""} 
               onChange={handleChange}
             /> Rice

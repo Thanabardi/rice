@@ -10,7 +10,10 @@ import ShowUser from '../components/ShowUser'
 import VotePopup from '../components/VotePopup'
 
 import '../assets/VotePage.css';
+
 import getSessionAddress from '../utils/FetchVoteSession';
+import checkMetaMask from '../utils/CheckMetaMask';
+import followerFormatter from '../utils/FollowerFormat';
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
@@ -32,12 +35,24 @@ const Vote = () => {
 		onfetchVote()
 
 		onfetchStatus()
-		
-
-		
-
   }, []);
 
+	// async function getAccountProfile() {
+	// 	if (candidateIDs.length > 0) {
+	// 		await axios.get(`/1.1/users/lookup.json?user_id=${candidateIDs.toString()}`, {
+	// 			"headers": {
+	// 				'Authorization': `Bearer ${bearerToken}`
+	// 			}
+	// 		})
+	// 		.then(response => {
+	// 			// console.log(response.data)
+	// 			setCandidateList(response.data)
+	// 		})
+	// 		.catch(error => {
+	// 			window.alert(error)
+	// 			// console.log(error)
+	// 		})
+	// 	}
 
 
 //   async function findWinner(){
@@ -92,19 +107,17 @@ const Vote = () => {
       const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
       const sessionAddress = getSessionAddress(factoryAddress)
       const contract = new ethers.Contract(factoryAddress, voteFactory.abi, provider)
-        const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
-        try{
-            await contractVote.getCandidateName().then((data)=>{
-				console.log('data',data)
-				setCandidateID(data)
-				getAccountProfile(data)
-			})
-            
-        }catch (err) {
-        console.log("Error: ", err)
-    }
-}  
+			const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
+			try {
+				await contractVote.getCandidateName().then((data)=>{
+					setCandidateID(data)
+					getAccountProfile(data)
+				})
+      } catch (err) {
 
+        console.log("Error: ", err)
+    	}
+		}  
   }
 
   async function onfetchStatus(){
@@ -112,37 +125,36 @@ const Vote = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner();
       const sessionAddress = getSessionAddress(factoryAddress)
-        const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
-        try{
-            const data = await contractVote.status()
-			if (data == 1){
+			const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
+			try {
+				const data = await contractVote.status()
+				if (data === 1) {
 					findAward()
-				// setTimeout(function () {
-				// 	findWinner()
-				// }, 10000);		 
-			}
-        }catch (err) {
+					// setTimeout(function () {
+					// 	findWinner()
+					// }, 10000);		 
+				}
+      } catch (err) {
         console.log("Error: ", err)
-    }
-  }
-}  
-
+			}
+		}
+	}  
 
   async function onfetchVote(){
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner();
       const sessionAddress = getSessionAddress(factoryAddress)
-        const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
-        try{
-            const data = await contractVote.remainingVote(signer.getAddress())
-			// fix this to decimal
-            setVoteAmount(parseInt(data._hex,16))
-        }catch (err) {
+			const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
+			try {
+				const data = await contractVote.remainingVote(signer.getAddress())
+				// fix this to decimal
+				setVoteAmount(parseInt(data._hex,16))
+      } catch (err) {
         console.log("Error: ", err)
-    }
-  }
-}  
+			}
+		}
+	}  
 
 // async function testTwitter(e) {
 // 	e.preventDefault()
@@ -192,59 +204,100 @@ const Vote = () => {
 		}
 	}
 
+	function handleSelect(candidate) {
+		if (candidate !== select) {
+			setSelect(candidate)
+		} else {
+			setSelect({})
+		}
+	}
+
+	function findWinner() {
+		const winnerAccount = candidateList.find(candidate => candidate.id_str === winner)
+		const profile_image = winnerAccount.profile_image_url_https.replace("_normal", "")
+		return [winnerAccount.id_str, winnerAccount.name, winnerAccount.screen_name, winnerAccount.followers_count, profile_image]
+	}
+
+	function redirect(ID) {
+    window.open(`https://twitter.com/i/user/${ID}`, `_blank`);
+  }
+
   return (
 		<div className='vote'>
 
+			<div className='vote-inform'>
+				<div style={{fontSize: "30px"}}>
+					{(!award & checkMetaMask() === "Connected") ? <div>You have {voteAmount} RICE</div>:<div />}
+					{(!award & checkMetaMask() !== "Connected") ? <div style={{fontSize: "25px"}}>MetaMask account required</div>:<div />}
+					{award && "Vote Result"}
+				</div>
+				<div style={{fontSize: "18px"}}>
+					<div style={{opacity: "50%"}}>{!award ? "Session is on going": "Session has ended"}</div>
+					{winner && 
+						<div>
+							<div style={{fontSize: "25px", opacity: "80%"}}>Winner</div>
+							<div className='vote-winner'>
+								{/* show user profile picture */}
+								<img src={findWinner()[4]} alt="Account Profile" style={{borderRadius: "100%", width: "200px"}}/>
+								{/* show user name */}
+								<p style={{fontSize: "25px", lineHeight: "10px", fontWeight: "bolder"}}>{findWinner()[1]}</p>
+								{/* show user screen name */}
+								<p className='vote-winner-button' style={{fontSize: "16px", lineHeight: "0"}} onClick={e => redirect(findWinner()[0]) }>@{findWinner()[2]}</p>
+								{/* show Followers count */}
+								<div style={{fontSize: "14px", color: "rgb(0, 0, 0, 0.5)"}}> {followerFormatter(findWinner()[3])} Followers</div>
+							</div>
+						</div>
+					}
+					{award && 
+					<div style={{opacity: "80%"}}>
+						<div style={{fontSize: "20px"}}>Award Goes To</div>
+						<div style={{textShadow: "10px 0px 10px black", fontSize: "15px"}}>{award}</div>
+					</div>}
 
-			{!award && "RICE: "+ voteAmount}{award && "Session is ended!!"}<br/>
-			{!award && "Session is on going"}{award && "Winner is: "+ winner}<br/>
-			
-			{award && "Award is: "+ award}<br/>
-			<div style={{padding: "20px", fontSize: "30px"}}>Vote</div>
-			<div className='vote-div'>
-				<table className='vote-table'>
-					
-					<tbody>
-						{candidateList.length!==0 &&  candidateList.map((candidate, index) => {
-							const profile_image = candidate.profile_image_url_https.replace("_normal", "")
-							return (
-								<tr key={index} className={candidate.id_str === select.id_str ? "select" : "table"}>
-									<td className='vote-td'><img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}} 
-										onClick={() => setSelect(candidate)} className='vote-select-button'/></td>
-									<td className='vote-td' ><button className='vote-select-button' value={candidate} 
-										onClick={() => setSelect(candidate)}>{candidate.name}</button>
-									<ShowUser accountProfile={[candidate.id_str, candidate.name, candidate.screen_name, candidate.followers_count, profile_image]} /></td>
-								</tr>
-							);
-						})}
-						
-					</tbody>
-				</table>
-			</div>
-			<div style={{padding: "20px", fontSize: "20px"}}>Add Your New Candidate</div>
-			<div className='vote-div'>
-				<table className='vote-table'>
-					<tbody>
-						{
-							newCandidateList.map((candidate, index) => {
-							const profile_image = candidate.profile_image_url_https.replace("_normal", "")
-							return (
-								<tr key={index} className={candidate.id_str === select.id_str ? "select" : "table"}>
-									<td className='vote-td'><img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}} 
-										onClick={() => setSelect(candidate)} className='vote-select-button'/></td>
-									<td className='vote-td' ><button className='vote-select-button' value={candidate} 
-										onClick={() => setSelect(candidate)}>{candidate.name}</button>
-									<ShowUser accountProfile={[candidate.id_str, candidate.name, candidate.screen_name, candidate.followers_count, profile_image]} /></td>
-								</tr>
-							);
-						})}
-					</tbody>
-				</table>
-				<div style={{paddingTop: newCandidateList.length > 0 ? "20px": "0"}}>
-					<UserSearch sendData={addCandidate} />
 				</div>
 			</div>
-			<VotePopup voteAccount={select}/>
+			{ checkMetaMask() !== "Install MetaMask" || award && <div>
+				<div style={{padding: "20px", fontSize: "30px"}}>Vote</div>
+				<div className='vote-div'>
+					<table className='vote-table'>
+						<tbody>
+							{candidateList.map((candidate, index) => {
+								const profile_image = candidate.profile_image_url_https.replace("_normal", "")
+								return (
+									<tr key={index} className={candidate.id_str === select.id_str ? "vote-select" : "vote-tr"} 
+										onClick={() => handleSelect(candidate)}>
+										<td className='vote-td'><img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}} /></td>
+										<td className='vote-td' >{candidate.name}
+										<ShowUser accountProfile={[candidate.id_str, candidate.name, candidate.screen_name, candidate.followers_count, profile_image]} /></td>
+									</tr>
+								);
+							})}
+						</tbody>
+					</table>
+				</div>
+				<div style={{padding: "20px", fontSize: "20px"}}>Add Your New Candidate</div>
+				<div className='vote-div'>
+					<table className='vote-table'>
+						<tbody>
+							{newCandidateList.map((candidate, index) => {
+								const profile_image = candidate.profile_image_url_https.replace("_normal", "")
+								return (
+									<tr key={index} className={candidate.id_str === select.id_str ? "vote-select" : "vote-tr"} 
+										onClick={() => handleSelect(candidate)}>
+										<td className='vote-td'><img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}} /></td>
+										<td className='vote-td' >{candidate.name}
+										<ShowUser accountProfile={[candidate.id_str, candidate.name, candidate.screen_name, candidate.followers_count, profile_image]} /></td>
+									</tr>
+								);
+							})}
+						</tbody>
+					</table>
+					<div style={{paddingTop: newCandidateList.length > 0 ? "20px": "0"}}>
+						<UserSearch sendData={addCandidate} />
+					</div>
+				</div>
+				<VotePopup voteAccount={select}/>
+			</div>}
 		</div>
   );
 }

@@ -43,6 +43,7 @@ contract RiceNFT is ERC721URIStorage {
         _setTokenURI(newItemId, tokenURI);
 
         status = State.CLOSED;
+
         setAward(address(0));
         return newItemId;
     }

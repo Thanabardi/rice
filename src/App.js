@@ -9,12 +9,15 @@ import AdminPage from './pages/AdminPage'
 
 
 import NavBar from './components/NavBar'
+import CallMetaMask from './components/CallMetaMask'
+
 import NFT from './pages/NFT';
 
 function App() {
   return (
     <div className="App">
       <NavBar />
+      <CallMetaMask />
       <Routes>
         <Route path="/nft" element={<NFT />} />
         <Route path="/swap" element={<SwapPage />} />

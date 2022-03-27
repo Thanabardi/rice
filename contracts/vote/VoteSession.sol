@@ -83,7 +83,7 @@ contract VoteSession is VRFConsumerBase {
         return voteExchange.voteExchange(_voter) / 10**18 - voteMap[_voter];
     }
 
-    function endVote() public {
+    function endVote() public returns (address){
         // end the vote session for owner or out of time
         require(tx.origin == owner, "Not owner");
         status = voteState.ENDED;
@@ -102,6 +102,7 @@ contract VoteSession is VRFConsumerBase {
             }
         }
         winner = tempWinner;
+
     }
 
     function getCandidateName() public view returns (string[] memory) {

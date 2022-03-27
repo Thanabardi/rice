@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import followerFormatter from '../utils/FollowerFormat';
 import '../assets/ShowUser.css';
 
 const ShowAccount = ({ accountProfile }) => {
@@ -7,17 +8,6 @@ const ShowAccount = ({ accountProfile }) => {
 
   function redirect() {
     window.open(`https://twitter.com/i/user/${accountProfile[0]}`, `_blank`);
-  }
-
-  function followerFormatter(follower) {
-    // format raw int number into form of thousand and million
-    if (follower > 999 && follower < 1000000){
-      return (follower/1000).toFixed(1) + 'K'; 
-    }else if (follower > 1000000){
-      return (follower/1000000).toFixed(1) + 'M';  
-    }else if (follower < 900){
-      return follower
-    }
   }
 
   return (

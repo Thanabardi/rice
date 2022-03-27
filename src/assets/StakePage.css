@@ -1,9 +1,11 @@
-.swap-alert {
+.stake-alert {
+    font-family: Tahoma;
     color: red;
-    /* font-size: 20px; */
+    font-size: 20px;
+    margin-top: -160px;
 }
 
-.swap-inform {
+.stake-inform {
 	background: radial-gradient(circle at 50%, rgb(20, 20, 40), rgb(20, 20, 40) 75%, rgb(199, 199, 199) 78%, rgb(20, 20, 40) 90%);
 	color: rgb(255, 255, 255);
 	line-height: 30px;
@@ -16,10 +18,8 @@
 	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.swap {
-	margin-top: 2%;
-	margin-left: auto;
-	margin-right: auto;
+.stake-div {
+	margin: 2% auto 2% auto ;
     background-color: white;
     display: inline-block;
     min-width: 28%;
@@ -28,33 +28,39 @@
 	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.swap-div {
-    background-color: rgba(0, 0, 0, 0.05);
-    display: flex;
-    width: 93%;
-	padding: 2%;
-	border-radius: 15px;
-    margin: 5px;
-}
-
-.swap-input {
+.stake-input {
     border: none;
-	background: none;
+	background: rgba(0, 0, 0, 0.05);
 	padding: 10px;
-    border-radius: 18px;
-	width: 200%;
+    margin: 2px;
+    border-radius: 8px;
+	min-width: 90%;
     font-size: 20px;
 }
-.swap-input:focus {
+/* .stake-input:focus {
     outline: none;
+} */
+.stake-input-stake {
+    border: none;
+	background: rgba(0, 0, 0, 0.05);
+	padding: 10px;
+    margin: 2px;
+    border-radius: 8px;
+	min-width: 90%;
+    font-size: 20px;
+    /* display: inline-flex; */
+    min-width: 80%;
 }
 
-.swap-img {
-    max-width: 25px;
+.stake-img {
+    /* max-width: 25px;
+    max-height: 25px; */
     border-radius: 100%;
+    margin: auto;
+    width: 30px;
 }
 
-.swap-button{
+.stake-button{
     background: rgb(123, 182, 97);
     text-decoration: none;
     width: 95%;
@@ -68,13 +74,13 @@
     box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.swap-button:hover {
+.stake-button:hover {
     color: rgb(150, 90, 62);
 	background: rgb(255, 237, 121);
 	cursor: pointer;
 }
 
-.swap-button-dis{
+.stake-button-dis{
     background: rgb(123, 182, 97);
     text-decoration: none;
     width: 95%;
@@ -88,7 +94,17 @@
     box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.swap-button :disabled{
+.stake-button :disabled{
     pointer-events: none;
     background-color: transparent;
+}
+
+.stake-p {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.stake-input-img {
+    display: flex;
+    justify-content: center;
 }

@@ -10,16 +10,12 @@ import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession
 import PoolFactory from '../artifacts/contracts/PoolFactory.sol/PoolFactory.json'
 import Pool from '../artifacts/contracts/Pool.sol/Pool.json'
 
-import '../assets/SwapPage.css';
+import '../assets/StakePage.css';
 import h2d from '../utils/H2D';
+import checkMetaMask from '../utils/CheckMetaMask';
 
 import matic from '../assets/images/matic.png';
-import rice from '../assets/images/rice.jpg';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import rice from '../assets/images/rice.png';
 import getSessionAddress from '../utils/FetchVoteSession';
 
 
@@ -45,12 +41,25 @@ const StakePage = () => {
   let [coinState2, setState2] = useState("");
   let [voteAmount, setVoteAmount] = useState("0") 
 
+  let [status, setStatus] = useState(checkMetaMask())
+
   useEffect(() => {
 		// create candidate details list from candidate id
 		getStakeAmount()
     onfetchVote()
 		
 
+  }, []);
+
+  
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStatus(checkMetaMask())
+      if (checkMetaMask() === "Connected") {
+        clearInterval(interval);
+      }
+    }, 3000);
   }, []);
 
   async function requestAccount() {
@@ -215,60 +224,63 @@ async function getToken0Need(e){
 }
 } 
 
-
-
-
-
-
   return (
-    <div>
-        
-
-
-
-      
-      Stake
-      <form onSubmit={onStake}>
-        <img src={matic} style={{width:"30px"}}></img>
-        <input placeholder='amount token0' type='number' onChange={getToken0Need} step=".0001"></input><br/>
-        <img src={rice} style={{width:"30px"}}></img>
-        <input placeholder='amount token1' type='number' step=".0001"></input><br/>
-        <button>submit</button>
-      </form>     
-      Matic:{amountMatic}<br/>
-      Rice:{amountRice}<br/>
-      
-      <form onSubmit={unstake}>
-        unstake<br/>
-        <input placeholder='percent' type='number' min='1' max='100'></input>%<br/>
-        <button>submit</button>
-        </form>
-
-
-
     <div className='stake'>
-     
+      {(status !== "Connected") &&
+        <div className='stake-inform'>
+          <div style={{fontSize: "25px"}}>MetaMask account required</div>
+        </div>}
+        <p />
+      {(status === "Connected") &&
+      <div>
+        <div className='stake-div'>
+          <div style={{padding: "20px", fontSize: "25px"}}>Stake</div>
+          <form onSubmit={onStake}>
+            <div style={{display: "flex", width: "100%"}}>
+              <input className='stake-input-stake' 
+                placeholder='Matic Amount' type='number' onChange={getToken0Need} step=".0001"></input>
+              <img className='stake-img' src={matic} alt="Matic" />
+            </div>
+            <div style={{display: "flex", width: "100%"}}>
+              <input className='stake-input-stake'
+                placeholder='Rice Amount' type='number' step=".0001" disabled></input>
+              <img className='stake-img' src={rice} alt="Rice" />
+            </div>
+            <button className='stake-button'>Stake</button>
+          </form>
+        </div>
+        <p />
+        <div className='stake-div'>
+          <div style={{padding: "20px", fontSize: "25px"}}>Unstake</div>
+          <div className='stake-p'>
+            <div style={{paddingBottom: "10px", fontSize: "18px"}}>You have</div>
+            <div style={{paddingBottom: "10px", fontSize: "18px"}}>{amountMatic} Matic</div>
+            <div style={{paddingBottom: "10px", fontSize: "18px"}}>{amountRice} Rice</div>
+          </div>
+          
+          <form onSubmit={unstake}>
+            <input className='stake-input-stake' placeholder='percent' type='number' min='1' max='100' /> %
+            <button className='stake-button'>Unstake</button>
+          </form>
+        </div>
+        <div style={{paddingTop: "40px", fontSize: "30px"}}>Stake Rice</div>
+        <div className='stake-div'>
+          <div className='rice-stake'>
+              <div style={{paddingTop: "10px", fontSize: "20px"}}>You have {voteAmount} Rice</div>
+              <div style={{padding: "20px", fontSize: "25px"}}>deposit</div>
+            <form onSubmit={onDeposit}>
+                <input className='stake-input' type='number' min='1' max='100' placeholder='Amount' required/>
+              <button className='stake-button' type='submit'> Deposit</button>
+            </form>
+          </div>
+            <div style={{padding: "20px", fontSize: "25px"}}>withdraw</div>
+            <form onSubmit={onWithdraw}>
+                <input className='stake-input' type='number' min='1' max='100' placeholder='Amount' required/>
+              <button className='stake-button' type='submit'> Withdraw</button>
+            </form>
+        </div>
+      </div>}
     </div>
-    <div className='rice-stake'>
-      <h2>RICE - STAKE</h2>
-      Current Rice: {voteAmount}<br/>
-
-      deposit
-<form onSubmit={onDeposit}>
-    <input type='number' min='1' max='100' placeholder='amount 1-100' required/>
-   <button type='submit'> deposit</button>
-</form>
-
-withdraw
-<form onSubmit={onWithdraw}>
-    <input type='number' min='1' max='100' placeholder='amount 1-100' required/>
-   <button type='submit'> withdraw</button>
-</form>
-
-    </div>
-</div>
-
-
   );
 }
 export default StakePage;
