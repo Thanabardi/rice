@@ -7,10 +7,14 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 contract RiceNFT is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
-    
-    address public owner;
 
-    enum State {OPENED, CLOSED}
+    address public owner;
+    address public recentAward;
+
+    enum State {
+        OPENED,
+        CLOSED
+    }
     State public status;
 
     constructor() ERC721("RiceNFT", "RND") {
@@ -19,27 +23,43 @@ contract RiceNFT is ERC721URIStorage {
         owner = msg.sender;
     }
 
-    function award(address _to, string memory tokenURI) public returns (uint) {
+    function setAward(address _award) public {
+        recentAward = _award;
+    }
+
+    function award(string memory tokenURI) public returns (uint256) {
         require(status == State.OPENED, "Unable to mint since NFT is closed");
         require(tx.origin == owner, "Not Owner");
+        require(recentAward != address(0), "Award Address not exist!");
 
         _tokenIds.increment();
 
-        uint newItemId = _tokenIds.current();
+        uint256 newItemId = _tokenIds.current();
 
         // mint NFT to winner address
-        _mint(_to, newItemId);
+        _mint(recentAward, newItemId);
 
         // set tokenURI for winner
         _setTokenURI(newItemId, tokenURI);
 
         status = State.CLOSED;
-
+        setAward(address(0));
         return newItemId;
     }
 
+    function handleNFT() public returns (uint256[] memory list) {
+        uint256[] memory listId;
+        uint256 count = 0;
+        for (uint256 i = 1; i <= _tokenIds.current(); i++) {
+            if (ownerOf(i) == msg.sender) {
+                listId[count] = i;
+                count++;
+            }
+        }
+        return listId;
+    }
+
     function openNFT() public {
-        require(tx.origin == owner, "Not Owner");
         status = State.OPENED;
     }
 }

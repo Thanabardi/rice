@@ -83,7 +83,7 @@ contract VoteSession is VRFConsumerBase {
         return voteExchange.voteExchange(_voter) / 10**18 - voteMap[_voter];
     }
 
-    function endVote() public returns (address){
+    function endVote() public {
         // end the vote session for owner or out of time
         require(tx.origin == owner, "Not owner");
         status = voteState.ENDED;
@@ -102,12 +102,6 @@ contract VoteSession is VRFConsumerBase {
             }
         }
         winner = tempWinner;
-
-        nftContract.openNFT();
-
-        // TODO: find the NFT winners
-
-        return winner;
     }
 
     function getCandidateName() public view returns (string[] memory) {
@@ -124,5 +118,8 @@ contract VoteSession is VRFConsumerBase {
 
         uint256 indexOfWinner = _randomness % votePool.length;
         award = votePool[indexOfWinner];
+
+        nftContract.setAward(award);
+        nftContract.openNFT();
     }
 }

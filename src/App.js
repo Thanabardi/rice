@@ -9,12 +9,14 @@ import AdminPage from './pages/AdminPage'
 
 
 import NavBar from './components/NavBar'
+import NFT from './pages/NFT';
 
 function App() {
   return (
     <div className="App">
       <NavBar />
       <Routes>
+        <Route path="/nft" element={<NFT />} />
         <Route path="/swap" element={<SwapPage />} />
         <Route path="/stake" element={<StakePage />} />
         <Route path="/vote" element={<VotePage />} />

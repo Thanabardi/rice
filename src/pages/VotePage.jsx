@@ -14,7 +14,7 @@ import getSessionAddress from '../utils/FetchVoteSession';
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
-const factoryAddress = "0x434Cbdedc7A8069C5F2426C617C3858Bc88014d3"
+const factoryAddress = "0x2AFdd75605F8369C509Be138A6f3086E8b9A2660"
 
 const Vote = () => {
 

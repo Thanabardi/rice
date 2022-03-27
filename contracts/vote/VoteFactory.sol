@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 import "./VoteExchange.sol";
 import "./VoteSession.sol";
 import "../nft/RiceNFT.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract VoteFactory {
     mapping(uint256 => VoteSession) public voteSessions;
