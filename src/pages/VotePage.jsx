@@ -149,14 +149,8 @@ const Vote = () => {
 
 	async function getAccountProfile(IDs) {
 		if (IDs.length > 0) {
- 		// await axios.get(`https://limitless-escarpment-03632.herokuapp.com/get-account-profile/${IDs.toString()}`
-		// )
-
-		await axios.get(`/1.1/users/lookup.json?user_id=${IDs}`, {
-			"headers": {
-				'Authorization': `Bearer ${bearerToken}`
-			}
-		})
+ 		 await axios.get(`https://limitless-escarpment-03632.herokuapp.com/get-account-profile/${IDs.toString()}`
+		 )
 		.then(response => {
 			// console.log(response.data)
 			setCandidateList(response.data)
@@ -275,7 +269,7 @@ const Vote = () => {
 						<UserSearch sendData={addCandidate} />
 					</div>
 				</div>
-				<VotePopup voteAccount={select}/>
+				<VotePopup voteAccount={[select,voteAmount]}/>
 			</div>:<div></div>}
 		</div>
   );
