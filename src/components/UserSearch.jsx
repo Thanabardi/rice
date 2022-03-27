@@ -20,8 +20,10 @@ const Home = (props) => {
 
   const handleChange = (event) => {
     const name = event.target.name;
-    const value = event.target.value.replace(/[^A-Za-z]/ig, '')
+
+	const value = event.target.value.replace(/[^A-Za-z]/ig, '')
     setInputs(values => ({...values, [name]: value}))
+	
   }
 
 	function handleSubmit(event) {
@@ -31,7 +33,7 @@ const Home = (props) => {
 
   async function handleSearch(accountName) {
 		if (accountName !== "" && accountName !== "/" && accountName !== undefined) {
-			await axios.get(`https:/limitless-escarpment-03632.herokuapp.com/handle-search/${accountName.replace("/", "")}`
+			await axios.get(`https://limitless-escarpment-03632.herokuapp.com/handle-search/${accountName.replace("/", "")}`
 				)
 			.then(response => {
 				// console.log(response.data)

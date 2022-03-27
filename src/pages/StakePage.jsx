@@ -20,11 +20,11 @@ import getSessionAddress from '../utils/FetchVoteSession';
 
 
 
-  const exchangeAddress = "0xfA8bCD1292CdEe0a20dB373d3da57D4964C3B8b2"
+  const exchangeAddress = "0x21513F5Ead7DBDD75fc1166A19cd8C2c395ca385"
   const tokenAddress = '0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346'
   const stakeAddress = '0x3Cb07efDBAfbc1BEb470d7B761eac8BacF428CF8'
   const wMaticAddress = '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'
-  const factoryAddress =  "0x2AFdd75605F8369C509Be138A6f3086E8b9A2660"
+  const factoryAddress =  "0xa674321C98C13889936113Aac266227ab8E0c21a"
   const poolFactoryAddress = "0x4D03044Ee7f8f228a7A9D1C6f33d361C08CfBD61"
 
 
