@@ -75,7 +75,7 @@ const Home = (props) => {
 					<table className="search-table">
 						<tbody>
 							{/* filter out best 5 account with followers >= 1000 */}
-							{twitterAccount.filter(account => account.followers_count >= 1000 && account!==undefined).slice(0, 5).map((account, index) => {
+							{twitterAccount.length > 0 && twitterAccount[0] !== 'undefined' && twitterAccount.filter(account => account.followers_count >= 1000).slice(0, 5).map((account, index) => {
 								const profile_image = account.profile_image_url_https.replace("_normal", "")
 								return (
 									<tr key={index}>
