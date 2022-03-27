@@ -1,9 +1,7 @@
 {
-  "homepage": "http:skdue-ethernals.github.io/rice",
   "name": "rice",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://api.twitter.com",
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
@@ -25,8 +23,6 @@
     "web3modal": "^1.9.5"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -58,3 +54,4 @@
     "hardhat": "^2.9.0"
   }
 }
+
