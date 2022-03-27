@@ -269,13 +269,13 @@ async function getToken0Need(e){
               <div style={{paddingTop: "10px", fontSize: "20px"}}>You have {voteAmount} Rice</div>
               <div style={{padding: "20px", fontSize: "25px"}}>deposit</div>
             <form onSubmit={onDeposit}>
-                <input className='stake-input' type='number' min='1' max='100' placeholder='Amount' required/>
+                <input className='stake-input' type='number' min='1' placeholder='Amount' required/>
               <button className='stake-button' type='submit'> Deposit</button>
             </form>
           </div>
             <div style={{padding: "20px", fontSize: "25px"}}>withdraw</div>
             <form onSubmit={onWithdraw}>
-                <input className='stake-input' type='number' min='1' max='100' placeholder='Amount' required/>
+                <input className='stake-input' type='number' min='1' placeholder='Amount' required/>
               <button className='stake-button' type='submit'> Withdraw</button>
             </form>
         </div>

@@ -16,8 +16,8 @@ const NavBar = ({}) => {
           className={path === "/stake" ? 'nav-select' : 'nav-not-select'}>Stake</button>
         <button onClick={()=>{localStorage.state="vote"; navigate('/vote')}} 
           className={path === "/vote" ? 'nav-select' : 'nav-not-select'}>Vote</button>
-        <button onClick={()=>{localStorage.state="admin"; navigate('/admin')}} 
-          className={path === "/admin" ? 'nav-select' : 'nav-not-select'}>Admin</button>
+        <button onClick={()=>{localStorage.state="nft"; navigate('/nft')}} 
+          className={path === "/nft" ? 'nav-select' : 'nav-not-select'}>NFT</button>
       </div>
     </div>
   );

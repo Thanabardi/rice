@@ -1,0 +1,100 @@
+.nft{
+	margin-top: 2%;
+	margin-left: auto;
+	margin-right: auto;
+	padding-bottom: 2%;
+}
+
+.nft-div{
+	background-color: white;
+	padding: 20px;
+	display: inline-block;
+	min-width: 25%;
+	margin: auto;
+	border-radius: 18px;
+	margin-bottom: 20px;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nft-div-img{
+	background-color: white;
+	padding: 15px;
+	display: inline-block;
+	/* min-width: 25%; */
+	margin: auto;
+	border-radius: 0;
+	margin-bottom: 20px;
+	/* box-shadow: 0px 0px 100px rgb(255, 208, 0); */
+  animation: colorRotate 2s linear 0s infinite;
+}
+
+@keyframes colorRotate {
+  from {
+    box-shadow: 0px 0px 200px rgb(255, 255, 255);
+  }
+  50% {
+    box-shadow: 0px 0px 1px rgb(243, 243, 243);
+  }
+  to {
+    box-shadow: 0px 0px 200px rgb(255, 255, 255);
+  }
+}
+
+.nft-input{
+  border: none;
+	background-color: rgb(240, 240, 240);
+	padding: 10px;
+	border-radius: 5px;
+	width: 100%;
+}
+
+.nft-button-con{
+	/* width: 100%; */
+	border: none;
+	background: rgb(123, 182, 97);
+	text-decoration: none;
+	padding: 4px 20px 4px 20px;
+	color: white;
+	font-size: 20px;
+	border-radius: 18px;
+	margin-top: 10px;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nft-button-con:hover {
+	color: rgb(150, 90, 62);
+	background: rgb(255, 237, 121);
+	cursor: pointer;
+}
+
+.nft-img {
+  max-width: 800px;
+  max-height: 500px;
+}
+
+.nft-name {
+  padding: 20px;
+  font-size: 40px;
+  text-shadow: -0px -4px 5px rgba(0, 0, 0, 0.3);
+}
+
+.nft-des {
+  opacity: 80%;
+  padding: 10px;
+  font-size: 25px;
+  display: inline-block;
+  max-width: 30%;
+  text-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.nft-owner {
+  opacity: 50%;
+  padding: 10px;
+  font-size: 18px;
+  /* text-shadow: 0px 10px 10px rgba(0, 0, 0, 0.4); */
+}
+
+.nft-alert {
+    color: red;
+    /* font-size: 20px; */
+}
