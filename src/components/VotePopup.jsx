@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 
 import '../assets/VotePopup.css';
 import getSessionAddress from '../utils/FetchVoteSession';
+import followerFormatter from '../utils/FollowerFormat';
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
@@ -29,19 +30,6 @@ const VotePopup = ({ voteAccount }) => {
     } else {
       setInputs(values => ({...values, [name]: 100}))
       // window.alert('Rice value must under 100.')
-    }
-  }
-
- 
-
-  function followerFormatter(follower) {
-    // format raw int number into form of thousand and million
-    if (follower > 999 && follower < 1000000){
-      return (follower/1000).toFixed(1) + 'K'; 
-    }else if (follower > 1000000){
-      return (follower/1000000).toFixed(1) + 'M';  
-    }else if (follower < 900){
-      return follower
     }
   }
 

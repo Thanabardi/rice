@@ -31,6 +31,30 @@
 	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
+.vote-winner {
+	display: inline-block;
+	min-width: 40%;
+	border-radius: 10px;
+	padding: 20px;
+	margin: 20px 0 20px 0;
+	color: black;
+	background: white;
+	box-shadow: 2px 0px 30px white;
+}
+
+.vote-winner-button{
+	border: none;
+	background: none;
+	text-decoration: none;
+	padding: 0;
+	color: rgb(29,155,240);
+}
+
+.vote-winner-button:hover {
+	color: rgba(29, 156, 240, 0.5);
+	cursor: pointer;
+}
+
 .vote-table {
 	margin: auto;
 	border-collapse: collapse;

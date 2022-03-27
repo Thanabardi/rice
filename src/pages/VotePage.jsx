@@ -10,8 +10,10 @@ import ShowUser from '../components/ShowUser'
 import VotePopup from '../components/VotePopup'
 
 import '../assets/VotePage.css';
+
 import getSessionAddress from '../utils/FetchVoteSession';
 import checkMetaMask from '../utils/CheckMetaMask';
+import followerFormatter from '../utils/FollowerFormat';
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
@@ -196,20 +198,49 @@ const Vote = () => {
 		}
 	}
 
+	function findWinner() {
+		const winnerAccount = candidateList.find(candidate => candidate.id_str === winner)
+		const profile_image = winnerAccount.profile_image_url_https.replace("_normal", "")
+		return [winnerAccount.id_str, winnerAccount.name, winnerAccount.screen_name, winnerAccount.followers_count, profile_image]
+	}
+
+	function redirect(ID) {
+    window.open(`https://twitter.com/i/user/${ID}`, `_blank`);
+  }
+
   return (
 		<div className='vote'>
 			<div className='vote-inform'>
-				<div style={{fontSize: "25px"}}>
-					{(!award & checkMetaMask() === "Connected") ? <div>You have {voteAmount} RICE</div>:<div>MetaMask account required.</div>}
-					{award && "Session is ended!!"}
+				<div style={{fontSize: "30px"}}>
+					{(!award & checkMetaMask() === "Connected") ? <div>You have {voteAmount} RICE</div>:<div />}
+					{(!award & checkMetaMask() !== "Connected") ? <div style={{fontSize: "25px"}}>MetaMask account required</div>:<div />}
+					{award && "Vote Result"}
 				</div>
-				<div style={{fontSize: "18px", opacity: "50%"}}>
-					{!award && "Session is on going"}
-					<div>{award && "Winner is "+ winner}</div>
-					<div>{award && "Wins "+ award}</div>
+				<div style={{fontSize: "18px"}}>
+					<div style={{opacity: "50%"}}>{!award ? "Session is on going": "Session has ended"}</div>
+					{winner && 
+						<div>
+							<div style={{fontSize: "25px", opacity: "80%"}}>Winner</div>
+							<div className='vote-winner'>
+								{/* show user profile picture */}
+								<img src={findWinner()[4]} alt="Account Profile" style={{borderRadius: "100%", width: "200px"}}/>
+								{/* show user name */}
+								<p style={{fontSize: "25px", lineHeight: "10px", fontWeight: "bolder"}}>{findWinner()[1]}</p>
+								{/* show user screen name */}
+								<p className='vote-winner-button' style={{fontSize: "16px", lineHeight: "0"}} onClick={e => redirect(findWinner()[0]) }>@{findWinner()[2]}</p>
+								{/* show Followers count */}
+								<div style={{fontSize: "14px", color: "rgb(0, 0, 0, 0.5)"}}> {followerFormatter(findWinner()[3])} Followers</div>
+							</div>
+						</div>
+					}
+					{award && 
+					<div style={{opacity: "80%"}}>
+						<div style={{fontSize: "20px"}}>Award Goes To</div>
+						<div style={{textShadow: "10px 0px 10px black", fontSize: "15px"}}>{award}</div>
+					</div>}
 				</div>
 			</div>
-			{ checkMetaMask() !== "Install MetaMask" && <div>
+			{ checkMetaMask() !== "Install MetaMask" || award && <div>
 				<div style={{padding: "20px", fontSize: "30px"}}>Vote</div>
 				<div className='vote-div'>
 					<table className='vote-table'>

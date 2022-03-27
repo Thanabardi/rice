@@ -130,7 +130,7 @@ const SwapPage = () => {
     <div>
       {(status !== "Connected") &&
       <div className='swap-inform'>
-				<div style={{fontSize: "25px"}}>MetaMask account required.</div>
+				<div style={{fontSize: "25px"}}>MetaMask account required</div>
 			</div>}
       <p />
       {(status !== "Install MetaMask") &&
@@ -187,7 +187,7 @@ const SwapPage = () => {
           <button className={amountHex==="0x00" || status !== "Connected" ? 'swap-button-dis':'swap-button'} id="Summit" 
             disabled={amountHex==="0x00" || status !== "Connected"?true :false}>Enter amount</button>
         </form>
-        {/* <p className='Alert' id="Alert"></p> */}
+        <p className='swap-alert' id="Alert"></p>
       </div>}
     </div>
   );
