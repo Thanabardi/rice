@@ -32,7 +32,7 @@ const Home = (props) => {
 
   async function handleSearch(accountName) {
 		if (accountName !== "" && accountName !== "/" && accountName !== undefined) {
-			await axios.get(`/1.1/users/search.json?q=${accountName.replace("/", "")}`, {
+			await axios.get(`http://localhost:9000/handle-search/${accountName.replace("/", "")}`, {
 				"headers": {
 					'Authorization': `Bearer ${bearerToken}`
 				}
@@ -49,6 +49,7 @@ const Home = (props) => {
 			setTwitterAccount([]) //clear search result
 		}
   }
+
 
 	function addCandidate(account) {
 		props.sendData(account);

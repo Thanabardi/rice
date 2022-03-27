@@ -96,6 +96,7 @@ const Vote = () => {
         const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
         try{
             await contractVote.getCandidateName().then((data)=>{
+				console.log('data',data)
 				setCandidateID(data)
 				getAccountProfile(data)
 			})
@@ -144,28 +145,28 @@ const Vote = () => {
   }
 }  
 
-async function testTwitter(e) {
-	e.preventDefault()
-	console.log(e.target[0].value)
-	 await axios.get(`https://api.twitter.com/1.1/users/lookup.json?user_id=${e.target[0].value}`, {
-		"headers": {
-			'Authorization': `Bearer ${bearerToken}`
-		}
-	})
-	.then(response => {
-		console.log(response.data)
-		// setCandidateList(response.data)
-	})
-	.catch(error => {
-		window.alert(error)
-		console.log(error)
-	})
-}
+// async function testTwitter(e) {
+// 	e.preventDefault()
+// 	console.log(e.target[0].value)
+// 	 await axios.get(`http://localhost:9000/get-account-profile/${e.target[0].value}`, {
+// 		"headers": {
+// 			'Authorization': `Bearer ${bearerToken}`
+// 		}
+// 	})
+// 	.then(response => {
+// 		console.log(response.data)
+// 		// setCandidateList(response.data)
+// 	})
+// 	.catch(error => {
+// 		window.alert(error)
+// 		console.log(error)
+// 	})
+// }
 
 
 	async function getAccountProfile(IDs) {
 		console.log(IDs)
- 		await axios.get(`1.1/users/lookup.json?user_id=${IDs}`, {
+ 		await axios.get(`http://localhost:9000/get-account-profile/${IDs}`, {
 			"headers": {
 				'Authorization': `Bearer ${bearerToken}`
 			}
@@ -179,7 +180,7 @@ async function testTwitter(e) {
 			// console.log(error)
 		})
   }
-  
+
 
 	function addCandidate(account) {
 		// console.log(account)
@@ -198,10 +199,6 @@ async function testTwitter(e) {
   return (
 		<div className='vote'>
 
-			<form onSubmit={testTwitter}>
-				<input type="text" />
-				<button>Submit</button>
-			</form>
 
 			{!award && "RICE: "+ voteAmount}{award && "Session is ended!!"}<br/>
 			{!award && "Session is on going"}{award && "Winner is: "+ winner}<br/>
@@ -211,7 +208,7 @@ async function testTwitter(e) {
 			<div className='vote-div'>
 				<table className='vote-table'>
 					
-					{/* <tbody>
+					<tbody>
 						{candidateList.length!==0 &&  candidateList.map((candidate, index) => {
 							const profile_image = candidate.profile_image_url_https.replace("_normal", "")
 							return (
@@ -225,13 +222,13 @@ async function testTwitter(e) {
 							);
 						})}
 						
-					</tbody> */}
+					</tbody>
 				</table>
 			</div>
 			<div style={{padding: "20px", fontSize: "20px"}}>Add Your New Candidate</div>
 			<div className='vote-div'>
 				<table className='vote-table'>
-					{/* <tbody>
+					<tbody>
 						{
 							newCandidateList.map((candidate, index) => {
 							const profile_image = candidate.profile_image_url_https.replace("_normal", "")
@@ -245,7 +242,7 @@ async function testTwitter(e) {
 								</tr>
 							);
 						})}
-					</tbody> */}
+					</tbody>
 				</table>
 				<div style={{paddingTop: newCandidateList.length > 0 ? "20px": "0"}}>
 					<UserSearch sendData={addCandidate} />
