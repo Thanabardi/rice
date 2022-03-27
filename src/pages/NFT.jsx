@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import riceNFT from '../artifacts/contracts/nft/RiceNFT.sol/RiceNFT.json'
 
-const nftAddress = "0x1D32c7FC542105B536CA3D9Fb452dD11Fc79310F"
+const nftAddress = "0xbcEE5365B749cd4A0c25DBecCAA6a840D12fCC9D"
 
 const NFT = () => {
 

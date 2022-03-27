@@ -10,7 +10,7 @@ import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession
 import checkMetaMask from '../utils/CheckMetaMask';
 import { isDisabled } from '@testing-library/user-event/dist/utils';
 
-const factoryAddress = "0x2AFdd75605F8369C509Be138A6f3086E8b9A2660"
+const factoryAddress = "0xa674321C98C13889936113Aac266227ab8E0c21a"
 
 
 const VotePopup = ({ voteAccount }) => {

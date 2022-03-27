@@ -17,7 +17,7 @@ import followerFormatter from '../utils/FollowerFormat';
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
-const factoryAddress = "0x2AFdd75605F8369C509Be138A6f3086E8b9A2660"
+const factoryAddress = "0xa674321C98C13889936113Aac266227ab8E0c21a"
 
 const Vote = () => {
 
