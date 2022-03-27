@@ -144,6 +144,24 @@ const Vote = () => {
   }
 }  
 
+async function testTwitter(e) {
+	e.preventDefault()
+	console.log(e.target[0].value)
+	 await axios.get(`/1.1/users/lookup.json?user_id=${e.target[0].value}`, {
+		"headers": {
+			'Authorization': `Bearer ${bearerToken}`
+		}
+	})
+	.then(response => {
+		console.log(response.data)
+		// setCandidateList(response.data)
+	})
+	.catch(error => {
+		window.alert(error)
+		console.log(error)
+	})
+}
+
 
 	async function getAccountProfile(IDs) {
 		console.log(IDs)
@@ -178,6 +196,12 @@ const Vote = () => {
 
   return (
 		<div className='vote'>
+
+			<form onSubmit={testTwitter}>
+				<input type="text" />
+				<button>Submit</button>
+			</form>
+
 			{!award && "RICE: "+ voteAmount}{award && "Session is ended!!"}<br/>
 			{!award && "Session is on going"}{award && "Winner is: "+ winner}<br/>
 			
