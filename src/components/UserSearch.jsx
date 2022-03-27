@@ -6,7 +6,6 @@ import ShowUser from './ShowUser'
 import '../assets/UserSearch.css';
 
 const Home = (props) => {
-	const bearerToken = process.env.REACT_APP_TWITTER_API_KEY
 	
   let [inputs, setInputs] = useState({account: ""});
 	let [twitterAccount, setTwitterAccount] = useState([]); //list of account object from search
@@ -21,8 +20,9 @@ const Home = (props) => {
 
   const handleChange = (event) => {
     const name = event.target.name;
-    const value = event.target.value;
+	const value = event.target.value.replace(/[^A-Za-z]/ig, '')
     setInputs(values => ({...values, [name]: value}))
+	
   }
 
 	function handleSubmit(event) {
@@ -32,11 +32,8 @@ const Home = (props) => {
 
   async function handleSearch(accountName) {
 		if (accountName !== "" && accountName !== "/" && accountName !== undefined) {
-			await axios.get(`/1.1/users/search.json?q=${accountName.replace("/", "")}`, {
-				"headers": {
-					'Authorization': `Bearer ${bearerToken}`
-				}
-			})
+			await axios.get(`https://limitless-escarpment-03632.herokuapp.com/handle-search/${accountName.replace("/", "")}`
+				)
 			.then(response => {
 				// console.log(response.data)
 				setTwitterAccount(response.data) //update search result
@@ -49,6 +46,7 @@ const Home = (props) => {
 			setTwitterAccount([]) //clear search result
 		}
   }
+
 
 	function addCandidate(account) {
 		props.sendData(account);
@@ -75,18 +73,18 @@ const Home = (props) => {
 					<table className="search-table">
 						<tbody>
 							{/* filter out best 5 account with followers >= 1000 */}
-							{twitterAccount.filter(account => account.followers_count >= 1000).slice(0, 5).map((account, index) => {
-								const profile_image = account.profile_image_url_https.replace("_normal", "")
+								{twitterAccount!== [] && twitterAccount.filter(account => account.followers_count >= 1000).slice(0, 5).map((account, index) => {
+									const profile_image = account.profile_image_url_https.replace("_normal", "")
 								return (
-									<tr key={index}>
+									// add account when user click
+									<tr key={index} className="search-user-tr" onClick={() => addCandidate(account)}>
 										{/* profile image */}
 										<td className="search-table-td">
 											<img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}}/>
 										</td>
 										<td className="search-table-td">
-											{/* account name that add into a candidate list when user click*/}
-											<div style={{fontSize: "15px", color: "white"}}>
-												<button className='search-button' value={account} onClick={() => addCandidate(account)}>{account.name}</button>
+											{/* account name */}
+											<div style={{fontSize: "18px"}}>{account.name}
 											</div>
 											{/* account screen name that show the account details on mouse hover */}
 											<div style={{bottom: "10px"}}>

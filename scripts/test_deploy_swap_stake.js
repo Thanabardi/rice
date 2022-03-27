@@ -14,14 +14,17 @@ async function main() {
      const PoolFactory = await hre.ethers.getContractFactory("PoolFactory");
      const poolFactory = await PoolFactory.deploy();
 
-     const MoneyBall = await hre.ethers.getContractFactory("MoneyBall");
-     const moneyBall = await MoneyBall.deploy();
-
+     
      await poolFactory.deployed();
-     await moneyBall.deployed();
 
 //   console.log("Token deployed to:", token.address);
      console.log("PoolFactory deployed to:", poolFactory.address);
+     const MoneyBall = await hre.ethers.getContractFactory("MoneyBall");
+     const moneyBall = await MoneyBall.deploy(poolFactory.address);
+
+    
+     await moneyBall.deployed();
+
      console.log("MoneyBall deployed to:", moneyBall.address);
 
      const Stake = await hre.ethers.getContractFactory("Stake");

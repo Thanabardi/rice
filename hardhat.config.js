@@ -13,6 +13,5 @@ module.exports = {
       accounts: [`0x${WALLET_PRIVATE_KEY}`]
     }
   },
-  solidity: "0.8.0",
+  solidity: "0.8.1",
 };
-

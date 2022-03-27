@@ -1,42 +1,33 @@
-.vote-popup-button{
-	/* width: 100%; */
-	border: none;
-	background: rgb(123, 182, 97);
-	text-decoration: none;
-	padding: 0;
-	/* margin: 50px 0 100px 0; */
-	color: white;
-	font-size: 20px;
-	width: 7%;
-	border-radius: 18px;
-	padding: 4px;
-	margin-top: 10px;
-  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-.vote-popup-button:hover {
-	color: rgb(16, 116, 54);
-	cursor: pointer;
-}
-
 .vote-popup-button-con{
 	/* width: 100%; */
 	border: none;
 	background: rgb(123, 182, 97);
 	text-decoration: none;
-	padding: 0;
-	/* margin: 50px 0 100px 0; */
+	padding: 4px 20px 4px 20px;
 	color: white;
 	font-size: 20px;
-	width: 30%;
 	border-radius: 18px;
-	padding: 4px;
 	margin-top: 10px;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .vote-popup-button-con:hover {
-	color: rgb(16, 116, 54);
+	color: rgb(150, 90, 62);
+	background: rgb(255, 237, 121);
 	cursor: pointer;
+}
+
+.vote-popup-button-dis{
+	/* width: 100%; */
+	border: none;
+	background: rgb(123, 182, 97);
+	text-decoration: none;
+	padding: 4px 20px 4px 20px;
+	color: white;
+	font-size: 20px;
+	border-radius: 18px;
+	margin-top: 10px;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .vote-popup-button-can{
@@ -44,18 +35,18 @@
 	border: none;
 	background: rgb(165, 165, 165);
 	text-decoration: none;
-	padding: 0;
 	/* margin: 50px 0 100px 0; */
 	color: white;
 	font-size: 20px;
-	width: 30%;
 	border-radius: 18px;
-	padding: 4px;
+	padding: 4px 20px 4px 20px;
 	margin-top: 10px;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .vote-popup-button-can:hover {
 	color: rgb(0, 0, 0);
+	background: rgb(207, 207, 207);
 	cursor: pointer;
 }
 

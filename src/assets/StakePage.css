@@ -1,0 +1,110 @@
+.stake-alert {
+    font-family: Tahoma;
+    color: red;
+    font-size: 20px;
+    margin-top: -160px;
+}
+
+.stake-inform {
+	background: radial-gradient(circle at 50%, rgb(20, 20, 40), rgb(20, 20, 40) 75%, rgb(199, 199, 199) 78%, rgb(20, 20, 40) 90%);
+	color: rgb(255, 255, 255);
+	line-height: 30px;
+	padding: 20px;
+	display: inline-block;
+	min-width: 25%;
+    margin-top: 2%;
+	border-radius: 18px;
+	margin-bottom: 20px;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.stake-div {
+	margin: 2% auto 2% auto ;
+    background-color: white;
+    display: inline-block;
+    min-width: 28%;
+    height: 100%;
+	border-radius: 18px;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.stake-input {
+    border: none;
+	background: rgba(0, 0, 0, 0.05);
+	padding: 10px;
+    margin: 2px;
+    border-radius: 8px;
+	min-width: 90%;
+    font-size: 20px;
+}
+/* .stake-input:focus {
+    outline: none;
+} */
+.stake-input-stake {
+    border: none;
+	background: rgba(0, 0, 0, 0.05);
+	padding: 10px;
+    margin: 2px;
+    border-radius: 8px;
+	min-width: 90%;
+    font-size: 20px;
+    /* display: inline-flex; */
+    min-width: 80%;
+}
+
+.stake-img {
+    /* max-width: 25px;
+    max-height: 25px; */
+    border-radius: 100%;
+    margin: auto;
+    width: 30px;
+}
+
+.stake-button{
+    background: rgb(123, 182, 97);
+    text-decoration: none;
+    width: 95%;
+    height: 50px;
+    color: white;
+    border: none;
+    margin: 10px;
+    font-size: 17px;
+    border-radius: 18px;
+    margin-top: 10px;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.stake-button:hover {
+    color: rgb(150, 90, 62);
+	background: rgb(255, 237, 121);
+	cursor: pointer;
+}
+
+.stake-button-dis{
+    background: rgb(123, 182, 97);
+    text-decoration: none;
+    width: 95%;
+    height: 50px;
+    color: white;
+    border: none;
+    margin: 10px;
+    font-size: 17px;
+    border-radius: 18px;
+    margin-top: 10px;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.stake-button :disabled{
+    pointer-events: none;
+    background-color: transparent;
+}
+
+.stake-p {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.stake-input-img {
+    display: flex;
+    justify-content: center;
+}

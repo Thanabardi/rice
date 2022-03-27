@@ -1,12 +1,13 @@
 pragma solidity ^0.8.0;
 
+import "../nft/RiceNFT.sol";
 import "./VoteExchange.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 
 contract VoteSession is VRFConsumerBase {
     uint256 public voteId;
     mapping(address => uint256) public voteMap;
-    mapping(string => uint) public candidate;
+    mapping(string => uint256) public candidate;
     string[] public candidateName;
     VoteExchange public voteExchange;
     address public owner;
@@ -15,7 +16,13 @@ contract VoteSession is VRFConsumerBase {
     address[] public votePool;
     uint256 public fee;
     bytes32 public keyhash;
-    address public winner;
+    //people who have most vote
+    string public winner;
+    //people who get NFT as award
+    address public award;
+
+    // nft
+    RiceNFT public nftContract;
 
     enum voteState {
         STARTED,
@@ -29,7 +36,8 @@ contract VoteSession is VRFConsumerBase {
         address _coordinator,
         address _link,
         bytes32 _hash,
-        uint256 _fee
+        uint256 _fee,
+        address _nftAddress
     ) public VRFConsumerBase(_coordinator, _link) {
         //random
         keyhash = _hash;
@@ -41,6 +49,9 @@ contract VoteSession is VRFConsumerBase {
         voteExchange.closeExchange();
         fee = _fee;
         keyhash = _hash;
+
+        // nft
+        nftContract = RiceNFT(_nftAddress);
     }
 
     function vote(uint256 _amount, string memory _twitterId) public {
@@ -56,7 +67,7 @@ contract VoteSession is VRFConsumerBase {
             "Not have enough vote"
         );
 
-        if(candidate[_twitterId] == 0) {
+        if (candidate[_twitterId] == 0) {
             candidateName.push(_twitterId);
         }
         candidate[_twitterId] += _amount;
@@ -72,7 +83,7 @@ contract VoteSession is VRFConsumerBase {
         return voteExchange.voteExchange(_voter) / 10**18 - voteMap[_voter];
     }
 
-    function endVote() public {
+    function endVote() public returns (address){
         // end the vote session for owner or out of time
         require(tx.origin == owner, "Not owner");
         status = voteState.ENDED;
@@ -81,8 +92,17 @@ contract VoteSession is VRFConsumerBase {
         bytes32 requestID = requestRandomness(keyhash, fee);
 
         voteExchange.openExchange();
+        uint256 mostVote = 0;
+        string memory tempWinner;
+        for (uint256 i = 0; i < candidateName.length; i++) {
+            string memory temp = candidateName[i];
+            if (mostVote < candidate[temp]) {
+                mostVote = candidate[temp];
+                tempWinner = temp;
+            }
+        }
+        winner = tempWinner;
 
-        // TODO: add random method to find the NFT winner
     }
 
     function getCandidateName() public view returns (string[] memory) {
@@ -98,6 +118,9 @@ contract VoteSession is VRFConsumerBase {
         require(_randomness > 0, "not found");
 
         uint256 indexOfWinner = _randomness % votePool.length;
-        winner = votePool[indexOfWinner];
+        award = votePool[indexOfWinner];
+
+        nftContract.setAward(award);
+        nftContract.openNFT();
     }
 }

@@ -9,21 +9,19 @@ async function main() {
     const riceToken = "0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346";
 
     console.log("Deploying contracts with the account:", deployer.address);
-    // you can remove this part if you're already deploy token
-    // but you have to specify address of the token instead
-    // const Token = await ethers.getContractFactory("RICE");
-    // const token = await Token.deploy("RICE", "RICE");
-    // await token.deployed();
-    // console.log("Token deployed to:", token.address);
-
 
     const VoteExchange = await ethers.getContractFactory("VoteExchange");
     const voteExchange = await VoteExchange.deploy(riceToken);
     await voteExchange.deployed();
     console.log("VoteExchange deployed to:", voteExchange.address);
 
+    const NFT = await ethers.getContractFactory("RiceNFT");
+    const nft = await NFT.deploy();
+    await nft.deployed();
+    console.log("NFT deployed to:", nft.address);
+
     const VoteFactory = await ethers.getContractFactory("VoteFactory");
-    const voteFactory = await VoteFactory.deploy(voteExchange.address,VRFCoordinator,LINK,FEE,KEYHASH);
+    const voteFactory = await VoteFactory.deploy(voteExchange.address,VRFCoordinator,LINK,FEE,KEYHASH,nft.address);
     await voteFactory.deployed();
     console.log("VoteFactory deployed to:", voteFactory.address);
 

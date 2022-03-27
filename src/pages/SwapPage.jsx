@@ -1,18 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { ethers } from 'ethers'
+import RICE from '../artifacts/contracts/Token.sol/RICE.json'
 import WMATIC from '../artifacts/contracts/WMatic.sol/WMATIC.json'
 import Swap from '../artifacts/contracts/Swap.sol/Swap.json'
-import matic from '../assets/images/matic.png';
-import rice from '../assets/images/rice.jpg';
-import '../assets/SwapPage.css';
+import h2d from '../utils/H2D';
+import checkMetaMask from '../utils/CheckMetaMask';
+
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
+import '../assets/SwapPage.css';
+
+import matic from '../assets/images/matic.png';
+import rice from '../assets/images/rice.png';
+import { unstable_composeClasses } from '@mui/material';
+
+
+
 const SwapPage = () => {
-  const swapAddress = '0x9DDe8618a3713aE483E4976Ae8427A040d9f931B'
+  const swapAddress = "0xb6b4fD2703e9e878b530aC8906a74f892De46aC6"
+  const wMaticAddress  = "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"
+  const tokenAddress= "0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346"
+  const poolFactoryAddress= "0x4D03044Ee7f8f228a7A9D1C6f33d361C08CfBD61"
 
   // TODO: change address Rice and Matic
   const coinOption  = [
@@ -25,52 +37,79 @@ const SwapPage = () => {
 
   async function onSwap(e){
     e.preventDefault()
+  
     if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         console.log({ provider })
         const signer = provider.getSigner()
      
-      // const token = new ethers.Contract(e.target[0].value, RICE.abi, signer)
-      // await token.approve(swapAddress, e.target[2].value*100000 + "0000000000000")
+      const token1 = new ethers.Contract(coinState1, RICE.abi, signer)
+      await token1.approve(swapAddress, e.target[0].value*100000 + "0000000000000")
 
-      const token = new ethers.Contract(e.target[0].value, WMATIC.abi, signer)
-      await token.approve(swapAddress, e.target[2].value*100000 + "0000000000000")
 
-      // const wMatic = new ethers.Contract(wMaticAddress, WMATIC.abi, signer)
-      // await wMatic.approve(poolFactoryAddress, '1000000000000000')
 
       setTimeout(function () {
         const contract = new ethers.Contract(swapAddress, Swap.abi, signer)
   
         const transaction = contract.swap(
-              e.target[0].value, //rice
-              e.target[1].value, // matic
-              e.target[2].value*100000 + "0000000000000",
+            coinState1,coinState2,
+              e.target[0].value*100000 + "0000000000000"
             )
       }, 20000);
     }
   }
 
-  async function  onGetOdds(e){
-    e.preventDefault()
+  async function  onGetOdds(amount){
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
       console.log({ provider })
       const contract = new ethers.Contract(swapAddress, Swap.abi, provider)
-      try {
-        const data = await contract.getTokenOdds(coinState1, coinState2,  e.target[2].value*100000 + "0000000000000",)
-
-        console.log('Total: ', data)
-      } catch (err) {
-        console.log("Error: ", err)
-      }
+          try {
+            console.log("amountState",amount)
+            const data = await contract.getTokenOdds(coinState1, coinState2,  amount*100000 + "0000000000000",)
+            setHex(data._hex);
+            const hexToDec = h2d(data._hex);
+            if (data._hex==="0x00"){
+              document.getElementById("Alert").innerHTML = "Error Insufficient Amount"
+            }
+            else {
+              document.getElementById("Alert").innerHTML = ""
+            }
+            setCalculateState(hexToDec/Math.pow(10, 18));
+            console.log('Total: ', data)
+          } catch (err) {
+            console.log("Error: ", err)
+          }
     }  
   }
 
-  const [coinState1, setState1] = useState("");
-  const [coinState2, setState2] = useState("");
-  const [amountState, setAmountState] = useState("");
+  // function isSufficient(){
+  //   // const ele = document.getElementById("value").value
+  //   // console.log("insuffiecient ", amountHex)
+  //   if (amountHex==='0x00'){
+  //     document.getElementById("Summit").disabled = true;
+  //   } else {
+  //     document.getElementById("Summit").disabled = false;
+  //   }
+  // }
+
+  const [coinState1, setState1] = useState('0');
+  const [coinState2, setState2] = useState('0');
+  // const [amountState, setAmountState] = useState('0');
+  const [amountHex, setHex] = useState('0');
+  const [amountCalculation, setCalculateState] = useState('0');
+
+  let [status, setStatus] = useState(checkMetaMask())
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStatus(checkMetaMask())
+      if (checkMetaMask() === "Connected") {
+        clearInterval(interval);
+      }
+    }, 3000);
+  }, []);
 
   const handleChange1 = (event) => {
     setState1(event.target.value);
@@ -79,67 +118,80 @@ const SwapPage = () => {
 
   const handleChange2 = (event) => {
     setState2(event.target.value);
-    console.log(event.target.value)
+    // console.log(event.target.value)
   };
 
   const handleChange3 = (event) => {
-    // TODO: set CalculateCoin
-    setAmountState(event.target.value);
-    console.log(event.target.value)
-  };
+    // setAmountState(event.target.value);
+    // console.log(event.target.value);
+    onGetOdds(event.target.value);
+  }
 
   return (
-    <div className='swap'>
-      Swap
-      <center>
-        <Box sx={{ maxWidth: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">COIN</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={coinState1}
-              label="Coin"
-              onChange={handleChange1}
-            >
-              <MenuItem value={coinOption[0].value}>Matic <img src={coinOption[0].img}/></MenuItem>
-              <MenuItem value={coinOption[1].value}>Rice <img src={coinOption[1].img}/></MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-      </center>
-      <center>
-        <Box sx={{ maxWidth: 120 }}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">COIN</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={coinState2}
-              label="Coin"
-              onChange={handleChange2}
-            >
-              <MenuItem value={coinOption[0].value}>Matic <img src={coinOption[0].img}/></MenuItem>
-              <MenuItem value={coinOption[1].value}>Rice <img src={coinOption[1].img}/></MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-      </center>
-      <form onSubmit={onSwap}>
-        <input type="hidden" value={coinState1} disabled={coinState1===""}></input>
-        <input type="hidden" value={coinState2} disabled={coinState1===""}></input>
-        <input placeholder='amount token' type='number' step=".0001" onChange={handleChange3}></input><br/>
-
-        <button>submit</button>
-      </form>
-      GetOdds
-      <form onSubmit={onGetOdds}>
-        <input type="hidden" value={coinState1} disabled={coinState1===""}></input>
-        <input type="hidden" value={coinState2} disabled={coinState1===""}></input>
-        {/* TODO: set value and render coin */}
-        <input placeholder='amount token' type='number' step=".0001" ></input><br/>
-        <button>submit</button>
-      </form>
+    // <input className='swapInput' type="hidden" value={coinState1} disabled={coinState1===""}></input>
+    // <input className='swapInput' type="hidden" value={coinState2} disabled={coinState1===""}></input>
+    <div>
+      {(status !== "Connected") &&
+      <div className='swap-inform'>
+				<div style={{fontSize: "25px"}}>MetaMask account required</div>
+			</div>}
+      <p />
+      {(status !== "Install MetaMask") &&
+      <div className='swap'> 
+        <div style={{padding: "20px", fontSize: "30px"}}>Swap</div>
+        <form onSubmit={onSwap}> 
+          <div className='swap-div'>
+            <input className='swap-input' id='value' placeholder='amount token' type='number' step=".0001" onInput={handleChange3}></input>
+            <div className='swap-input-select'>
+              <Box sx={{ width:"125px"}}>
+                <FormControl fullWidth required>
+                  <InputLabel id="demo-simple-select-label">COIN</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={coinState1}
+                    label="Coin"
+                    onChange={handleChange1}
+                    sx={{
+                      bgcolor:"white"
+                    }}
+                  >
+                    <MenuItem sx={{display: "flex", justifyContent: "space-between"}} value={coinOption[0].value}>Matic <img className='swap-img' src={coinOption[0].img} alt="Matic"/></MenuItem>
+                    <MenuItem sx={{display: "flex", justifyContent: "space-between"}} value={coinOption[1].value}>Rice <img className='swap-img' src={coinOption[1].img} alt="Rice"/></MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+            </div>
+          </div>
+          <div style={{opacity: "50%", fontSize: "15px", fontWeight: "bold", lineHeight: "8px"}}>To</div>
+          <div className='swap-div'>
+            <input className='swap-input' value={amountCalculation} placeholder='amount token' type='number' step=".0001" disabled></input>
+            <div className='swap-input-select'>
+              <Box sx={{ width:"125px"}}>
+                <FormControl fullWidth required>
+                  <InputLabel id="demo-simple-select-label">COIN</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={coinState2}
+                    label="Coin"
+                    onChange={handleChange2}
+                    sx={{
+                      bgcolor:"white"
+                    }}
+                  >
+                    <MenuItem sx={{display: "flex", justifyContent: "space-between"}} value={coinOption[0].value}>Matic <img className='swap-img' src={coinOption[0].img} alt="Matic"/></MenuItem>
+                    <MenuItem sx={{display: "flex", justifyContent: "space-between"}} className='swap-select' value={coinOption[1].value}>Rice <img className='swap-img' src={coinOption[1].img} alt="Rice"/></MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+            </div>
+          </div>
+          <button className={amountHex==="0x00" || status !== "Connected" ? 'swap-button-dis':'swap-button'} id="Summit" 
+            disabled={amountHex==="0x00" || status !== "Connected"?true :false}>Swap</button>
+        </form>
+        <p className='swap-alert' id="Alert"></p>
+      </div>}
     </div>
   );
 }

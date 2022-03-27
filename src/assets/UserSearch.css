@@ -13,14 +13,16 @@
 }
 
 .search-table{
+	position: absolute;
 	text-align: left;
 	margin: 2px auto;
-	color: white;
-	background-color: rgb(13,17,23);
+	color: black;
+	background-color: white;
 	line-height: 1;
 	border-radius: 5px;
-	min-width: 100%;
+	min-width: 25%;
 	border-collapse: collapse;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .search-table-td{
@@ -32,17 +34,7 @@
 	width: 50px;
 }
 
-.search-button{
-	/* width: 100%; */
-	border: none;
-	background: none;
-	text-decoration: none;
-	padding: 0;
-	color: white;
-	font-size: 15px;
-}
-
-.search-button:hover {
-	color: rgb(240, 201, 29);
+.search-user-tr:hover {
+	background-color: rgba(0, 0, 0, 0.05);
 	cursor: pointer;
 }
