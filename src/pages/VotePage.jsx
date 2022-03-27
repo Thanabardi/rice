@@ -147,7 +147,7 @@ const Vote = () => {
 async function testTwitter(e) {
 	e.preventDefault()
 	console.log(e.target[0].value)
-	 await axios.get(`/1.1/users/lookup.json?user_id=${e.target[0].value}`, {
+	 await axios.get(`https://api.twitter.com/1.1/users/lookup.json?user_id=${e.target[0].value}`, {
 		"headers": {
 			'Authorization': `Bearer ${bearerToken}`
 		}
