@@ -165,7 +165,7 @@ async function testTwitter(e) {
 
 	async function getAccountProfile(IDs) {
 		console.log(IDs)
- 		await axios.get(`/1.1/users/lookup.json?user_id=${IDs}`, {
+ 		await axios.get(`1.1/users/lookup.json?user_id=${IDs}`, {
 			"headers": {
 				'Authorization': `Bearer ${bearerToken}`
 			}
