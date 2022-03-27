@@ -6,7 +6,6 @@ import ShowUser from './ShowUser'
 import '../assets/UserSearch.css';
 
 const Home = (props) => {
-	const bearerToken = process.env.REACT_APP_TWITTER_API_KEY
 	
   let [inputs, setInputs] = useState({account: ""});
 	let [twitterAccount, setTwitterAccount] = useState([]); //list of account object from search
@@ -32,11 +31,8 @@ const Home = (props) => {
 
   async function handleSearch(accountName) {
 		if (accountName !== "" && accountName !== "/" && accountName !== undefined) {
-			await axios.get(`http://localhost:9000/handle-search/${accountName.replace("/", "")}`, {
-				"headers": {
-					'Authorization': `Bearer ${bearerToken}`
-				}
-			})
+			await axios.get(`https:/limitless-escarpment-03632.herokuapp.com/handle-search/${accountName.replace("/", "")}`
+				)
 			.then(response => {
 				// console.log(response.data)
 				setTwitterAccount(response.data) //update search result

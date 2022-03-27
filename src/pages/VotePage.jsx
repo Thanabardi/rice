@@ -17,7 +17,6 @@ import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession
 const factoryAddress = "0x434Cbdedc7A8069C5F2426C617C3858Bc88014d3"
 
 const Vote = () => {
-	const bearerToken = process.env.REACT_APP_TWITTER_API_KEY
 
 	let [candidateIDs, setCandidateID] = useState(["."]) //list of candidate id
 	let [newCandidateList, setNewCandidateList] = useState([]) //list of new candidate id
@@ -166,11 +165,8 @@ const Vote = () => {
 
 	async function getAccountProfile(IDs) {
 		console.log(IDs)
- 		await axios.get(`http://localhost:9000/get-account-profile/${IDs}`, {
-			"headers": {
-				'Authorization': `Bearer ${bearerToken}`
-			}
-		})
+ 		await axios.get(`https://limitless-escarpment-03632.herokuapp.com/get-account-profile/${IDs}`
+		)
 		.then(response => {
 			// console.log(response.data)
 			setCandidateList(response.data)
