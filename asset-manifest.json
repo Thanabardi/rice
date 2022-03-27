@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/rice/static/css/main.61c22dc9.css",
+    "main.js": "/rice/static/js/main.d8c3c115.js",
+    "static/js/787.1189b49f.chunk.js": "/rice/static/js/787.1189b49f.chunk.js",
+    "static/media/rice.jpg": "/rice/static/media/rice.785afc70f3ee71296f83.jpg",
+    "static/media/matic.png": "/rice/static/media/matic.21acc0e5212966d9b862.png",
+    "index.html": "/rice/index.html",
+    "main.61c22dc9.css.map": "/rice/static/css/main.61c22dc9.css.map",
+    "main.d8c3c115.js.map": "/rice/static/js/main.d8c3c115.js.map",
+    "787.1189b49f.chunk.js.map": "/rice/static/js/787.1189b49f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.61c22dc9.css",
+    "static/js/main.d8c3c115.js"
+  ]
+}
