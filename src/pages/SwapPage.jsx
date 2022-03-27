@@ -1,5 +1,6 @@
 import React, { useState, useEffect  } from 'react';
 import { ethers } from 'ethers'
+import RICE from '../artifacts/contracts/Token.sol/RICE.json'
 import WMATIC from '../artifacts/contracts/WMatic.sol/WMATIC.json'
 import Swap from '../artifacts/contracts/Swap.sol/Swap.json'
 import h2d from '../utils/H2D';
@@ -15,9 +16,15 @@ import '../assets/SwapPage.css';
 
 import matic from '../assets/images/matic.png';
 import rice from '../assets/images/rice.png';
+import { unstable_composeClasses } from '@mui/material';
+
+
 
 const SwapPage = () => {
-  const swapAddress = '0x9DDe8618a3713aE483E4976Ae8427A040d9f931B'
+  const swapAddress = "0xb6b4fD2703e9e878b530aC8906a74f892De46aC6"
+  const wMaticAddress  = "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"
+  const tokenAddress= "0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346"
+  const poolFactoryAddress= "0x4D03044Ee7f8f228a7A9D1C6f33d361C08CfBD61"
 
   // TODO: change address Rice and Matic
   const coinOption  = [
@@ -30,30 +37,26 @@ const SwapPage = () => {
 
   async function onSwap(e){
     e.preventDefault()
+  
     if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         console.log({ provider })
         const signer = provider.getSigner()
      
-      // const token = new ethers.Contract(e.target[0].value, RICE.abi, signer)
-      // await token.approve(swapAddress, e.target[2].value*100000 + "0000000000000")
+      const token1 = new ethers.Contract(coinState1, RICE.abi, signer)
+      await token1.approve(swapAddress, e.target[0].value*100000 + "0000000000000")
 
-      const token = new ethers.Contract(e.target[0].value, WMATIC.abi, signer)
-      await token.approve(swapAddress, e.target[2].value*100000 + "0000000000000")
 
-      // const wMatic = new ethers.Contract(wMaticAddress, WMATIC.abi, signer)
-      // await wMatic.approve(poolFactoryAddress, '1000000000000000')
 
-      // setTimeout(function () {
-      //   const contract = new ethers.Contract(swapAddress, Swap.abi, signer)
+      setTimeout(function () {
+        const contract = new ethers.Contract(swapAddress, Swap.abi, signer)
   
-      //   const transaction = contract.swap(
-      //         e.target[0].value, //rice
-      //         e.target[1].value, // matic
-      //         e.target[2].value*100000 + "0000000000000",
-      //       )
-      // }, 20000);
+        const transaction = contract.swap(
+            coinState1,coinState2,
+              e.target[0].value*100000 + "0000000000000"
+            )
+      }, 20000);
     }
   }
 
@@ -185,7 +188,7 @@ const SwapPage = () => {
             </div>
           </div>
           <button className={amountHex==="0x00" || status !== "Connected" ? 'swap-button-dis':'swap-button'} id="Summit" 
-            disabled={amountHex==="0x00" || status !== "Connected"?true :false}>Wrap</button>
+            disabled={amountHex==="0x00" || status !== "Connected"?true :false}>Swap</button>
         </form>
         <p className='swap-alert' id="Alert"></p>
       </div>}

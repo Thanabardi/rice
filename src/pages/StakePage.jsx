@@ -34,7 +34,7 @@ const StakePage = () => {
     {value: "0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346", label: "Rice", img:rice}
   ]
 
-  
+  let [token0Need , setToken0Need] = useState(0)
   let [amountMatic,setAmountMatic] = useState(0)
   let [amountRice,setAmountRice] = useState(0)
   let [coinState1, setState1] = useState("");
@@ -217,7 +217,7 @@ async function getToken0Need(e){
       try{
           console.log(e.target.value)
           const data = await contractVote.token0NeedForStake(e.target.value * 10000 + "00000000000000")
-          console.log(Math.round(h2d(data._hex)/10**18)+1)
+          setToken0Need(Math.round(h2d(data._hex)/10**18)+1)
       }catch (err) {
       console.log("Error: ", err)
   }
@@ -243,7 +243,7 @@ async function getToken0Need(e){
             </div>
             <div style={{display: "flex", width: "100%"}}>
               <input className='stake-input-stake'
-                placeholder='Rice Amount' type='number' step=".0001" disabled></input>
+                value={token0Need} type='number' step=".0001" disabled></input>
               <img className='stake-img' src={rice} alt="Rice" />
             </div>
             <button className='stake-button'>Stake</button>
@@ -253,7 +253,7 @@ async function getToken0Need(e){
         <div className='stake-div'>
           <div style={{padding: "20px", fontSize: "25px"}}>Unstake</div>
           <div className='stake-p'>
-            <div style={{paddingBottom: "10px", fontSize: "18px"}}>You have</div>
+            <div style={{paddingBottom: "10px", fontSize: "18px"}}>You have </div>
             <div style={{paddingBottom: "10px", fontSize: "18px"}}>{amountMatic} Matic</div>
             <div style={{paddingBottom: "10px", fontSize: "18px"}}>{amountRice} Rice</div>
           </div>
