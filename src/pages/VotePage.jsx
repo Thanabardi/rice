@@ -37,53 +37,24 @@ const Vote = () => {
 		onfetchStatus()
   }, []);
 
-	// async function getAccountProfile() {
-	// 	if (candidateIDs.length > 0) {
-	// 		await axios.get(`/1.1/users/lookup.json?user_id=${candidateIDs.toString()}`, {
-	// 			"headers": {
-	// 				'Authorization': `Bearer ${bearerToken}`
-	// 			}
-	// 		})
-	// 		.then(response => {
-	// 			// console.log(response.data)
-	// 			setCandidateList(response.data)
-	// 		})
-	// 		.catch(error => {
-	// 			window.alert(error)
-	// 			// console.log(error)
-	// 		})
-	// 	}
 
 
-//   async function findWinner(){
-// 	  let winner = 0;
-// 	  let maxVote = 0;
-// 	await candidateIDs.forEach((id)=>{
-// 		fetchVoteCandidate(id).then((temp_vote)=>{
-// 			if (temp_vote > maxVote){
-// 				 winner = id;
-// 				 maxVote = temp_vote
-// 				 setWinner(winner)
-// 			}
-// 		})	
-// 	})
-//   }
 
-//   async function fetchVoteCandidate(id){
-// 	if (typeof window.ethereum !== 'undefined') {
-// 		const provider = new ethers.providers.Web3Provider(window.ethereum)
-// 		console.log({ provider })
-// 		const signer = provider.getSigner();
-// 		const sessionAddress = getSessionAddress(factoryAddress)
-// 		  const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
-// 		  try{
-// 			  const data = await contractVote.candidate(id)
-// 			  return parseInt(data._hex,16)
-// 		  }catch (err) {
-// 		  console.log("Error: ", err)
-// 	  }
-// 	}
-//   }
+  async function fetchVoteCandidate(id){
+	if (typeof window.ethereum !== 'undefined') {
+		const provider = new ethers.providers.Web3Provider(window.ethereum)
+		console.log({ provider })
+		const signer = provider.getSigner();
+		const sessionAddress = getSessionAddress(factoryAddress)
+		  const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
+		  try{
+			  const data = await contractVote.candidate(id)
+			  return parseInt(data._hex,16)
+		  }catch (err) {
+		  console.log("Error: ", err)
+	  }
+	}
+  }
 
   async function findAward(){
 	if (typeof window.ethereum !== 'undefined') {
@@ -176,8 +147,8 @@ const Vote = () => {
 
 
 	async function getAccountProfile(IDs) {
-		console.log(IDs)
- 		await axios.get(`https://limitless-escarpment-03632.herokuapp.com/get-account-profile/${IDs}`
+		if (IDs.length > 0) {
+ 		await axios.get(`https://limitless-escarpment-03632.herokuapp.com/get-account-profile/${IDs.toString()}`
 		)
 		.then(response => {
 			// console.log(response.data)
@@ -187,6 +158,7 @@ const Vote = () => {
 			window.alert(error)
 			// console.log(error)
 		})
+	}
   }
 
 
@@ -256,7 +228,7 @@ const Vote = () => {
 
 				</div>
 			</div>
-			{ checkMetaMask() !== "Install MetaMask" || award && <div>
+			{ checkMetaMask() !== "Install MetaMask" & !award ? <div>
 				<div style={{padding: "20px", fontSize: "30px"}}>Vote</div>
 				<div className='vote-div'>
 					<table className='vote-table'>
@@ -297,7 +269,7 @@ const Vote = () => {
 					</div>
 				</div>
 				<VotePopup voteAccount={select}/>
-			</div>}
+			</div>:<div></div>}
 		</div>
   );
 }
