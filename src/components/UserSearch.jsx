@@ -31,7 +31,7 @@ const Home = (props) => {
 
   async function handleSearch(accountName) {
 		if (accountName !== "" && accountName !== "/" && accountName !== undefined) {
-			await axios.get(`https:/limitless-escarpment-03632.herokuapp.com/handle-search/${accountName.replace("/", "")}`
+			await axios.get(`https://limitless-escarpment-03632.herokuapp.com/handle-search/${accountName.replace("/", "")}`
 				)
 			.then(response => {
 				// console.log(response.data)
