@@ -98,6 +98,7 @@ const VotePopup = ({ voteAccount }) => {
     <div>
       <button
         className={checkMetaMask() === "Connected" ? 'vote-popup-button-con':'vote-popup-button-dis'}
+        disabled={checkMetaMask() === "Connected" ? false:true}
         // show confirm popup
         onClick={e => {
           if (checkMetaMask() === "Connected")

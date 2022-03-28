@@ -42,12 +42,14 @@ const StakePage = () => {
   let [voteAmount, setVoteAmount] = useState("0") 
 
   let [status, setStatus] = useState(checkMetaMask())
+  let [voteStatus, setVoteStatus] = useState(false)
 
   useEffect(() => {
 		// create candidate details list from candidate id
 		getStakeAmount()
     onfetchVote()
 		
+    onfetchStatus()
 
   }, []);
 
@@ -91,7 +93,19 @@ const StakePage = () => {
         const transaction =  contract.stake(wMaticAddress,tokenAddress,
               e.target[0].value*100000 + "0000000000000",
               e.target[1].value*100000 + "0000000000000"
-              )
+              ).then(()=>{const interval = setInterval(() => {
+                getStakeAmount().then(function(result) {
+                  // console.log("onStake Rice", result[0], amountRice)
+                  // console.log("onStake Matic", result[1], amountMatic)
+                  if (result[0] > amountRice) {
+                    clearInterval(interval);
+                    // console.log("onStake complete")
+                    setAmountRice(result[0])
+                    setAmountMatic(result[1])
+                    // window.location.reload()
+                  }
+                })
+              }, 3000);})
       }, 20000);
     }
   }
@@ -106,6 +120,26 @@ const StakePage = () => {
     console.log(event.target.value)
   };
 
+  async function onfetchStatus(){
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner();
+      const sessionAddress = getSessionAddress(factoryAddress)
+			const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
+			try {
+				const data = await contractVote.status()
+				if (data === 1) {
+					setVoteStatus(true)
+					// setTimeout(function () {
+					// 	findWinner()
+					// }, 10000);		 
+				}
+      } catch (err) {
+        console.log("Error: ", err)
+			}
+		}
+	}  
+
 
   async function unstake(e){
     e.preventDefault()
@@ -116,8 +150,19 @@ const StakePage = () => {
       const contract = new ethers.Contract(stakeAddress, Stake.abi,signer)
       console.log(e.target[0].value)
       try {
-        const data = await contract.unstake(tokenAddress,wMaticAddress,e.target[0].value)
-       
+        const data = await contract.unstake(tokenAddress,wMaticAddress,e.target[0].value).then(()=>{const interval = setInterval(() => {
+          getStakeAmount().then(function(result) {
+            // console.log("unstake Rice", result[0], amountRice)
+            // console.log("unstake Matic", result[1], amountMatic)
+            if (result[0] < amountRice) {
+              clearInterval(interval);
+              // console.log("unstake complete")
+              setAmountRice(result[0])
+              setAmountMatic(result[1])
+              // window.location.reload()
+            }
+          })
+        }, 3000);})
         console.log('Total: ',data)
       } catch (err) {
         console.log("Error: ", err)
@@ -137,11 +182,11 @@ const StakePage = () => {
         console.log('Total: ',data)
         setAmountRice(h2d(data[0]._hex)/10**18)
         setAmountMatic(h2d(data[1]._hex)/10**18)
+        return [h2d(data[0]._hex)/10**18, h2d(data[1]._hex)/10**18]
       } catch (err) {
         console.log("Error: ", err)
       }
     }  
-
   }
 
 
@@ -157,9 +202,18 @@ const StakePage = () => {
   
           setTimeout(function () {
             const contract = new ethers.Contract(exchangeAddress, voteExchange.abi, signer)
-            const transaction = contract.deposit( e.target[0].value*100000 + "0000000000000")
+            const transaction = contract.deposit( e.target[0].value*100000 + "0000000000000").then(()=>{const interval = setInterval(() => {
+              onfetchVote().then(function(result) {
+                // console.log("onDeposit", result, voteAmount)
+                if (result > voteAmount) {
+                  clearInterval(interval);
+                  // console.log("onDeposit complete")
+                  setVoteAmount(result)
+                  // window.location.reload()
+                }
+              })
+            }, 3000);})
         }, 20000);
-         
       }
   }
   
@@ -171,9 +225,17 @@ const StakePage = () => {
           console.log({ provider })
           const signer = provider.getSigner()
         const contract = new ethers.Contract(exchangeAddress, voteExchange.abi, signer)
-        const transaction = contract.withdraw(e.target[0].value + "000000000000000000")
-  
-         
+        const transaction = contract.withdraw(e.target[0].value + "000000000000000000").then(()=>{const interval = setInterval(() => {
+          onfetchVote().then(function(result) {
+            // console.log("onWithdraw", result, voteAmount)
+            if (result < voteAmount) {
+              clearInterval(interval);
+              // console.log("onWithdraw complete")
+              setVoteAmount(result)
+              // window.location.reload()
+            }
+          })
+        }, 3000);})
       }
   }
 
@@ -184,9 +246,10 @@ const StakePage = () => {
       const sessionAddress = getSessionAddress(factoryAddress)
         const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
         try{
-            const data = await contractVote.remainingVote(signer.getAddress())
-			// fix this to decimal
-            setVoteAmount(parseInt(data._hex,16))
+          const data = await contractVote.remainingVote(signer.getAddress())
+			    // fix this to decimal
+          setVoteAmount(parseInt(data._hex,16))
+          return parseInt(data._hex,16)
         }catch (err) {
         console.log("Error: ", err)
     }
@@ -239,14 +302,14 @@ async function getToken0Need(e){
           <div style={{padding: "20px", fontSize: "25px"}}>Stake</div>
           <form onSubmit={onStake}>
             <div style={{display: "flex", width: "100%"}}>
-              <input className='stake-input-stake' 
-                placeholder='Matic Amount' type='number' onChange={getToken0Need} step=".0001"></input>
-              <img className='stake-img' src={matic} alt="Matic" />
+              <input className='stake-input-stake' style={{marginLeft: "12px"}}
+                placeholder='Matic Amount' type='number' min='0.0001' onChange={getToken0Need} step=".0001"></input>
+              <img className='stake-img' src={matic} alt="Matic" style={{paddingRight: "12px"}}/>
             </div>
             <div style={{display: "flex", width: "100%"}}>
-              <input className='stake-input-stake'
+              <input className='stake-input-stake' style={{marginLeft: "12px"}}
                 value={token0Need} type='number' step=".0001" disabled></input>
-              <img className='stake-img' src={rice} alt="Rice" />
+              <img className='stake-img' src={rice} alt="Rice" style={{paddingRight: "12px"}}/>
             </div>
             <button className={(status === "Connected") ? 'stake-button':'stake-button-dis'}
                     disabled={(status === "Connected") ? false:true}>Stake</button>
@@ -262,7 +325,7 @@ async function getToken0Need(e){
           </div>
           
           <form onSubmit={unstake}>
-            <input className='stake-input-stake' placeholder='percent' type='number' min='1' max='100' /> %
+            <input className='stake-input-stake' placeholder='Amount' type='number' min='1' max='100' style={{marginLeft: "12px"}}/> %
             <button className={(status === "Connected") ? 'stake-button':'stake-button-dis'}
                     disabled={(status === "Connected") ? false:true}>Unstake</button>
           </form>
@@ -278,12 +341,16 @@ async function getToken0Need(e){
                       disabled={(status === "Connected") ? false:true}> Deposit</button>
             </form>
           </div>
-            <div style={{padding: "20px", fontSize: "25px"}}>withdraw</div>
-            <form onSubmit={onWithdraw}>
-              <input className='stake-input' type='number' min='1' placeholder='Amount' required/>
-              <button className={(status === "Connected") ? 'stake-button':'stake-button-dis'}
-                      disabled={(status === "Connected") ? false:true}> Withdraw</button>
-            </form>
+            {voteStatus ?
+            <div>
+              <div style={{padding: "20px", fontSize: "25px"}}>withdraw</div>
+              <form onSubmit={onWithdraw}>
+                <input className='stake-input' type='number' min='1' placeholder='Amount' required/>
+                <button className={(status === "Connected") ? 'stake-button':'stake-button-dis'}
+                        disabled={(status === "Connected") ? false:true}> Withdraw</button>
+              </form>
+            </div>:<div style={{padding: "20px", fontSize: "18px", lineHeight: "0.5", opacity: "50%"}}>
+              Vote session is ongoing <p/> withdrawal is unavailable right now</div>}
         </div>
       </div>}
     </div>

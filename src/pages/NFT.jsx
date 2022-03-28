@@ -18,7 +18,7 @@ const NFT = () => {
 
   useEffect(() => {
   // create candidate details list from candidate id
-  fetchNftList(2)
+  fetchNftList(1)
   }, []);
  
 

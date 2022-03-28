@@ -88,7 +88,7 @@ const Home = (props) => {
 											</div>
 											{/* account screen name that show the account details on mouse hover */}
 											<div style={{bottom: "10px"}}>
-												<ShowUser accountProfile={[account.id_str, account.name, account.screen_name, account.followers_count, profile_image]} />
+												<ShowUser accountProfile={[account.id_str, account.name, account.screen_name, account.followers_count, profile_image, false]} />
 											</div>
 										</td>
 									</tr>	

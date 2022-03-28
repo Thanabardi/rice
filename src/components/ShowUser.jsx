@@ -11,7 +11,7 @@ const ShowAccount = ({ accountProfile }) => {
   }
 
   return (
-    <div>
+    <div style={{position: "relative"}}>
       <button
         className='show-button'
         onMouseEnter={e => {setUserPopup(true)}}	
@@ -19,7 +19,7 @@ const ShowAccount = ({ accountProfile }) => {
         // redirect to account profile
         onClick={e => redirect() }>@{accountProfile[2]}</button>
       {userPopup && 
-        <div className='show-popup'>
+        <div className='show-popup'style={!accountProfile[5]? {bottom: "0"}: {}}>
           {/* show user profile picture */}
           <img src={accountProfile[4]} alt="Account Profile" style={{borderRadius: "100%", width: "200px"}}/>
           {/* show user name */}

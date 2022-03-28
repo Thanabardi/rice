@@ -20,7 +20,7 @@
 .vote-popup-button-dis{
 	/* width: 100%; */
 	border: none;
-	background: rgb(123, 182, 97);
+	background: rgba(123, 182, 97, 0.5);
 	text-decoration: none;
 	padding: 4px 20px 4px 20px;
 	color: white;

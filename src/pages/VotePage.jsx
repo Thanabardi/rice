@@ -107,6 +107,8 @@ const Vote = () => {
 					// setTimeout(function () {
 					// 	findWinner()
 					// }, 10000);		 
+				} else {
+					setWinner("0")
 				}
       } catch (err) {
         console.log("Error: ", err)
@@ -209,42 +211,39 @@ const Vote = () => {
 
   return (
 		<div className='vote'>
-
+			{winner ? <div>
 			<div className='vote-inform'>
 				<div style={{fontSize: "30px"}}>
-					{(!award & checkMetaMask() === "Connected") ? <div>You have {voteAmount} RICE</div>:<div />}
-					{(!award & checkMetaMask() !== "Connected") ? 
+					{(winner === "0" & checkMetaMask() === "Connected") ? <div>You have {voteAmount} RICE</div>:<div />}
+					{(winner === "0" & checkMetaMask() !== "Connected") ? 
 						<div style={{fontSize: "25px"}}>
             	{(checkMetaMask() === "Connect MetaMask") ? "MetaMask account required":"MetaMask installation required"}
           	</div>:<div />}
-					{award && "Vote Result"}
+					{winner !== "0" && "Vote Result"}
 				</div>
 				<div style={{fontSize: "18px"}}>
-					<div style={{opacity: "50%"}}>{!award ? "Session is on going": "Session has ended"}</div>
-					{winner && 
-						<div>
-							<div style={{fontSize: "25px", opacity: "80%"}}>Winner</div>
-							<div className='vote-winner'>
-								{/* show user profile picture */}
-								<img src={findWinner()[4]} alt="Account Profile" style={{borderRadius: "100%", width: "200px"}}/>
-								{/* show user name */}
-								<p style={{fontSize: "25px", lineHeight: "10px", fontWeight: "bolder"}}>{findWinner()[1]}</p>
-								{/* show user screen name */}
-								<p className='vote-winner-button' style={{fontSize: "16px", lineHeight: "0"}} onClick={e => redirect(findWinner()[0]) }>@{findWinner()[2]}</p>
-								{/* show Followers count */}
-								<div style={{fontSize: "14px", color: "rgb(0, 0, 0, 0.5)"}}> {followerFormatter(findWinner()[3])} Followers</div>
-							</div>
+					<div style={{opacity: "50%"}}>{winner === "0" ? "Session is on going": "Session has ended"}</div>
+					{winner !== "0" && 
+					<div>
+						<div style={{fontSize: "25px", opacity: "80%", paddingTop: "15px"}}>Winner</div>
+						<div className='vote-winner'>
+							{/* show user profile picture */}
+							<img src={findWinner()[4]} alt="Account Profile" style={{borderRadius: "100%", width: "200px"}}/>
+							{/* show user name */}
+							<p style={{fontSize: "25px", lineHeight: "10px", fontWeight: "bolder"}}>{findWinner()[1]}</p>
+							{/* show user screen name */}
+							<p className='vote-winner-button' style={{fontSize: "16px", lineHeight: "0"}} onClick={e => redirect(findWinner()[0]) }>@{findWinner()[2]}</p>
+							{/* show Followers count */}
+							<div style={{fontSize: "14px", color: "rgb(0, 0, 0, 0.5)"}}> {followerFormatter(findWinner()[3])} Followers</div>
 						</div>
-					}
-					{award && 
-					<div style={{opacity: "80%"}}>
-						<div style={{fontSize: "20px"}}>Award Goes To</div>
-						<div style={{textShadow: "10px 0px 10px black", fontSize: "15px"}}>{award}</div>
+						<div style={{opacity: "80%"}}>
+							<div style={{fontSize: "20px"}}>Award Goes To</div>
+							<div style={{textShadow: "10px 0px 10px black", fontSize: "15px"}}>{award}</div>
+						</div>
 					</div>}
-
 				</div>
 			</div>
-			{ checkMetaMask() !== "Install MetaMask" & !award ? <div>
+			{ checkMetaMask() !== "Install MetaMask" & winner === "0" ? <div>
 				{candidateList.length > 0 &&
 				<div>
 					<div style={{padding: "20px", fontSize: "30px"}}>Vote</div>
@@ -259,8 +258,8 @@ const Vote = () => {
 											onClick={() => handleSelect(candidate)}>
 											<td className='vote-td'><img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}} /></td>
 											<td className='vote-td'>{candidate.name}
-											<ShowUser accountProfile={[candidate.id_str, candidate.name, candidate.screen_name, candidate.followers_count, profile_image]} /></td>
-											<td className='vote-td' style={{textAlign: "center", verticalAlign: "middle", opacity: "50%", fontSize: "18px"}}>
+											<ShowUser accountProfile={[candidate.id_str, candidate.name, candidate.screen_name, candidate.followers_count, profile_image, true]} /></td>
+											<td className='vote-td' style={{textAlign: "right", verticalAlign: "middle", opacity: "50%", fontSize: "18px"}}>
 												{vote_count && vote_count.vote} Vote</td>
 										</tr>
 									);
@@ -280,7 +279,7 @@ const Vote = () => {
 										onClick={() => handleSelect(candidate)}>
 										<td className='vote-td'><img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}} /></td>
 										<td className='vote-td' >{candidate.name}
-										<ShowUser accountProfile={[candidate.id_str, candidate.name, candidate.screen_name, candidate.followers_count, profile_image]} /></td>
+										<ShowUser accountProfile={[candidate.id_str, candidate.name, candidate.screen_name, candidate.followers_count, profile_image, false]} /></td>
 									</tr>
 								);
 							})}
@@ -292,6 +291,12 @@ const Vote = () => {
 				</div>
 				<VotePopup voteAccount={select}/>
 			</div>:<div></div>}
+			</div>:
+			<div className='vote-inform'>
+				<div style={{fontSize: "25px"}}>
+					Loading...
+				</div>
+			</div>}
 		</div>
   );
 }
