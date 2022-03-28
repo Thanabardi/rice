@@ -17,10 +17,15 @@ const VotePopup = ({ voteAccount }) => {
   
 	const [votePopup, setUserPopup] = useState(false);
   let [inputs, setInputs] = useState({account: ""});
+  let [voteAmount, setVoteAmount] = useState("0")
 
   async function requestAccount() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
   }
+
+  useEffect(() => {
+		onfetchVote()
+  }, []);
 
 
   const handleChange = (event) => {
@@ -34,6 +39,23 @@ const VotePopup = ({ voteAccount }) => {
     }
   }
 
+  async function onfetchVote(){
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      const signer = provider.getSigner();
+      const sessionAddress = getSessionAddress(factoryAddress)
+			const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
+			try {
+				const data = await contractVote.remainingVote(signer.getAddress())
+				// fix this to decimal
+        setVoteAmount(parseInt(data._hex,16))
+        return parseInt(data._hex,16)
+      } catch (err) {
+        console.log("Error: ", err)
+			}
+		}
+	}  
+
   async function onVote(amount,twitterId){
     if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
@@ -42,18 +64,24 @@ const VotePopup = ({ voteAccount }) => {
       const signer = provider.getSigner()
     
       const contract = new ethers.Contract(sessionAddress, voteSession.abi, signer)
-      const transaction = contract.vote(amount,twitterId).then(()=>{const timer = setTimeout(() => {
-        window.location.reload()
-      }, 8000);})
+      const transaction = contract.vote(amount,twitterId).then(()=>{const interval = setInterval(() => {
+        onfetchVote().then(function(result) {
+          // console.log(result, voteAmount)
+          if (result < voteAmount) {
+            clearInterval(interval);
+            window.location.reload()
+          }
+        })
+      }, 3000);})
     }
   }
 
   async function vote() {
     if (inputs.rice > 0 ) {
-      if(inputs.rice <= voteAccount[1]){
-        if (window.confirm(`Vote ${voteAccount[0].name} (@${voteAccount[0].screen_name}) for ${inputs.rice} Rice?`) == true) {
-          console.log(`voted user ID ${voteAccount[0].id_str} with ${inputs.rice}`)
-          let account = voteAccount[0].id_str
+      if(inputs.rice <= voteAmount){
+        if (window.confirm(`Vote ${voteAccount.name} (@${voteAccount.screen_name}) for ${inputs.rice} Rice?`) == true) {
+          console.log(`voted user ID ${voteAccount.id_str} with ${inputs.rice}`)
+          let account = voteAccount.id_str
           if (account !== '') onVote(inputs.rice,account.toString())
           setInputs("")
           setUserPopup(false)
@@ -73,7 +101,7 @@ const VotePopup = ({ voteAccount }) => {
         // show confirm popup
         onClick={e => {
           if (checkMetaMask() === "Connected")
-            if (voteAccount[0].id !== undefined) { setUserPopup(true) } 
+            if (voteAccount.id !== undefined) { setUserPopup(true) } 
             else {window.alert(`Please select your candidate.`)}}}>Vote</button>
       {votePopup &&
         <div className='vote-popup'>
@@ -81,13 +109,13 @@ const VotePopup = ({ voteAccount }) => {
             <div style={{fontSize: "30px", paddingBottom: "20px"}}>Vote</div>
             <div style={{paddingBottom: "20px"}}>
               {/* show user profile picture */}
-              <img src={voteAccount[0].profile_image_url_https.replace("_normal", "")} alt="Account Profile" style={{borderRadius: "100%", width: "200px"}}/>
+              <img src={voteAccount.profile_image_url_https.replace("_normal", "")} alt="Account Profile" style={{borderRadius: "100%", width: "200px"}}/>
               {/* show user name */}
-              <p style={{fontSize: "25px", lineHeight: "10px", fontWeight: "bolder"}}>{voteAccount[0].name}</p>
+              <p style={{fontSize: "25px", lineHeight: "10px", fontWeight: "bolder"}}>{voteAccount.name}</p>
               {/* show user screen name */}
-              <p style={{fontSize: "16px", lineHeight: "0", color: "rgb(0, 0, 0, 0.6)"}}>@{voteAccount[0].screen_name}</p>
+              <p style={{fontSize: "16px", lineHeight: "0", color: "rgb(0, 0, 0, 0.6)"}}>@{voteAccount.screen_name}</p>
               {/* show Followers count */}
-              <div style={{fontSize: "14px", color: "rgb(0, 0, 0, 0.6)"}}> {followerFormatter(voteAccount[0].followers_count)} Followers</div>
+              <div style={{fontSize: "14px", color: "rgb(0, 0, 0, 0.6)"}}> {followerFormatter(voteAccount.followers_count)} Followers</div>
             </div>
             <input
               className="vote-popup-input"

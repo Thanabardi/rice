@@ -228,10 +228,12 @@ async function getToken0Need(e){
     <div className='stake'>
       {(status !== "Connected") &&
         <div className='stake-inform'>
-          <div style={{fontSize: "25px"}}>MetaMask account required</div>
+          <div style={{fontSize: "25px"}}>
+            {(status === "Connect MetaMask") ? "MetaMask account required":"MetaMask installation required"}
+          </div>
         </div>}
         <p />
-      {(status === "Connected") &&
+      {(status !== "Install MetaMask") &&
       <div>
         <div className='stake-div'>
           <div style={{padding: "20px", fontSize: "25px"}}>Stake</div>
@@ -246,7 +248,8 @@ async function getToken0Need(e){
                 value={token0Need} type='number' step=".0001" disabled></input>
               <img className='stake-img' src={rice} alt="Rice" />
             </div>
-            <button className='stake-button'>Stake</button>
+            <button className={(status === "Connected") ? 'stake-button':'stake-button-dis'}
+                    disabled={(status === "Connected") ? false:true}>Stake</button>
           </form>
         </div>
         <p />
@@ -260,7 +263,8 @@ async function getToken0Need(e){
           
           <form onSubmit={unstake}>
             <input className='stake-input-stake' placeholder='percent' type='number' min='1' max='100' /> %
-            <button className='stake-button'>Unstake</button>
+            <button className={(status === "Connected") ? 'stake-button':'stake-button-dis'}
+                    disabled={(status === "Connected") ? false:true}>Unstake</button>
           </form>
         </div>
         <div style={{paddingTop: "40px", fontSize: "30px"}}>Stake Rice</div>
@@ -269,14 +273,16 @@ async function getToken0Need(e){
               <div style={{paddingTop: "10px", fontSize: "20px"}}>You have {voteAmount} Rice</div>
               <div style={{padding: "20px", fontSize: "25px"}}>deposit</div>
             <form onSubmit={onDeposit}>
-                <input className='stake-input' type='number' min='1' placeholder='Amount' required/>
-              <button className='stake-button' type='submit'> Deposit</button>
+              <input className='stake-input' type='number' min='1' placeholder='Amount' required/>
+              <button className={(status === "Connected") ? 'stake-button':'stake-button-dis'}
+                      disabled={(status === "Connected") ? false:true}> Deposit</button>
             </form>
           </div>
             <div style={{padding: "20px", fontSize: "25px"}}>withdraw</div>
             <form onSubmit={onWithdraw}>
-                <input className='stake-input' type='number' min='1' placeholder='Amount' required/>
-              <button className='stake-button' type='submit'> Withdraw</button>
+              <input className='stake-input' type='number' min='1' placeholder='Amount' required/>
+              <button className={(status === "Connected") ? 'stake-button':'stake-button-dis'}
+                      disabled={(status === "Connected") ? false:true}> Withdraw</button>
             </form>
         </div>
       </div>}

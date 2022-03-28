@@ -22,9 +22,10 @@ const factoryAddress = "0xa674321C98C13889936113Aac266227ab8E0c21a"
 const Vote = () => {
 	const bearerToken = process.env.REACT_APP_TWITTER_API_KEY
 
-	let [candidateIDs, setCandidateID] = useState(["."]) //list of candidate id
+	let [candidateIDs, setCandidateIDs] = useState(["."]) //list of candidate id
 	let [newCandidateList, setNewCandidateList] = useState([]) //list of new candidate id
 	let [candidateList, setCandidateList] = useState([]) // list candidate details(id, name, screen name, followers, profile image)
+	let [candidateVote, setCandidateVote] = useState([]) //list of candidate id and vote count
 	let [select, setSelect] = useState({}) // a candidate that user selected
 	let [voteAmount, setVoteAmount] = useState("0") 
 	let [winner,setWinner] = useState()
@@ -82,8 +83,9 @@ const Vote = () => {
 			const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
 			try {
 				await contractVote.getCandidateName().then((data)=>{
-					setCandidateID(data)
+					setCandidateIDs(data)
 					getAccountProfile(data)
+					getVoteCount(data)
 				})
       } catch (err) {
 
@@ -170,7 +172,7 @@ const Vote = () => {
 		} else {
 			// add accountID into database
 			let temp = candidateIDs.concat(account.id_str)
-			setCandidateID(temp)
+			setCandidateIDs(temp)
 			// add Candidate's account profile into NewCandidateList
 			temp = newCandidateList.concat(account)
 			setNewCandidateList(temp)
@@ -195,13 +197,25 @@ const Vote = () => {
     window.open(`https://twitter.com/i/user/${ID}`, `_blank`);
   }
 
+	function getVoteCount(IDs) {
+		for (let i = 0; i < IDs.length; i++) {
+			fetchVoteCandidate(IDs[i]).then(function(result) {
+				let temp = candidateVote.concat({"id_str": IDs[i], "vote": result})
+				setCandidateVote(temp)
+			})
+		}
+	}
+
   return (
 		<div className='vote'>
 
 			<div className='vote-inform'>
 				<div style={{fontSize: "30px"}}>
 					{(!award & checkMetaMask() === "Connected") ? <div>You have {voteAmount} RICE</div>:<div />}
-					{(!award & checkMetaMask() !== "Connected") ? <div style={{fontSize: "25px"}}>MetaMask account required</div>:<div />}
+					{(!award & checkMetaMask() !== "Connected") ? 
+						<div style={{fontSize: "25px"}}>
+            	{(checkMetaMask() === "Connect MetaMask") ? "MetaMask account required":"MetaMask installation required"}
+          	</div>:<div />}
 					{award && "Vote Result"}
 				</div>
 				<div style={{fontSize: "18px"}}>
@@ -230,24 +244,30 @@ const Vote = () => {
 				</div>
 			</div>
 			{ checkMetaMask() !== "Install MetaMask" & !award ? <div>
-				<div style={{padding: "20px", fontSize: "30px"}}>Vote</div>
-				<div className='vote-div'>
-					<table className='vote-table'>
-						<tbody>
-							{candidateList.map((candidate, index) => {
-								const profile_image = candidate.profile_image_url_https.replace("_normal", "")
-								return (
-									<tr key={index} className={candidate.id_str === select.id_str ? "vote-select" : "vote-tr"} 
-										onClick={() => handleSelect(candidate)}>
-										<td className='vote-td'><img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}} /></td>
-										<td className='vote-td' >{candidate.name}
-										<ShowUser accountProfile={[candidate.id_str, candidate.name, candidate.screen_name, candidate.followers_count, profile_image]} /></td>
-									</tr>
-								);
-							})}
-						</tbody>
-					</table>
-				</div>
+				{candidateList.length > 0 &&
+				<div>
+					<div style={{padding: "20px", fontSize: "30px"}}>Vote</div>
+					<div className='vote-div'>
+						<table className='vote-table'>
+							<tbody>
+								{candidateList.map((candidate, index) => {
+									console.log(candidateVote)
+									const profile_image = candidate.profile_image_url_https.replace("_normal", "")
+									const vote_count = candidateVote.find(data => data.id_str === candidate.id_str)
+									return (
+										<tr key={index} className={candidate.id_str === select.id_str ? "vote-select" : "vote-tr"} 
+											onClick={() => handleSelect(candidate)}>
+											<td className='vote-td'><img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}} /></td>
+											<td className='vote-td' >{candidate.name}
+											<ShowUser accountProfile={[candidate.id_str, candidate.name, candidate.screen_name, candidate.followers_count, profile_image]} /></td>
+											<td>{vote_count && vote_count.vote}</td>
+										</tr>
+									);
+								})}
+							</tbody>
+						</table>
+					</div>
+				</div>}
 				<div style={{padding: "20px", fontSize: "20px"}}>Add Your New Candidate</div>
 				<div className='vote-div'>
 					<table className='vote-table'>
@@ -269,7 +289,7 @@ const Vote = () => {
 						<UserSearch sendData={addCandidate} />
 					</div>
 				</div>
-				<VotePopup voteAccount={[select,voteAmount]}/>
+				<VotePopup voteAccount={select}/>
 			</div>:<div></div>}
 		</div>
   );

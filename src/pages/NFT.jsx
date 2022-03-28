@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import riceNFT from '../artifacts/contracts/nft/RiceNFT.sol/RiceNFT.json'
 
+import checkMetaMask from '../utils/CheckMetaMask';
 
 import '../assets/NFT.css';
 const nftAddress = "0xbcEE5365B749cd4A0c25DBecCAA6a840D12fCC9D"
@@ -13,9 +14,21 @@ const NFT = () => {
   const [name, setName] = useState()
   const [description, setDescription] = useState()
   const [owner, setOwner] = useState()
+  let [status, setStatus] = useState(checkMetaMask())
+
   useEffect(() => {
   // create candidate details list from candidate id
   fetchNftList(2)
+  }, []);
+ 
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStatus(checkMetaMask())
+      if (checkMetaMask() === "Connected") {
+        clearInterval(interval);
+      }
+    }, 3000);
   }, []);
 
 
@@ -54,25 +67,32 @@ const NFT = () => {
   }
 
   return (
-    <div className='nft'>
-      <div className='nft-div'>
-        <form onSubmit={onFetch}>
-          <div style={{paddingBottom: "20px", fontSize: "25px"}}>Search NFT</div>
-          <input type="search" min="1" placeholder='NFT ID' className='nft-input'/>
-          {/* <button className='nft-button-con'>Search</button> */}
-        </form>
+    <div>
+      {(status === "Install MetaMask") ?
+        <div className='stake-inform'>
+          <div style={{fontSize: "25px"}}>MetaMask installation required</div>
       </div>
-      {image ?
+      : 
       <div>
-        <div className='nft-name'>{name}</div>
-        <div className='nft-div-img'>
-          <img className='nft-img' src={image} alt="preview image" /> 
+        <div className='nft-div'>
+          <form onSubmit={onFetch}>
+            <div style={{paddingBottom: "20px", fontSize: "25px"}}>Search NFT</div>
+            <input type="search" min="1" placeholder='NFT ID' className='nft-input'/>
+            {/* <button className='nft-button-con'>Search</button> */}
+          </form>
         </div>
+        {image ?
         <div>
-          <div className='nft-des'>"{description}"</div>
-          <div className='nft-owner'>-Own by {owner}-</div>
-        </div>
-      </div>:<div className='nft-alert'>NFT Not found</div>}
+          <div className='nft-name'>{name}</div>
+          <div className='nft-div-img'>
+            <img className='nft-img' src={image} alt="preview image" /> 
+          </div>
+          <div>
+            <div className='nft-des'>"{description}"</div>
+            <div className='nft-owner'>-Own by {owner}-</div>
+          </div>
+        </div>:<div className='nft-alert'>NFT Not found</div>}
+      </div>}
     </div>
   )
 }

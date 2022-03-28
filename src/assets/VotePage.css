@@ -39,7 +39,19 @@
 	margin: 20px 0 20px 0;
 	color: black;
 	background: white;
-	box-shadow: 2px 0px 30px white;
+	animation: colorRotate 2s linear 0s infinite;
+}
+
+@keyframes colorRotate {
+  from {
+    box-shadow: 2px 0px 30px white;
+  }
+  50% {
+    box-shadow: 2px 0px 10px rgba(243, 243, 243, 0.6);
+  }
+  to {
+    box-shadow: 2px 0px 300px white;
+  }
 }
 
 .vote-winner-button{
