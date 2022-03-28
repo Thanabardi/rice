@@ -217,7 +217,7 @@ const Vote = () => {
 					{(winner === "0" & checkMetaMask() === "Connected") ? <div>You have {voteAmount} RICE</div>:<div />}
 					{(winner === "0" & checkMetaMask() !== "Connected") ? 
 						<div style={{fontSize: "25px"}}>
-            	{(checkMetaMask() === "Connect MetaMask") ? "MetaMask account required":"MetaMask installation required"}
+            	MetaMask account required
           	</div>:<div />}
 					{winner !== "0" && "Vote Result"}
 				</div>
@@ -294,7 +294,7 @@ const Vote = () => {
 			</div>:
 			<div className='vote-inform'>
 				<div style={{fontSize: "25px"}}>
-					Loading...
+					{(checkMetaMask() === "Install MetaMask") ? "MetaMask installation required":"Loading..."}
 				</div>
 			</div>}
 		</div>
