@@ -198,9 +198,10 @@ const Vote = () => {
   }
 
 	function getVoteCount(IDs) {
+		let temp = []
 		for (let i = 0; i < IDs.length; i++) {
 			fetchVoteCandidate(IDs[i]).then(function(result) {
-				let temp = candidateVote.concat({"id_str": IDs[i], "vote": result})
+				temp = temp.concat({"id_str": IDs[i], "vote": result})
 				setCandidateVote(temp)
 			})
 		}
@@ -251,16 +252,16 @@ const Vote = () => {
 						<table className='vote-table'>
 							<tbody>
 								{candidateList.map((candidate, index) => {
-									console.log(candidateVote)
 									const profile_image = candidate.profile_image_url_https.replace("_normal", "")
 									const vote_count = candidateVote.find(data => data.id_str === candidate.id_str)
 									return (
 										<tr key={index} className={candidate.id_str === select.id_str ? "vote-select" : "vote-tr"} 
 											onClick={() => handleSelect(candidate)}>
 											<td className='vote-td'><img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}} /></td>
-											<td className='vote-td' >{candidate.name}
+											<td className='vote-td'>{candidate.name}
 											<ShowUser accountProfile={[candidate.id_str, candidate.name, candidate.screen_name, candidate.followers_count, profile_image]} /></td>
-											<td>{vote_count && vote_count.vote}</td>
+											<td className='vote-td' style={{textAlign: "center", verticalAlign: "middle", opacity: "50%", fontSize: "18px"}}>
+												{vote_count && vote_count.vote} Vote</td>
 										</tr>
 									);
 								})}
