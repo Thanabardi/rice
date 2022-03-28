@@ -66,8 +66,9 @@ const SwapPage = () => {
       console.log({ provider })
       const contract = new ethers.Contract(swapAddress, Swap.abi, provider)
           try {
-            console.log("amountState",amount)
-            const data = await contract.getTokenOdds(coinState1, coinState2,  amount*100000 + "0000000000000",)
+            console.log("amountState", amount*100000 + "0000000000000")
+            console.log("coinstate",coinState1,coinState2)
+            const data = await contract.getTokenOdds(coinState1, coinState2,  amount*100000 + "0000000000000")
             setHex(data._hex);
             const hexToDec = h2d(data._hex);
             if (data._hex==="0x00"){
