@@ -293,7 +293,7 @@ const Vote = () => {
 			</div>:<div></div>}
 			</div>:
 			<div className='vote-inform'>
-				<div style={{fontSize: "25px"}}>
+				<div style={{fontSize: "25px", opacity: "80%"}}>
 					{(checkMetaMask() === "Install MetaMask") ? "MetaMask installation required":"Loading..."}
 				</div>
 			</div>}

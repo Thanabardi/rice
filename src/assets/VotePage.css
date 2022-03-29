@@ -47,7 +47,7 @@
     box-shadow: 2px 0px 100px white;
   }
   50% {
-    box-shadow: 2px 0px 50px white;
+    box-shadow: 2px 0px 100px rgba(255, 255, 255, 0.5);
   }
   to {
     box-shadow: 2px 0px 100px white;

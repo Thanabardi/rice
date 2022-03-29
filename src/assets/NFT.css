@@ -16,6 +16,8 @@
 	padding: 20px;
 	display: inline-block;
 	min-width: 25%;
+	min-height: 90px;
+	vertical-align: middle;
 	margin: 2% auto;
 	border-radius: 18px;
 	margin-bottom: 20px;
@@ -39,7 +41,7 @@
     box-shadow: 0px 0px 200px white;
   }
   50% {
-    box-shadow: 0px 0px 1px white;
+    box-shadow: 0px 0px 200px rgba(255, 255, 255, 0.5);
   }
   to {
     box-shadow: 0px 0px 200px white;

@@ -4,11 +4,9 @@ import { ethers } from 'ethers'
 import '../assets/VotePopup.css';
 import getSessionAddress from '../utils/FetchVoteSession';
 import followerFormatter from '../utils/FollowerFormat';
-import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
 import checkMetaMask from '../utils/CheckMetaMask';
-import { isDisabled } from '@testing-library/user-event/dist/utils';
 
 const factoryAddress = "0xa674321C98C13889936113Aac266227ab8E0c21a"
 
@@ -18,6 +16,7 @@ const VotePopup = ({ voteAccount }) => {
 	const [votePopup, setUserPopup] = useState(false);
   let [inputs, setInputs] = useState({account: ""});
   let [voteAmount, setVoteAmount] = useState("0")
+  let [voteCheck, setVoteCheck] = useState(false)
 
   async function requestAccount() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -79,12 +78,13 @@ const VotePopup = ({ voteAccount }) => {
   async function vote() {
     if (inputs.rice > 0 ) {
       if(inputs.rice <= voteAmount){
-        if (window.confirm(`Vote ${voteAccount.name} (@${voteAccount.screen_name}) for ${inputs.rice} Rice?`) == true) {
+        if (window.confirm(`Vote ${voteAccount.name} (@${voteAccount.screen_name}) for ${inputs.rice} Rice?`) === true) {
           console.log(`voted user ID ${voteAccount.id_str} with ${inputs.rice}`)
           let account = voteAccount.id_str
           if (account !== '') onVote(inputs.rice,account.toString())
           setInputs("")
-          setUserPopup(false)
+          setVoteCheck(true)
+          // setUserPopup(false)
         }
       }else{
         window.alert("You don't have that amount of rice!!") 
@@ -118,6 +118,7 @@ const VotePopup = ({ voteAccount }) => {
               {/* show Followers count */}
               <div style={{fontSize: "14px", color: "rgb(0, 0, 0, 0.6)"}}> {followerFormatter(voteAccount.followers_count)} Followers</div>
             </div>
+            {!voteCheck ? <div>
             <input
               className="vote-popup-input"
               type="number"
@@ -135,6 +136,8 @@ const VotePopup = ({ voteAccount }) => {
               <button className='vote-popup-button-can'
               onClick={e => {setUserPopup(false); setInputs("");}}>Cancel</button>
             </div>
+            </div>:<div style={{padding: "20px", fontSize: "18px", opacity: "50%"}}>
+              Vote pending..</div>}
           </div>
         </div>
       }
