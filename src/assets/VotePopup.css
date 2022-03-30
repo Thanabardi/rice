@@ -63,13 +63,24 @@
 	background-color: white;
   position: absolute;
 	padding: 20px;
-	min-width: 20%;
+	min-width: 16%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 	/* margin: auto; */
 	border-radius: 18px;
 	margin-bottom: 20px;
+}
+
+.vote-popup-div-account {
+	background-color: rgb(13,17,23);
+	margin-bottom: 20px;
+	border-radius: 18px;
+	color: white;
+	padding: 30px 30px 20px 30px;
+	min-width: max-content;
+	display: inline-block;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.6);
 }
 
 .vote-popup-input {

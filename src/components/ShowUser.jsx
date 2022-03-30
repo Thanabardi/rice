@@ -21,7 +21,7 @@ const ShowAccount = ({ accountProfile }) => {
       {userPopup && 
         <div className='show-popup'style={!accountProfile[5]? {bottom: "0"}: {}}>
           {/* show user profile picture */}
-          <img src={accountProfile[4]} alt="Account Profile" style={{borderRadius: "100%", width: "200px"}}/>
+          <img src={accountProfile[4]} alt="Account Profile" style={{borderRadius: "100%", width: "200px", height: "200px"}}/>
           {/* show user name */}
           <p style={{fontSize: "25px", lineHeight: "10px", fontWeight: "bolder"}}>{accountProfile[1]}</p>
           {/* show user screen name */}

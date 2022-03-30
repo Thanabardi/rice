@@ -105,7 +105,11 @@ const StakePage = () => {
                     // window.location.reload()
                   }
                 })
-              }, 3000);})
+              }, 3000);}).catch(error => {
+                // console.log(error)
+                window.alert(error.message)
+                window.location.reload()
+              })
       }, 20000);
     }
   }
@@ -162,7 +166,11 @@ const StakePage = () => {
               // window.location.reload()
             }
           })
-        }, 3000);})
+        }, 3000);}).catch(error => {
+          // console.log(error)
+          window.alert(error.message)
+          window.location.reload()
+        })
         console.log('Total: ',data)
       } catch (err) {
         console.log("Error: ", err)
@@ -212,7 +220,11 @@ const StakePage = () => {
                   // window.location.reload()
                 }
               })
-            }, 3000);})
+            }, 3000);}).catch(error => {
+              // console.log(error)
+              window.alert(error.message)
+              window.location.reload()
+            })
         }, 20000);
       }
   }
@@ -235,7 +247,11 @@ const StakePage = () => {
               // window.location.reload()
             }
           })
-        }, 3000);})
+        }, 3000);}).catch(error => {
+        // console.log(error)
+        window.alert(error.message)
+        window.location.reload()
+        })
       }
   }
 
@@ -318,12 +334,17 @@ async function getToken0Need(e){
         <p />
         <div className='stake-div'>
           <div style={{padding: "20px", fontSize: "25px"}}>Unstake</div>
-          <div className='stake-p'>
-            <div style={{paddingBottom: "10px", fontSize: "18px"}}>You have </div>
-            <div style={{paddingBottom: "10px", fontSize: "18px"}}>{amountMatic} Matic</div>
-            <div style={{paddingBottom: "10px", fontSize: "18px"}}>{amountRice} Rice</div>
-          </div>
-          
+          <table style={{width: "100%", padding: "0 30px 10px 30px", fontSize: "18px"}}>
+            <tr style={{borderCollapse: "collapse"}}>
+              <td rowSpan="2" style={{verticalAlign: "top",textAlign: "left"}}>You have</td>
+              <td style={{textAlign: "right",paddingBottom: "10px"}}> {amountMatic}</td>
+              <td style={{paddingBottom: "10px"}}> Matic</td>
+            </tr>
+            <tr>
+              <td style={{textAlign: "right"}}> {amountRice}</td>
+              <td> Rice</td>
+            </tr>
+          </table>
           <form onSubmit={unstake}>
             <input className='stake-input-stake' placeholder='Amount' type='number' min='1' max='100' style={{marginLeft: "12px"}}/> %
             <button className={(status === "Connected") ? 'stake-button':'stake-button-dis'}
@@ -349,8 +370,11 @@ async function getToken0Need(e){
                 <button className={(status === "Connected") ? 'stake-button':'stake-button-dis'}
                         disabled={(status === "Connected") ? false:true}> Withdraw</button>
               </form>
-            </div>:<div style={{padding: "20px", fontSize: "18px", lineHeight: "0.5", opacity: "50%"}}>
-              Vote session is ongoing <p/> withdrawal is unavailable right now</div>}
+            </div>:
+              <div style={{padding: "10px 0 10px 0", fontSize: "18px", opacity: "50%"}}>
+                <div>Vote session is ongoing</div>
+                <div>withdrawal is unavailable right now</div>
+              </div>}
         </div>
       </div>}
     </div>

@@ -72,6 +72,11 @@ const VotePopup = ({ voteAccount }) => {
           }
         })
       }, 3000);})
+      .catch(error => {
+        // console.log(error)
+        window.alert(error.message)
+        window.location.reload()
+      })
     }
   }
 
@@ -79,7 +84,7 @@ const VotePopup = ({ voteAccount }) => {
     if (inputs.rice > 0 ) {
       if(inputs.rice <= voteAmount){
         if (window.confirm(`Vote ${voteAccount.name} (@${voteAccount.screen_name}) for ${inputs.rice} Rice?`) === true) {
-          console.log(`voted user ID ${voteAccount.id_str} with ${inputs.rice}`)
+          // console.log(`voted user ID ${voteAccount.id_str} with ${inputs.rice}`)
           let account = voteAccount.id_str
           if (account !== '') onVote(inputs.rice,account.toString())
           setInputs("")
@@ -108,15 +113,16 @@ const VotePopup = ({ voteAccount }) => {
         <div className='vote-popup'>
           <div className='vote-popup-div'>
             <div style={{fontSize: "30px", paddingBottom: "20px"}}>Vote</div>
-            <div style={{paddingBottom: "20px"}}>
+            <div className='vote-popup-div-account'>
               {/* show user profile picture */}
-              <img src={voteAccount.profile_image_url_https.replace("_normal", "")} alt="Account Profile" style={{borderRadius: "100%", width: "200px"}}/>
+              <img src={voteAccount.profile_image_url_https.replace("_normal", "")} alt="Account Profile" 
+                style={{borderRadius: "100%", width: "200px", height: "200px"}}/>
               {/* show user name */}
               <p style={{fontSize: "25px", lineHeight: "10px", fontWeight: "bolder"}}>{voteAccount.name}</p>
               {/* show user screen name */}
-              <p style={{fontSize: "16px", lineHeight: "0", color: "rgb(0, 0, 0, 0.6)"}}>@{voteAccount.screen_name}</p>
+              <p style={{fontSize: "16px", lineHeight: "0", color: "rgb(255, 255, 255, 0.6)"}}>@{voteAccount.screen_name}</p>
               {/* show Followers count */}
-              <div style={{fontSize: "14px", color: "rgb(0, 0, 0, 0.6)"}}> {followerFormatter(voteAccount.followers_count)} Followers</div>
+              <div style={{fontSize: "14px", color: "rgb(255, 255, 255, 0.6)"}}> {followerFormatter(voteAccount.followers_count)} Followers</div>
             </div>
             {!voteCheck ? <div>
             <input
@@ -136,8 +142,8 @@ const VotePopup = ({ voteAccount }) => {
               <button className='vote-popup-button-can'
               onClick={e => {setUserPopup(false); setInputs("");}}>Cancel</button>
             </div>
-            </div>:<div style={{padding: "20px", fontSize: "18px", opacity: "50%"}}>
-              Vote pending..</div>}
+            </div>:<div style={{fontSize: "18px", opacity: "50%"}}>
+              Vote pending...</div>}
           </div>
         </div>
       }
