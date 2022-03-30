@@ -230,8 +230,14 @@ const Vote = () => {
 					{winner && "Vote Result"}
 				</div>
 				<div style={{fontSize: "18px"}}>
-					<div style={{opacity: "50%"}}>{!winner ? "Session is on going": "Session has ended"}</div>
-					{winner&& 
+					{!winner ?
+					<div style={{opacity: "90%", padding: "10px 0 10px 0"}}>
+						<div style={{fontSize: "20px"}}>The winner takes all!!</div>
+						<div style={{fontSize: "16px", opacity: "80%"}}>Support your favorite political activist with your Rice</div>
+						<div style={{fontSize: "16px", opacity: "80%", lineHeight: "5px"}}>and have a chance to win a NFT!</div>
+					</div>
+					:<div style={{opacity: "50%"}}>Session has ended</div>}
+					{winner && 
 					<div>
 						<div style={{fontSize: "25px", opacity: "80%", paddingTop: "15px"}}>Winner</div>
 						<div className='vote-winner'>
@@ -247,7 +253,7 @@ const Vote = () => {
 						<div style={{opacity: "80%"}}>
 							{candidateVote.find(data => data.id_str === findWinner()[0]) !== undefined &&
 							<div style={{fontSize: "18px", paddingBottom: "10px", opacity: "70%"}}>
-								With {candidateVote.find(data => data.id_str === findWinner()[0]).vote} votes
+								With {candidateVote.find(data => data.id_str === findWinner()[0]).vote} Rice
 							</div>}
 							<div style={{fontSize: "20px"}}>Award Goes To</div>
 							<div style={{textShadow: "10px 0px 10px black", fontSize: "15px"}}>{award}</div>
@@ -274,7 +280,7 @@ const Vote = () => {
 											<td className='vote-td'>{candidate.name}
 											<ShowUser accountProfile={[candidate.id_str, candidate.name, candidate.screen_name, candidate.followers_count, profile_image, true]} /></td>
 											<td className='vote-td' style={{textAlign: "right", verticalAlign: "middle", opacity: "50%", fontSize: "18px"}}>
-												{voteC.vote} Vote</td>
+												{voteC.vote} Rice</td>
 										</tr>
 									);
 								})}
