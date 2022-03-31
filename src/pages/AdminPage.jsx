@@ -23,13 +23,6 @@ import { AddressContext } from '../context/AddressContextProvider';
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
 
-// const nftAddress = "0xbcEE5365B749cd4A0c25DBecCAA6a840D12fCC9D"
-// const exchangeAddress = "0x21513F5Ead7DBDD75fc1166A19cd8C2c395ca385"
-// const factoryAddress = "0xa674321C98C13889936113Aac266227ab8E0c21a"
-// const tokenAddress = '0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346'
-// const poolFactoryAddress = '0x4D03044Ee7f8f228a7A9D1C6f33d361C08CfBD61'
-//   const wMaticAddress ='0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'
-// const linkAddress = "0x326C977E6efc84E512bB9C30f76E30c160eD06FB"
 
 const AdminPage = () => {
 
@@ -83,12 +76,10 @@ const AdminPage = () => {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         console.log({ provider })
         const signer = provider.getSigner()
-     
-        const link = new ethers.Contract(network.linkAddress, RICE.abi, signer)
-        await link.approve(network.factoryAddress, "100000000000000")
-
+    
         const contract = new ethers.Contract(network.factoryAddress, voteFactory.abi, signer)
         const transaction = contract.createVoteSession()
+
     }
   }
 
@@ -101,9 +92,14 @@ async function onEndVote(e){
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       console.log({ provider })
       const signer = provider.getSigner()
-   
-      const contract = new ethers.Contract(sessionAddress, voteSession.abi, signer)
-      const transaction = contract.endVote()
+
+      const link = new ethers.Contract(network.linkAddress, RICE.abi, signer)
+      await link.approve(sessionAddress, "100000000000000")
+
+      setTimeout(function () {
+        const contract = new ethers.Contract(sessionAddress, voteSession.abi, signer)
+        const transaction = contract.endVote()
+      }, 20000);
   }
 }
 

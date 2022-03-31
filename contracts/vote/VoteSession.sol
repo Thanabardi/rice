@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 import "../nft/RiceNFT.sol";
 import "./VoteExchange.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract VoteSession is VRFConsumerBase {
     uint256 public voteId;
@@ -16,6 +17,7 @@ contract VoteSession is VRFConsumerBase {
     address[] public votePool;
     uint256 public fee;
     bytes32 public keyhash;
+    address link;
     //people who have most vote
     string public winner;
     //people who get NFT as award
@@ -49,6 +51,7 @@ contract VoteSession is VRFConsumerBase {
         voteExchange.closeExchange();
         fee = _fee;
         keyhash = _hash;
+        link = _link;
 
         // nft
         nftContract = RiceNFT(_nftAddress);
@@ -83,10 +86,17 @@ contract VoteSession is VRFConsumerBase {
         return voteExchange.voteExchange(_voter) / 10**18 - voteMap[_voter];
     }
 
-    function endVote() public returns (address){
+    function endVote() public returns (address) {
         // end the vote session for owner or out of time
         require(tx.origin == owner, "Not owner");
         status = voteState.ENDED;
+
+        //link
+        require(
+            ERC20(link).allowance(tx.origin, address(this)) >= fee,
+            "require link"
+        );
+        ERC20(link).transferFrom(tx.origin, address(this), fee);
 
         //random winner
         bytes32 requestID = requestRandomness(keyhash, fee);
@@ -102,7 +112,6 @@ contract VoteSession is VRFConsumerBase {
             }
         }
         winner = tempWinner;
-
     }
 
     function getCandidateName() public view returns (string[] memory) {

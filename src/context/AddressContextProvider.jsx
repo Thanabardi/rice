@@ -6,9 +6,9 @@ export const AddressContext = createContext()
 
 export const AddressContextProvider = ({children}) => {
     const Mumbai = {
-        nftAddress:"0xbcEE5365B749cd4A0c25DBecCAA6a840D12fCC9D",
-        exchangeAddress: "0x21513F5Ead7DBDD75fc1166A19cd8C2c395ca385",
-        factoryAddress: "0xa674321C98C13889936113Aac266227ab8E0c21a",
+        nftAddress:"0xaAC3066b3A1A2d0f8c6b276A03928FabFa0001Ee",
+        exchangeAddress: "0xF32701956f35C19b0C261D91da5D0CDD519E3869",
+        factoryAddress: "0x89C4F89F1c905802764f25e7ddbfD66cD4Da4Ae3",
      
         poolFactoryAddress: '0x4D03044Ee7f8f228a7A9D1C6f33d361C08CfBD61',
         swapAddress: "0xb6b4fD2703e9e878b530aC8906a74f892De46aC6",
