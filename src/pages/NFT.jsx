@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import { ethers } from 'ethers'
 import riceNFT from '../artifacts/contracts/nft/RiceNFT.sol/RiceNFT.json'
@@ -7,7 +7,7 @@ import checkMetaMask from '../utils/CheckMetaMask';
 // import NFTHover from '../components/NFTHover';
 
 import '../assets/NFT.css';
-const nftAddress = "0xbcEE5365B749cd4A0c25DBecCAA6a840D12fCC9D"
+import { AddressContext } from '../context/AddressContextProvider';
 
 
 const NFT = () => {
@@ -15,6 +15,8 @@ const NFT = () => {
   const [name, setName] = useState()
   const [description, setDescription] = useState()
   const [owner, setOwner] = useState()
+  const {network} = useContext(AddressContext);
+
 
   let [errorMsg, setErrorMsg] = useState("")
   let [loadStatus, setLoadStatus] = useState(true)
@@ -40,7 +42,7 @@ const NFT = () => {
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
       console.log({ provider })
-      const contract = new ethers.Contract(nftAddress, riceNFT.abi, provider)
+      const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider)
       try {
         let data = await contract.ownerOf(number)
         // console.log('owner: ',data)

@@ -1,4 +1,4 @@
-import React, { useState, useEffect  } from 'react';
+import React, { useState, useEffect, useContext  } from 'react';
 import { ethers } from 'ethers'
 import RICE from '../artifacts/contracts/Token.sol/RICE.json'
 import WMATIC from '../artifacts/contracts/WMatic.sol/WMATIC.json'
@@ -17,14 +17,12 @@ import '../assets/SwapPage.css';
 import matic from '../assets/images/matic.png';
 import rice from '../assets/images/rice.png';
 import { unstable_composeClasses } from '@mui/material';
+import { AddressContext } from '../context/AddressContextProvider';
 
 
 
 const SwapPage = () => {
-  const swapAddress = "0xb6b4fD2703e9e878b530aC8906a74f892De46aC6"
-  const wMaticAddress  = "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"
-  const tokenAddress= "0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346"
-  const poolFactoryAddress= "0x4D03044Ee7f8f228a7A9D1C6f33d361C08CfBD61"
+  const {network} = useContext(AddressContext);
 
   // TODO: change address Rice and Matic
   const coinOption  = [
@@ -45,12 +43,12 @@ const SwapPage = () => {
         const signer = provider.getSigner()
      
       const token1 = new ethers.Contract(coinState1, RICE.abi, signer)
-      await token1.approve(swapAddress, e.target[0].value*100000 + "0000000000000")
+      await token1.approve(network.swapAddress, e.target[0].value*100000 + "0000000000000")
 
 
 
       setTimeout(function () {
-        const contract = new ethers.Contract(swapAddress, Swap.abi, signer)
+        const contract = new ethers.Contract(network.swapAddress, Swap.abi, signer)
   
         const transaction = contract.swap(
             coinState1,coinState2,
@@ -64,7 +62,7 @@ const SwapPage = () => {
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
       console.log({ provider })
-      const contract = new ethers.Contract(swapAddress, Swap.abi, provider)
+      const contract = new ethers.Contract(network.swapAddress, Swap.abi, provider)
           try {
             console.log("amountState", amount*100000 + "0000000000000")
             console.log("coinstate",coinState1,coinState2)

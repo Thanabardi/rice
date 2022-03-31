@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { ethers } from 'ethers'
 
@@ -16,11 +16,12 @@ import checkMetaMask from '../utils/CheckMetaMask';
 import followerFormatter from '../utils/FollowerFormat';
 import voteFactory from '../artifacts/contracts/vote/VoteFactory.sol/VoteFactory.json'
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
+import { AddressContext } from '../context/AddressContextProvider';
 
-const factoryAddress = "0xa674321C98C13889936113Aac266227ab8E0c21a"
 
 const Vote = () => {
-	const bearerToken = process.env.REACT_APP_TWITTER_API_KEY
+	const {network} = useContext(AddressContext);
+
 
 	let [candidateIDs, setCandidateIDs] = useState(["."]) //list of candidate id
 	let [newCandidateList, setNewCandidateList] = useState([]) //list of new candidate id
@@ -37,6 +38,25 @@ const Vote = () => {
 		onfetchVote()
 
 		onfetchStatus()
+
+
+		// ask for permission to go to mumbai network
+		window.ethereum.request({
+			method: "wallet_addEthereumChain",
+			params: [{
+				chainId: "0x13881",
+				rpcUrls: ["https://rpc-mumbai.matic.today"],
+				chainName: "Polygon Mumbai",
+				nativeCurrency: {
+					name: "MATIC",
+					symbol: "MATIC",
+					decimals: 18
+				},
+				blockExplorerUrls: ["https://mumbai.polygonscan.com/"]
+			}]
+		});
+
+
   }, []);
 
 
@@ -47,7 +67,7 @@ const Vote = () => {
 		const provider = new ethers.providers.Web3Provider(window.ethereum)
 		console.log({ provider })
 		const signer = provider.getSigner();
-		const sessionAddress = getSessionAddress(factoryAddress)
+		const sessionAddress = getSessionAddress(network.factoryAddress)
 		  const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
 		  try{
 			  const data = await contractVote.candidate(id)
@@ -62,7 +82,7 @@ const Vote = () => {
 	if (typeof window.ethereum !== 'undefined') {
 		const provider = new ethers.providers.Web3Provider(window.ethereum)
 		const signer = provider.getSigner();
-		const sessionAddress = getSessionAddress(factoryAddress)
+		const sessionAddress = getSessionAddress(network.factoryAddress)
 		  const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
 		  try{
 			  const aw = await contractVote.award()
@@ -78,8 +98,8 @@ const Vote = () => {
   async function getCandidateList(){
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
-      const sessionAddress = getSessionAddress(factoryAddress)
-      const contract = new ethers.Contract(factoryAddress, voteFactory.abi, provider)
+      const sessionAddress = getSessionAddress(network.factoryAddress)
+      const contract = new ethers.Contract(network.factoryAddress, voteFactory.abi, provider)
 			const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
 			try {
 				await contractVote.getCandidateName().then((data)=>{
@@ -98,7 +118,7 @@ const Vote = () => {
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner();
-      const sessionAddress = getSessionAddress(factoryAddress)
+      const sessionAddress = getSessionAddress(network.factoryAddress)
 			const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
 			try {
 				const data = await contractVote.status()
@@ -118,7 +138,7 @@ const Vote = () => {
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner();
-      const sessionAddress = getSessionAddress(factoryAddress)
+      const sessionAddress = getSessionAddress(network.factoryAddress)
 			const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
 			try {
 				const data = await contractVote.remainingVote(signer.getAddress())
@@ -130,23 +150,6 @@ const Vote = () => {
 		}
 	}  
 
-// async function testTwitter(e) {
-// 	e.preventDefault()
-// 	console.log(e.target[0].value)
-// 	 await axios.get(`http://localhost:9000/get-account-profile/${e.target[0].value}`, {
-// 		"headers": {
-// 			'Authorization': `Bearer ${bearerToken}`
-// 		}
-// 	})
-// 	.then(response => {
-// 		console.log(response.data)
-// 		// setCandidateList(response.data)
-// 	})
-// 	.catch(error => {
-// 		window.alert(error)
-// 		console.log(error)
-// 	})
-// }
 
 
 	async function getAccountProfile(IDs) {

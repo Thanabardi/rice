@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { ethers } from 'ethers'
 
 import '../assets/VotePopup.css';
@@ -7,8 +7,8 @@ import followerFormatter from '../utils/FollowerFormat';
 import voteSession from '../artifacts/contracts/vote/VoteSession.sol/VoteSession.json'
 
 import checkMetaMask from '../utils/CheckMetaMask';
+import { AddressContext } from '../context/AddressContextProvider';
 
-const factoryAddress = "0xa674321C98C13889936113Aac266227ab8E0c21a"
 
 
 const VotePopup = ({ voteAccount }) => {
@@ -17,6 +17,7 @@ const VotePopup = ({ voteAccount }) => {
   let [inputs, setInputs] = useState({account: ""});
   let [voteAmount, setVoteAmount] = useState("0")
   let [voteCheck, setVoteCheck] = useState(false)
+  const {network} = useContext(AddressContext);
 
   async function requestAccount() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -42,7 +43,7 @@ const VotePopup = ({ voteAccount }) => {
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner();
-      const sessionAddress = getSessionAddress(factoryAddress)
+      const sessionAddress = getSessionAddress(network.factoryAddress)
 			const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
 			try {
 				const data = await contractVote.remainingVote(signer.getAddress())
@@ -58,7 +59,7 @@ const VotePopup = ({ voteAccount }) => {
   async function onVote(amount,twitterId){
     if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
-      const sessionAddress = getSessionAddress(factoryAddress)
+      const sessionAddress = getSessionAddress(network.factoryAddress)
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner()
     

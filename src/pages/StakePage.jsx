@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ethers } from 'ethers'
 
 import Stake from '../artifacts/contracts/Stake.sol/Stake.json'
@@ -17,15 +17,16 @@ import checkMetaMask from '../utils/CheckMetaMask';
 import matic from '../assets/images/matic.png';
 import rice from '../assets/images/rice.png';
 import getSessionAddress from '../utils/FetchVoteSession';
+import { AddressContext } from '../context/AddressContextProvider';
 
 
 
-  const exchangeAddress = "0x21513F5Ead7DBDD75fc1166A19cd8C2c395ca385"
-  const tokenAddress = '0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346'
-  const stakeAddress = '0x3Cb07efDBAfbc1BEb470d7B761eac8BacF428CF8'
-  const wMaticAddress = '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'
-  const factoryAddress =  "0xa674321C98C13889936113Aac266227ab8E0c21a"
-  const poolFactoryAddress = "0x4D03044Ee7f8f228a7A9D1C6f33d361C08CfBD61"
+  // const exchangeAddress = "0x21513F5Ead7DBDD75fc1166A19cd8C2c395ca385"
+  // const tokenAddress = '0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346'
+  // const stakeAddress = '0x3Cb07efDBAfbc1BEb470d7B761eac8BacF428CF8'
+  // const wMaticAddress = '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'
+  // const factoryAddress =  "0xa674321C98C13889936113Aac266227ab8E0c21a"
+  // const poolFactoryAddress = "0x4D03044Ee7f8f228a7A9D1C6f33d361C08CfBD61"
 
 
 const StakePage = () => {
@@ -40,6 +41,8 @@ const StakePage = () => {
   let [coinState1, setState1] = useState("");
   let [coinState2, setState2] = useState("");
   let [voteAmount, setVoteAmount] = useState("0") 
+  const {network} = useContext(AddressContext);
+
 
   let [status, setStatus] = useState(checkMetaMask())
   let [voteStatus, setVoteStatus] = useState(false)
@@ -81,16 +84,16 @@ const StakePage = () => {
       console.log({ provider })
       const signer = provider.getSigner()
 
-      const rice = new ethers.Contract(wMaticAddress, RICE.abi, signer)
-      await rice.approve(stakeAddress, e.target[0].value*100000 + "0000000000000")
+      const rice = new ethers.Contract(network.wMaticAddress, RICE.abi, signer)
+      await rice.approve(network.stakeAddress, e.target[0].value*100000 + "0000000000000")
 
-      const wMatic = new ethers.Contract(tokenAddress, WMATIC.abi, signer)
-      await wMatic.approve(stakeAddress,  e.target[1].value*100000 + "0000000000000")
+      const wMatic = new ethers.Contract(network.tokenAddress, WMATIC.abi, signer)
+      await wMatic.approve(network.stakeAddress,  e.target[1].value*100000 + "0000000000000")
 
 
       setTimeout(function () {
-        const contract = new ethers.Contract(stakeAddress, Stake.abi, signer)
-        const transaction =  contract.stake(wMaticAddress,tokenAddress,
+        const contract = new ethers.Contract(network.stakeAddress, Stake.abi, signer)
+        const transaction =  contract.stake(network.wMaticAddress,network.tokenAddress,
               e.target[0].value*100000 + "0000000000000",
               e.target[1].value*100000 + "0000000000000"
               ).then(()=>{const interval = setInterval(() => {
@@ -128,7 +131,7 @@ const StakePage = () => {
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner();
-      const sessionAddress = getSessionAddress(factoryAddress)
+      const sessionAddress = getSessionAddress(network.factoryAddress)
 			const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
 			try {
 				const data = await contractVote.status()
@@ -151,10 +154,10 @@ const StakePage = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       console.log({ provider })
       const signer = provider.getSigner()
-      const contract = new ethers.Contract(stakeAddress, Stake.abi,signer)
+      const contract = new ethers.Contract(network.stakeAddress, Stake.abi,signer)
       console.log(e.target[0].value)
       try {
-        const data = await contract.unstake(tokenAddress,wMaticAddress,e.target[0].value).then(()=>{const interval = setInterval(() => {
+        const data = await contract.unstake(network.tokenAddress,network.wMaticAddress,e.target[0].value).then(()=>{const interval = setInterval(() => {
           getStakeAmount().then(function(result) {
             // console.log("unstake Rice", result[0], amountRice)
             // console.log("unstake Matic", result[1], amountMatic)
@@ -183,9 +186,9 @@ const StakePage = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       console.log({ provider })
       const signer = provider.getSigner()
-      const contract = new ethers.Contract(stakeAddress, Stake.abi, signer)
+      const contract = new ethers.Contract(network.stakeAddress, Stake.abi, signer)
       try {
-        const data = await contract.getStakeAmount(tokenAddress,wMaticAddress)
+        const data = await contract.getStakeAmount(network.tokenAddress,network.wMaticAddress)
 
         console.log('Total: ',data)
         setAmountRice(h2d(data[0]._hex)/10**18)
@@ -205,11 +208,11 @@ const StakePage = () => {
           const provider = new ethers.providers.Web3Provider(window.ethereum);
           const signer = provider.getSigner()
   
-          const rice = new ethers.Contract(tokenAddress, RICE.abi, signer)
-          await rice.approve(exchangeAddress, e.target[0].value*100000 + "0000000000000")
+          const rice = new ethers.Contract(network.tokenAddress, RICE.abi, signer)
+          await rice.approve(network.exchangeAddress, e.target[0].value*100000 + "0000000000000")
   
           setTimeout(function () {
-            const contract = new ethers.Contract(exchangeAddress, voteExchange.abi, signer)
+            const contract = new ethers.Contract(network.exchangeAddress, voteExchange.abi, signer)
             const transaction = contract.deposit( e.target[0].value*100000 + "0000000000000").then(()=>{const interval = setInterval(() => {
               onfetchVote().then(function(result) {
                 // console.log("onDeposit", result, voteAmount)
@@ -236,7 +239,7 @@ const StakePage = () => {
           const provider = new ethers.providers.Web3Provider(window.ethereum);
           console.log({ provider })
           const signer = provider.getSigner()
-        const contract = new ethers.Contract(exchangeAddress, voteExchange.abi, signer)
+        const contract = new ethers.Contract(network.exchangeAddress, voteExchange.abi, signer)
         const transaction = contract.withdraw(e.target[0].value + "000000000000000000").then(()=>{const interval = setInterval(() => {
           onfetchVote().then(function(result) {
             // console.log("onWithdraw", result, voteAmount)
@@ -259,7 +262,7 @@ const StakePage = () => {
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner();
-      const sessionAddress = getSessionAddress(factoryAddress)
+      const sessionAddress = getSessionAddress(network.factoryAddress)
         const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
         try{
           const data = await contractVote.remainingVote(signer.getAddress())
@@ -276,9 +279,9 @@ async function fetchAddress(){
   if (typeof window.ethereum !== 'undefined') {
     const provider = new ethers.providers.Web3Provider(window.ethereum)
     const signer = provider.getSigner();
-      const contractVote = new ethers.Contract( poolFactoryAddress, PoolFactory.abi, provider)
+      const contractVote = new ethers.Contract( network.poolFactoryAddress, PoolFactory.abi, provider)
       try{
-          const data = await contractVote.getPoolAddress(tokenAddress,wMaticAddress)
+          const data = await contractVote.getPoolAddress(network.tokenAddress,network.wMaticAddress)
           return data
       }catch (err) {
       console.log("Error: ", err)
