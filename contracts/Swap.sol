@@ -63,14 +63,13 @@ contract Swap {
         if (poolFactory.getPoolAddress(_token0, _token1) != address(0)) {
             selectedPool = Pool(poolFactory.getPoolAddress(_token0, _token1));
             return
-                (selectedPool.getToken1Amount() /
-                    (selectedPool.getToken0Amount() + _amountToken0)) *
-                _amountToken0;
+                (selectedPool.getToken1Amount() * _amountToken0) /
+                (selectedPool.getToken0Amount() + _amountToken0);
+        } else {
+            selectedPool = Pool(poolFactory.getPoolAddress(_token1, _token0));
+            return
+                (selectedPool.getToken0Amount() * _amountToken0) /
+                (selectedPool.getToken1Amount() + _amountToken0);
         }
-        selectedPool = Pool(poolFactory.getPoolAddress(_token1, _token0));
-        return
-            (selectedPool.getToken0Amount() /
-                (selectedPool.getToken1Amount() + _amountToken0)) *
-            _amountToken0;
     }
 }

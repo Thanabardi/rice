@@ -48,7 +48,7 @@ const AdminPage = () => {
       try {
         const data = await contract.getTotalAmountInPool(tokenAddress,wMaticAddress)
 
-        console.log('RICE: ',h2d(data[0]._hex)/10**18,'wMatic: ',h2d(data[1]._hex))
+        console.log('RICE: ',h2d(data[0]._hex),'wMatic: ',h2d(data[1]._hex))
       } catch (err) {
         console.log("Error: ", err)
       }

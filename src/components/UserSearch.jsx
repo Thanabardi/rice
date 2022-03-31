@@ -21,6 +21,7 @@ const Home = (props) => {
   const handleChange = (event) => {
     const name = event.target.name;
 	const value = event.target.value.replace(/[^a-zA-Z0-9 ]/ig, '')
+
     setInputs(values => ({...values, [name]: value}))
 	
   }
@@ -29,7 +30,7 @@ const Home = (props) => {
 		event.preventDefault();
 		handleSearch(inputs.account)
 	}
-
+	
   async function handleSearch(accountName) {
 		if (accountName !== "" && accountName !== "/" && accountName !== undefined) {
 			await axios.get(`https://limitless-escarpment-03632.herokuapp.com/handle-search/${accountName.replace("/", "")}`
