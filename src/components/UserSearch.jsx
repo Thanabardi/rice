@@ -20,8 +20,8 @@ const Home = (props) => {
 
   const handleChange = (event) => {
     const name = event.target.name;
-	const value = event.target.value.replace(/[^A-Za-z]/ig, '')
-	
+	const value = event.target.value.replace(/[^a-zA-Z0-9 ]/ig, '')
+
     setInputs(values => ({...values, [name]: value}))
 	
   }
@@ -81,7 +81,7 @@ const Home = (props) => {
 									<tr key={index} className="search-user-tr" onClick={() => addCandidate(account)}>
 										{/* profile image */}
 										<td className="search-table-td">
-											<img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px"}}/>
+											<img src={profile_image} alt="Account Profile" style={{borderRadius: "100%", width: "50px", height: "50px"}}/>
 										</td>
 										<td className="search-table-td">
 											{/* account name */}
@@ -89,7 +89,7 @@ const Home = (props) => {
 											</div>
 											{/* account screen name that show the account details on mouse hover */}
 											<div style={{bottom: "10px"}}>
-												<ShowUser accountProfile={[account.id_str, account.name, account.screen_name, account.followers_count, profile_image]} />
+												<ShowUser accountProfile={[account.id_str, account.name, account.screen_name, account.followers_count, profile_image, false]} />
 											</div>
 										</td>
 									</tr>	

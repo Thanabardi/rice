@@ -2,9 +2,9 @@
 	margin-top: 2%;
 	margin-left: auto;
 	margin-right: auto;
-	padding-bottom: 10%;
+	padding-bottom: 6%;
 	border-radius: 18px;
-	margin-bottom: 22%;
+	/* margin-bottom: 10%; */
 }
 
 .vote-div {
@@ -36,10 +36,22 @@
 	min-width: 40%;
 	border-radius: 10px;
 	padding: 20px;
-	margin: 20px 0 20px 0;
+	margin: 20px 0 10px 0;
 	color: black;
 	background: white;
-	box-shadow: 2px 0px 30px white;
+	animation: voteColorRotate 4s linear 0s infinite;
+}
+
+@keyframes voteColorRotate {
+  from {
+    box-shadow: 2px 0px 100px white;
+  }
+  50% {
+    box-shadow: 2px 0px 100px rgba(255, 255, 255, 0.5);
+  }
+  to {
+    box-shadow: 2px 0px 100px white;
+  }
 }
 
 .vote-winner-button{

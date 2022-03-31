@@ -75,7 +75,7 @@
 }
 
 .swap-button-dis{
-    background: rgb(123, 182, 97);
+    background: rgba(123, 182, 97, 0.5);
     text-decoration: none;
     width: 95%;
     height: 50px;

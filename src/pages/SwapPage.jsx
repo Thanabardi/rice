@@ -134,7 +134,9 @@ const SwapPage = () => {
     <div>
       {(status !== "Connected") &&
       <div className='swap-inform'>
-				<div style={{fontSize: "25px"}}>MetaMask account required</div>
+				<div style={{fontSize: "25px"}}>
+          {(status === "Connect MetaMask") ? "MetaMask account required":"MetaMask installation required"}
+        </div>
 			</div>}
       <p />
       {(status !== "Install MetaMask") &&
