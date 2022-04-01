@@ -69,6 +69,28 @@ const AdminPage = () => {
     }  
   }
 
+
+  async function fetchNFT(e){
+    e.preventDefault()
+    if (typeof window.ethereum !== 'undefined') {
+      await requestAccount()
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner()
+      const address = await  signer.getAddress()
+
+      const provider2 = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+      const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider2)
+     
+      
+      try {
+        const data = await contract.getInventory(address)
+        console.log('Have NFT: ',data)
+      } catch (err) {
+        console.log("Error: ", err)
+      }
+    }  
+  }
+
   async function onCreateSession(e){
     e.preventDefault()
     if (typeof window.ethereum !== 'undefined') {
@@ -102,6 +124,9 @@ async function onEndVote(e){
       }, 20000);
   }
 }
+
+
+
 
 
 
@@ -228,6 +253,7 @@ function onGetSessionAddress(e){
           <button className='adminSubmit'>submit</button>
         </form>
 
+      
    
 
 
@@ -236,6 +262,12 @@ function onGetSessionAddress(e){
           fetch pool<br/>
 
           <button className='adminSubmit'>submit</button>
+        </form>
+
+        <form onSubmit={fetchNFT}>
+          fetch NFT<br/>
+
+          <button className='adminSubmit'>fetch</button>
         </form>
 
 
