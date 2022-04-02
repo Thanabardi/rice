@@ -245,7 +245,7 @@ async function onSending(e){
         <div style={{paddingTop: "40px", fontSize: "30px"}}>Your NFT</div>
         <table className='nft-table'>
           <tr>
-          <td>{current > 0 && <button className='nft-inventory-button' onClick={() => setCurrent(current-1)}>back</button>}</td>
+          <td>{current > 0 && <button className='nft-inventory-button' onClick={() => setCurrent(current-1)}>{"<"}</button>}</td>
           <td style={{position: "relative"}}>
           {inventory[current-1] &&
           <div className='nft-inventory-0'>
@@ -285,7 +285,7 @@ async function onSending(e){
             </div>
           </div>}
           </td>
-          <td>{current < inventory.length-1 && <button className='nft-inventory-button' onClick={() => setCurrent(current+1)}>Next</button>}</td>
+          <td>{current < inventory.length-1 && <button className='nft-inventory-button' onClick={() => setCurrent(current+1)}>{">"}</button>}</td>
           </tr>
         </table>
       {/* {inventory.map((index, i) => {         
