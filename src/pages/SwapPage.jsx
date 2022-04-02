@@ -144,7 +144,7 @@ const SwapPage = () => {
           <div className='swap-div'>
             <input className='swap-input' id='value' placeholder='amount token' type='number' step=".0001" onInput={handleChange3}></input>
             <div className='swap-input-select'>
-              <Box sx={{ width:"125px"}}>
+              <Box sx={{ width:"130px"}}>
                 <FormControl fullWidth required>
                   <InputLabel id="demo-simple-select-label">COIN</InputLabel>
                   <Select
@@ -168,7 +168,7 @@ const SwapPage = () => {
           <div className='swap-div'>
             <input className='swap-input' value={amountCalculation} placeholder='amount token' type='number' step=".0001" disabled></input>
             <div className='swap-input-select'>
-              <Box sx={{ width:"125px"}}>
+              <Box sx={{ width:"130px"}}>
                 <FormControl fullWidth required>
                   <InputLabel id="demo-simple-select-label">COIN</InputLabel>
                   <Select
