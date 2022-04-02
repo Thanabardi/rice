@@ -84,31 +84,6 @@ const NFT = () => {
 
 
 
-  async function fetchNftInventory(number){
-      if (typeof window.ethereum !== 'undefined') {
-        const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
-        console.log({ provider })
-        const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider)
-        console.log("n",number)
-        try {
-          let data = await contract.ownerOf(number)
-          // console.log('owner: ',data)
-          setOwner(data)
-          let url = await contract.tokenURI(number)
-          // console.log('award: ',url)
-          fetch(url).then(res => res.json())
-          .then((out) =>{
-            // inventoryImg.push(out.image);
-          
-            setInventoryImg(oldArray => [ out.image, ...oldArray]);
-            console.log("time",inventoryImg)
-          })
-        }catch (err) {
-          console.log("Error: ", err)
-        }
-      }
-
-  }
 
 
   async function testAlchemy(){
@@ -163,6 +138,8 @@ async function fetchNftList(number){
     url: `${baseURL}?contractAddress=${network.nftAddress}&tokenId=${tokenId}&tokenType=${tokenType}`,
     headers: { }
   };
+
+  
   
   axios(config)
   .then((response) => {
@@ -186,14 +163,17 @@ async function fetchNftList(number){
    setLoadStatus(false)
   });
 
-  if (typeof window.ethereum !== 'undefined') {
-  const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
-  const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider)
-      let data = await contract.ownerOf(number)
-          // console.log('owner: ',data)
-          setOwner(data)
-  }
 
+  const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+      console.log({ provider })
+      const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider)
+      try {
+        let data = await contract.ownerOf(number)
+        // console.log('owner: ',data)
+        setOwner(data)
+      }catch{
+          setOwner()
+      }
 }
 
 
