@@ -7,6 +7,7 @@ import '../assets/CallMetaMask.css';
 const MetaMask = () => {
   let [status, setStatus] = useState(checkMetaMask())
   
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setStatus(checkMetaMask())
@@ -15,6 +16,8 @@ const MetaMask = () => {
       }
     }, 3000);
   }, []);
+
+
 
 	async function callMetaMask() {
 		const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -32,6 +35,9 @@ const MetaMask = () => {
 
   return (
     <div>
+
+
+
       <button className={status === "Connected" ? "metamask-button-con":"metamask-button-dis"} 
         onClick={() => handleSelect(status)}>{status}</button>
     </div>

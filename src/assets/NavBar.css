@@ -59,3 +59,33 @@
 .nav-bar a.focus {
   background-color: #04AA6D;
 } */
+
+.maticmum {
+  color: rgb(150, 72, 163);
+  background: rgb(192, 180, 238);
+  text-decoration: none;
+  padding: 10px 20px 10px 20px;
+  border: 2px solid white;
+  font-size: 17px;
+  border-radius: 18px;
+  margin-top: 10px;
+  position: absolute;
+  top: 1%;
+  right: 12%;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.others {
+  color: rgb(148, 60, 60);
+  background: rgb(238, 180, 180);
+  text-decoration: none;
+  padding: 10px 20px 10px 20px;
+  border: 2px solid white;
+  font-size: 17px;
+  border-radius: 18px;
+  margin-top: 10px;
+  position: absolute;
+  top: 1%;
+  right: 12%;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}

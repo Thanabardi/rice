@@ -109,6 +109,7 @@ const NFT = () => {
   }
 
 
+
   async function testAlchemy(){
     if (typeof window.ethereum !== 'undefined') {
       // await requestAccount()
@@ -154,6 +155,8 @@ async function fetchNftList(number){
     url: `${baseURL}?contractAddress=${network.nftAddress}&tokenId=${tokenId}&tokenType=${tokenType}`,
     headers: { }
   };
+
+  
   
   axios(config)
   .then((response) => {
@@ -177,13 +180,18 @@ async function fetchNftList(number){
    setLoadStatus(false)
   });
 
-  if (typeof window.ethereum !== 'undefined') {
+
   const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
-  const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider)
-      let data = await contract.ownerOf(number)
-          // console.log('owner: ',data)
-          setOwner(data)
-  }
+      console.log({ provider })
+      const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider)
+      try {
+        let data = await contract.ownerOf(number)
+        // console.log('owner: ',data)
+        setOwner(data)
+      }catch{
+          setOwner()
+      }
+
 }
 
 

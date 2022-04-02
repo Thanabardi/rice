@@ -93,8 +93,8 @@ const SwapPage = () => {
   //   }
   // }
 
-  const [coinState1, setState1] = useState('0');
-  const [coinState2, setState2] = useState('0');
+  const [coinState1, setState1] = useState("0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889");
+  const [coinState2, setState2] = useState("0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346");
   // const [amountState, setAmountState] = useState('0');
   const [amountHex, setHex] = useState('0');
   const [amountCalculation, setCalculateState] = useState('0');
