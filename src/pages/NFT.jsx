@@ -154,11 +154,18 @@ async function fetchNftList(number){
   
   axios(config)
   .then((response) => {
-    console.log(JSON.stringify(response.data.metadata, null, 2))
-    setImage(response.data.metadata.image)
-          setName(response.data.metadata.name)
-          setDescription(response.data.metadata.description)
-         setLoadStatus(false)
+    if (response.data.error){
+      console.log(response.data.error)
+      setErrorMsg("NFT Not found")
+      setImage()
+      setLoadStatus(false)
+    }else{
+      console.log(JSON.stringify(response.data.metadata, null, 2))
+      setImage(response.data.metadata.image)
+            setName(response.data.metadata.name)
+            setDescription(response.data.metadata.description)
+          setLoadStatus(false)
+      }
     })
   .catch((error) => {
     console.log(error)
@@ -212,7 +219,7 @@ async function onSending(e){
         {!loadStatus ?
           <form onSubmit={onFetch}>
             <div style={{paddingBottom: "20px", fontSize: "25px"}}>Search NFT</div>
-            <input type="search" min="1" placeholder='NFT ID' className='nft-input'/>
+            <input type="number" min="1" placeholder='NFT ID' className='nft-input'/>
             {/* <button className='nft-button-con'>Search</button> */}
           </form>
           :<div style={{paddingTop: "35px", fontSize: "20px", opacity: "50%"}}>Loading NFT...</div>}
