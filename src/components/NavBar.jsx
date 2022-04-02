@@ -33,18 +33,37 @@ const NavBar = ({}) => {
 
 }},[]);
 
-function handleCheck(){
+function handleCheck2(){
   setNetworkStatus(window.ethereum.networkVersion == '80001' ? "Maticmum" : "Wrong Network")
-  console.log('switch')
+  if (typeof window.ethereum !== 'undefined') {
+    window.ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [{
+        chainId: "0x13881",
+        rpcUrls: ["https://rpc-mumbai.matic.today"],
+        chainName: "Polygon Mumbai",
+        nativeCurrency: {
+          name: "MATIC",
+          symbol: "MATIC",
+          decimals: 18
+        },
+        blockExplorerUrls: ["https://mumbai.polygonscan.com/"]
+      }]
+    })
+  }
 
 }
 
+function handleCheck(){
+  setNetworkStatus(window.ethereum.networkVersion == '80001' ? "Maticmum" : "Wrong Network")
+
+}
 
 
   return (
     <div>
 
-    <button className={networkStatus === "Maticmum" ? "maticmum":"others"} onClick={handleCheck} >{networkStatus === "Maticmum" ? "Matic Mumbai" : "Wrong Network"}</button>
+    <button className={networkStatus === "Maticmum" ? "maticmum":"others"} onClick={handleCheck2} >{networkStatus === "Maticmum" ? "Polygon Mumbai" : "Wrong Network"}</button>
 
       <div className='nav-bar'>
         <button onClick={()=>{localStorage.state="swap";  navigate('/swap')}} 
