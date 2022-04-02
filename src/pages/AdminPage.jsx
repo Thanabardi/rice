@@ -162,7 +162,7 @@ function onGetSessionAddress(e){
         const signer = provider.getSigner()
      
       const rice = new ethers.Contract(network.tokenAddress, RICE.abi, signer)
-      await rice.approve(network.poolFactoryAddress, '500000000000000000000000')
+      await rice.approve(network.poolFactoryAddress, '5000000000000000000000')
 
       const wMatic = new ethers.Contract(network.wMaticAddress, WMATIC.abi, signer)
       await wMatic.approve(network.poolFactoryAddress, '5000000000000000000')
@@ -172,8 +172,8 @@ function onGetSessionAddress(e){
         const transaction = contract.createNewPool(
           network.tokenAddress, //rice
           network.wMaticAddress, // matic
-              '500000000000000000000000',
-              '5000000000000000000')
+          '5000000000000000000000',
+          '5000000000000000000')
       }, 20000);
     }
   }
