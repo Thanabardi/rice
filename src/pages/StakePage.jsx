@@ -21,12 +21,6 @@ import { AddressContext } from '../context/AddressContextProvider';
 
 
 
-  // const exchangeAddress = "0x21513F5Ead7DBDD75fc1166A19cd8C2c395ca385"
-  // const tokenAddress = '0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346'
-  // const stakeAddress = '0x3Cb07efDBAfbc1BEb470d7B761eac8BacF428CF8'
-  // const wMaticAddress = '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'
-  // const factoryAddress =  "0xa674321C98C13889936113Aac266227ab8E0c21a"
-  // const poolFactoryAddress = "0x4D03044Ee7f8f228a7A9D1C6f33d361C08CfBD61"
 
 
 const StakePage = () => {
@@ -262,13 +256,12 @@ const StakePage = () => {
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner();
-      const sessionAddress = getSessionAddress(network.factoryAddress)
-        const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
+        const contractVote = new ethers.Contract( network.exchangeAddress, voteExchange.abi, provider)
         try{
-          const data = await contractVote.remainingVote(signer.getAddress())
+          const data = await contractVote.voteExchange(signer.getAddress())
 			    // fix this to decimal
-          setVoteAmount(parseInt(data._hex,16))
-          return parseInt(data._hex,16)
+          setVoteAmount(parseInt(data._hex,16)/10**18)
+          return parseInt(data._hex,16)/10**18
         }catch (err) {
         console.log("Error: ", err)
     }
