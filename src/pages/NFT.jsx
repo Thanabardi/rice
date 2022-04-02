@@ -17,7 +17,8 @@ const NFT = () => {
   const [description, setDescription] = useState()
   const [owner, setOwner] = useState()
   const {network} = useContext(AddressContext);
-  const [inventory, setInventory] = useState();
+  const [inventory, setInventory] = useState([]);
+  const [inventoryImg, setInventoryImg] = useState([]);
 
 
   let [errorMsg, setErrorMsg] = useState("")
@@ -27,7 +28,17 @@ const NFT = () => {
   useEffect(() => {
   // create candidate details list from candidate id
   fetchNftList(1)
-  fetchNFT()
+  fetchNFT().then((list)=>{
+    console.log("inventory",list)
+    list.forEach((e)=>{
+      console.log("e=",e)
+      fetchNftInventory(e).then(()=>{ setInventoryImg(inventoryImg)})
+    })
+  })
+ 
+
+ 
+ 
   }, []);
   
   async function requestAccount() {
@@ -39,6 +50,9 @@ const NFT = () => {
 
     const interval = setInterval(() => {
       setStatus(checkMetaMask())
+
+
+
       if (checkMetaMask() === "Connected") {
         clearInterval(interval);
       }
@@ -64,10 +78,38 @@ const NFT = () => {
           list.push(h2d(element._hex))
         });
         setInventory(list)
+        return list  
       } catch (err) {
         console.log("Error: ", err)
       }
-    }  
+    }
+  }
+
+
+  async function fetchNftInventory(number){
+      if (typeof window.ethereum !== 'undefined') {
+        const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+        console.log({ provider })
+        const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider)
+        console.log("n",number)
+        try {
+          let data = await contract.ownerOf(number)
+          // console.log('owner: ',data)
+          setOwner(data)
+          let url = await contract.tokenURI(number)
+          // console.log('award: ',url)
+          fetch(url).then(res => res.json())
+          .then((out) =>{
+            // inventoryImg.push(out.image);
+          
+            setInventoryImg(oldArray => [ out.image, ...oldArray]);
+            console.log("time",inventoryImg)
+          })
+        }catch (err) {
+          console.log("Error: ", err)
+        }
+      }
+
   }
 
 
@@ -167,13 +209,28 @@ async function onSending(e){
       </div>}
 
 
-      
+      {/* {inventory && inventory.map((index, i) => {     
+           console.log("index");      
+           const img = fetchNftList(index)           
+           // Return the element. Also pass key     
+           return (<img src={img}/>) 
+        })} */}
+
+
+      inventory<br/>
+      {inventoryImg && inventoryImg.map((img, i) => {  
+          console.log(inventoryImg)   
+           console.log("index");               
+           // Return the element. Also pass key     
+           return (<img src={img}/>) 
+        })}
+
 
 
       <form onSubmit={onSending}>
           sending<br/>
-          to: <input></input>
-          id: <input type='number'></input>
+          to: <input placeholder='address'></input>
+          id: <input type='number' placeholder='id NFT'></input>
           <button className='adminSubmit'>send</button>
         </form>
       
