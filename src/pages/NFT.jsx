@@ -91,6 +91,7 @@ const NFT = () => {
       // await requestAccount()
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner()
+      
 
     const baseURL = `${process.env.REACT_APP_ALCHEMY}/getNFTs/`
     // replace with the wallet address you want to query for NFTs
@@ -103,9 +104,13 @@ const NFT = () => {
   
     axios(config)
     .then((response) => {
+      
       let temp =[]
+      // response.data.ownedNfts.id.forEach((e)=>{
+      //   temp.push(e)
+      // })
       response.data.ownedNfts.forEach((e)=>{
-        temp.push(e.metadata)
+        temp.push({"metadata":e.metadata, "id":e.id})
       })
       // console.log(JSON.stringify(response.data.ownedNfts[0].metadata, null, 2))
       console.log(temp)
@@ -114,6 +119,13 @@ const NFT = () => {
     })
     .catch(error => console.log(error));
   }
+
+
+
+
+
+
+
 }
 
 async function fetchNftList(number){
@@ -150,6 +162,7 @@ async function fetchNftList(number){
    setImage()
    setLoadStatus(false)
   });
+
 
   const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
       console.log({ provider })
@@ -228,9 +241,21 @@ async function onSending(e){
 
 
       {inventory && inventory.map((index, i) => {         
-           const img = index.image         
+           const img = index.metadata.image 
+           const name = index.metadata.name
+           const desc = index.metadata.description
+           const id = h2d(index.id.tokenId)
+          //  console.log(index.tokenId)            
            // Return the element. Also pass key     
-           return (<img src={img}/>) 
+           return (<div>
+            
+             <img src={img}/><br/>
+             name:{name}<br/>
+             id:{id}<br/>
+             desc:{desc}
+             
+             
+             </div>) 
         })}
 
 

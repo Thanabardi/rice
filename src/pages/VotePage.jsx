@@ -39,24 +39,6 @@ const Vote = () => {
 
 		onfetchStatus()
 
-
-		// ask for permission to go to mumbai network
-		window.ethereum.request({
-			method: "wallet_addEthereumChain",
-			params: [{
-				chainId: "0x13881",
-				rpcUrls: ["https://rpc-mumbai.matic.today"],
-				chainName: "Polygon Mumbai",
-				nativeCurrency: {
-					name: "MATIC",
-					symbol: "MATIC",
-					decimals: 18
-				},
-				blockExplorerUrls: ["https://mumbai.polygonscan.com/"]
-			}]
-		});
-
-
   }, []);
 
 

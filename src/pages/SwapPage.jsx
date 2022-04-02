@@ -75,7 +75,7 @@ const SwapPage = () => {
             else {
               document.getElementById("Alert").innerHTML = ""
             }
-            setCalculateState(hexToDec/Math.pow(10, 18));
+            setCalculateState((hexToDec/Math.pow(10, 18)).toFixed(4));
             console.log('Total: ', data)
           } catch (err) {
             console.log("Error: ", err)
@@ -93,8 +93,8 @@ const SwapPage = () => {
   //   }
   // }
 
-  const [coinState1, setState1] = useState('0');
-  const [coinState2, setState2] = useState('0');
+  const [coinState1, setState1] = useState("0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889");
+  const [coinState2, setState2] = useState("0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346");
   // const [amountState, setAmountState] = useState('0');
   const [amountHex, setHex] = useState('0');
   const [amountCalculation, setCalculateState] = useState('0');
@@ -157,7 +157,7 @@ const SwapPage = () => {
                       bgcolor:"white"
                     }}
                   >
-                    <MenuItem sx={{display: "flex", justifyContent: "space-between"}} value={coinOption[0].value}>Matic <img className='swap-img' src={coinOption[0].img} alt="Matic"/></MenuItem>
+                    <MenuItem sx={{display: "flex", justifyContent: "space-between"}} value={coinOption[0].value}>wMatic <img className='swap-img' src={coinOption[0].img} alt="Matic"/></MenuItem>
                     <MenuItem sx={{display: "flex", justifyContent: "space-between"}} value={coinOption[1].value}>Rice <img className='swap-img' src={coinOption[1].img} alt="Rice"/></MenuItem>
                   </Select>
                 </FormControl>
@@ -181,7 +181,7 @@ const SwapPage = () => {
                       bgcolor:"white"
                     }}
                   >
-                    <MenuItem sx={{display: "flex", justifyContent: "space-between"}} value={coinOption[0].value}>Matic <img className='swap-img' src={coinOption[0].img} alt="Matic"/></MenuItem>
+                    <MenuItem sx={{display: "flex", justifyContent: "space-between"}} value={coinOption[0].value}>wMatic <img className='swap-img' src={coinOption[0].img} alt="Matic"/></MenuItem>
                     <MenuItem sx={{display: "flex", justifyContent: "space-between"}} className='swap-select' value={coinOption[1].value}>Rice <img className='swap-img' src={coinOption[1].img} alt="Rice"/></MenuItem>
                   </Select>
                 </FormControl>
