@@ -81,6 +81,9 @@ const NFT = () => {
   }
 
 
+
+
+
   async function fetchNftInventory(number){
       if (typeof window.ethereum !== 'undefined') {
         const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
@@ -138,39 +141,34 @@ const NFT = () => {
   }
 }
 
+async function fetchNftList(number){
+  const baseURL = `${process.env.REACT_APP_ALCHEMY}/getNFTMetadata`;
+  const tokenId = number;
+  const tokenType = "erc721";
+  
+  var config = {
+    method: 'get',
+    url: `${baseURL}?contractAddress=${network.nftAddress}&tokenId=${tokenId}&tokenType=${tokenType}`,
+    headers: { }
+  };
+  
+  axios(config)
+  .then((response) => {
+    console.log(JSON.stringify(response.data.metadata, null, 2))
+    setImage(response.data.metadata.image)
+          setName(response.data.metadata.name)
+          setDescription(response.data.metadata.description)
+         setLoadStatus(false)
+    })
+  .catch((error) => {
+    console.log(error)
+   setErrorMsg("NFT Not found")
+   setImage()
+   setLoadStatus(false)
+  });
+}
 
 
-  async function fetchNftList(number){
-    if (typeof window.ethereum !== 'undefined') {
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
-      console.log({ provider })
-      const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider)
-      try {
-        let data = await contract.ownerOf(number)
-        // console.log('owner: ',data)
-        setOwner(data)
-        let url = await contract.tokenURI(number)
-        // console.log('award: ',url)
-
-        fetch(url).then(res => res.json())
-        .then((out) =>{
-          // console.log('Checkout this JSON! ', out)
-          // console.log(out.name)
-          // console.log(out.description)
-          setImage(out.image)
-          setName(out.name)
-          setDescription(out.description)
-          setLoadStatus(false)
-        })
-          .catch(err => console.log(err));
-      } catch (err) {
-        console.log("Error: ", err)
-        setErrorMsg("NFT Not found")
-        setLoadStatus(false)
-        setImage()
-      }
-    }  
-  }
 
 
 async function onSending(e){
