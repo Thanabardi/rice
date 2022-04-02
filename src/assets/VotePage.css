@@ -70,6 +70,7 @@
 .vote-table {
 	margin: auto;
 	border-collapse: collapse;
+	display: inline-block;
 	min-width: 100%;
 }
 

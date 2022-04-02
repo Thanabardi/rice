@@ -5,6 +5,7 @@ body {
               rgb(255, 254, 248);
   /* background: radial-gradient(farthest-side at 50% 0%,rgb(253, 253, 203) 0%, rgb(241, 241, 229) 50%); */
   background-attachment: fixed;
+  overflow-y: overlay;
 }
 
 .App {
