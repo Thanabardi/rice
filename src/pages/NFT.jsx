@@ -20,6 +20,8 @@ const NFT = () => {
   const {network} = useContext(AddressContext);
   const [inventory, setInventory] = useState([]);
   const [inventoryImg, setInventoryImg] = useState([]);
+  let [select, setSelect] = useState()
+  let [current, setCurrent] = useState(0)
 
 
   let [errorMsg, setErrorMsg] = useState("")
@@ -80,9 +82,31 @@ const NFT = () => {
     }
   }
 
+  async function fetchNftInventory(number){
+      if (typeof window.ethereum !== 'undefined') {
+        const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+        console.log({ provider })
+        const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider)
+        console.log("n",number)
+        try {
+          let data = await contract.ownerOf(number)
+          // console.log('owner: ',data)
+          setOwner(data)
+          let url = await contract.tokenURI(number)
+          // console.log('award: ',url)
+          fetch(url).then(res => res.json())
+          .then((out) =>{
+            // inventoryImg.push(out.image);
+          
+            setInventoryImg(oldArray => [ out.image, ...oldArray]);
+            console.log("time",inventoryImg)
+          })
+        }catch (err) {
+          console.log("Error: ", err)
+        }
+      }
 
-
-
+  }
 
 
 
@@ -119,13 +143,6 @@ const NFT = () => {
     })
     .catch(error => console.log(error));
   }
-
-
-
-
-
-
-
 }
 
 async function fetchNftList(number){
@@ -174,9 +191,8 @@ async function fetchNftList(number){
       }catch{
           setOwner()
       }
+
 }
-
-
 
 
 async function onSending(e){
@@ -208,6 +224,22 @@ async function onSending(e){
       fetchNftList(e.target[0].value)
   }
 
+  async function getAccountAddress() {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner()
+    const address = await signer.getAddress()
+    return address
+  }
+
+  function handleSelect(nft) {
+		if (nft !== select) {
+      console.log(nft)
+			setSelect(nft)
+		} else {
+			setSelect()
+		}
+	}
+
   return (
     <div>
       {(status === "Install MetaMask") ?
@@ -216,6 +248,80 @@ async function onSending(e){
       </div>
       : 
       <div>
+        {inventory.length > 0 &&
+      <div>
+        <div style={{paddingTop: "40px", fontSize: "30px"}}>Your NFT</div>
+        <table className='nft-table'>
+          <tr>
+          <td>{current > 0 && <button className='nft-inventory-button' onClick={() => setCurrent(current-1)}>{"<"}</button>}</td>
+          <td style={{position: "relative"}}>
+          {inventory[current-1] &&
+          <div className='nft-inventory-0'>
+            <div className='nft-name'>{inventory[current-1].metadata.name}</div>
+            <div className={inventory[current-1] === select ? 'nft-div-img-select':'nft-div-img-in'} onClick={() => handleSelect(inventory[current-1])} style={{cursor: "pointer"}}>
+              <img className='nft-img' src={inventory[current-1].metadata.image} alt="preview image"/>
+            </div>
+            <div>
+              <div className='nft-des'>"{inventory[current-1].metadata.description}"</div>
+              <div className='nft-owner'>ID {h2d(inventory[current-1].id.tokenId)}</div>
+            </div>
+          </div>}
+          </td>
+          <td>
+          {inventory[current] &&
+          <div className='nft-inventory-1'>
+            <div className='nft-name'>{inventory[current].metadata.name}</div>
+            <div className={inventory[current] === select ? 'nft-div-img-select':'nft-div-img-in'} onClick={() => handleSelect(inventory[current])} style={{cursor: "pointer"}}>
+              <img className='nft-img' src={inventory[current].metadata.image} alt="preview image" style={{}}/>
+            </div>
+            <div>
+              <div className='nft-des'>"{inventory[current].metadata.description}"</div>
+              <div className='nft-owner'>ID {h2d(inventory[current].id.tokenId)}</div>
+            </div>
+          </div>}
+          </td>
+          <td>
+          {inventory[current+1] &&
+          <div className='nft-inventory-2'>
+            <div className='nft-name'>{inventory[current+1].metadata.name}</div>
+            <div className={inventory[current+1] === select ? 'nft-div-img-select':'nft-div-img-in'} onClick={() => handleSelect(inventory[current+1])} style={{cursor: "pointer"}}>
+              <img className='nft-img' src={inventory[current+1].metadata.image} alt="preview image"/>
+            </div>
+            <div>
+              <div className='nft-des'>"{inventory[current+1].metadata.description}"</div>
+              <div className='nft-owner'>ID {h2d(inventory[current+1].id.tokenId)}</div>
+            </div>
+          </div>}
+          </td>
+          <td>{current < inventory.length-1 && <button className='nft-inventory-button' onClick={() => setCurrent(current+1)}>{">"}</button>}</td>
+          </tr>
+        </table>
+      {/* {inventory.map((index, i) => {         
+        return (
+          <div>
+            <div className='nft-name'>{index.metadata.name}</div>
+            <div className={index === select ? 'nft-div-img-select':'nft-div-img-in'} onClick={() => handleSelect(index)} style={{cursor: "pointer"}}>
+              <img className='nft-img' src={index.metadata.image} alt="preview image"/>
+            </div>
+            <div>
+              <div className='nft-des'>"{index.metadata.description}"</div>
+              <div className='nft-owner'>ID {h2d(index.id.tokenId)}</div>
+            </div>
+          </div>
+          ) 
+        })} */}
+      <div className='nft-div'>
+        <form onSubmit={onSending}>
+          <div style={{paddingBottom: "20px", fontSize: "25px"}}>Send NFT</div>
+          <div style={{display: "flex", justifyContent: "space-around", paddingBottom: "20px"}}>
+            <div>Id: {select && h2d(select.id.tokenId)}</div>
+            <div>Name: {select && select.metadata.name}</div>
+          </div>
+          <div style={{display: "flex", justifyContent: "space-between"}}>to <input type="text" placeholder='Address' className='nft-input' required style={{minWidth: "90%"}} /></div>
+          <button className='nft-button-con'>Send</button>
+        </form>
+      </div>
+      </div>}
         <div className='nft-div'>
         {!loadStatus ?
           <form onSubmit={onFetch}>
@@ -234,40 +340,10 @@ async function onSending(e){
           </div>
           <div>
             <div className='nft-des'>"{description}"</div>
-            <div className='nft-owner'>-Own by {owner}-</div>
+            <div className='nft-owner'>-Own by {getAccountAddress() === owner? "You": owner}-</div>
           </div>
         </div>:<div className='nft-alert'>{errorMsg}</div>}
       </div>}
-
-
-      {inventory && inventory.map((index, i) => {         
-           const img = index.metadata.image 
-           const name = index.metadata.name
-           const desc = index.metadata.description
-           const id = h2d(index.id.tokenId)
-          //  console.log(index.tokenId)            
-           // Return the element. Also pass key     
-           return (<div>
-            
-             <img src={img}/><br/>
-             name:{name}<br/>
-             id:{id}<br/>
-             desc:{desc}
-             
-             
-             </div>) 
-        })}
-
-
-
-
-      <form onSubmit={onSending}>
-          sending<br/>
-          to: <input placeholder='address'></input>
-          id: <input type='number' placeholder='id NFT'></input>
-          <button className='adminSubmit'>send</button>
-        </form>
-      
     </div>
   )
 }

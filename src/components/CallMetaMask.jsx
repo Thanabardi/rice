@@ -21,13 +21,12 @@ const MetaMask = () => {
 
 	async function callMetaMask() {
 		const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-		console.log("MetaMask account",accounts)
+		// console.log("MetaMask account",accounts)
     return accounts
 	}
 
   function handleSelect(status) {
     if (status === "Connect MetaMask") {
-      console.log("thiss")
       callMetaMask().then(()=>{window.location.reload()})
     } else if (status === "Install MetaMask") {
       window.open(`https://metamask.io/`, `_blank`);

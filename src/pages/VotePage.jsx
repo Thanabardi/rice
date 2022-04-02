@@ -204,6 +204,7 @@ const Vote = () => {
 
   return (
 		<div className='vote'>
+			{checkMetaMask() !== "Install MetaMask" ? <div>
 			{candidateVote[0] !== "0" & candidateVote.length === candidateList.length ? <div>
 			<div className='vote-inform'>
 				<div style={{fontSize: "30px"}}>
@@ -218,7 +219,7 @@ const Vote = () => {
 					{!winner ?
 					<div style={{opacity: "90%", padding: "10px 0 10px 0"}}>
 						<div style={{fontSize: "20px"}}>The winner takes all!!</div>
-						<div style={{fontSize: "16px", opacity: "80%"}}>Support your favorite political activist with your Rice</div>
+						<div style={{fontSize: "16px", opacity: "80%"}}>Support your favorite activist without losing any Rice</div>
 						<div style={{fontSize: "16px", opacity: "80%", lineHeight: "5px"}}>and have a chance to win a NFT!</div>
 					</div>
 					:<div style={{opacity: "50%"}}>Session has ended</div>}
@@ -295,13 +296,9 @@ const Vote = () => {
 					</div>
 				</div>
 				<VotePopup voteAccount={select}/>
-			</div>:<div />}
-			</div>:
-			<div className='vote-inform'>
-				{checkMetaMask() === "Install MetaMask" ? 
-				<div style={{fontSize: "25px"}}>MetaMask installation required</div>:
-				<div style={{fontSize: "25px", opacity: "80%"}}>Loading...</div>}
-			</div>}
+				</div>:<div />}
+			</div>:<div className='vote-inform' style={{fontSize: "25px"}}><div style={{opacity: "80%"}}>Loading...</div></div>}
+			</div>:<div className='vote-inform' style={{fontSize: "25px"}}>MetaMask installation required</div>}
 		</div>
   );
 }
