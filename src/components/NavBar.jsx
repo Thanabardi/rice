@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 
 import '../assets/NavBar.css';
@@ -6,6 +6,25 @@ import '../assets/NavBar.css';
 const NavBar = ({}) => {
   const navigate = useNavigate();
   const path = window.location.pathname;
+
+  useEffect(() => {
+  // ask for permission to go to mumbai network
+  window.ethereum.request({
+    method: "wallet_addEthereumChain",
+    params: [{
+      chainId: "0x13881",
+      rpcUrls: ["https://rpc-mumbai.matic.today"],
+      chainName: "Polygon Mumbai",
+      nativeCurrency: {
+        name: "MATIC",
+        symbol: "MATIC",
+        decimals: 18
+      },
+      blockExplorerUrls: ["https://mumbai.polygonscan.com/"]
+    }]
+  });
+},[]);
+
 
   return (
     <div>

@@ -322,8 +322,8 @@ async function getToken0Need(e){
           <form onSubmit={onStake}>
             <div style={{display: "flex", width: "100%"}}>
               <input className='stake-input-stake' style={{marginLeft: "12px"}}
-                placeholder='Matic Amount' type='number' min='0.0001' onChange={getToken0Need} step=".0001"></input>
-              <img className='stake-img' src={matic} alt="Matic" style={{paddingRight: "12px"}}/>
+                placeholder='wMatic Amount' type='number' min='0.0001' onChange={getToken0Need} step=".0001"></input>
+              <img className='stake-img' src={matic} alt="wMatic" style={{paddingRight: "12px"}}/>
             </div>
             <div style={{display: "flex", width: "100%"}}>
               <input className='stake-input-stake' style={{marginLeft: "12px"}}
@@ -341,7 +341,7 @@ async function getToken0Need(e){
             <tr style={{borderCollapse: "collapse"}}>
               <td rowSpan="2" style={{verticalAlign: "top",textAlign: "left"}}>You have</td>
               <td style={{textAlign: "right",paddingBottom: "10px"}}> {amountMatic}</td>
-              <td style={{paddingBottom: "10px"}}> Matic</td>
+              <td style={{paddingBottom: "10px"}}> wMatic</td>
             </tr>
             <tr>
               <td style={{textAlign: "right"}}> {amountRice}</td>
