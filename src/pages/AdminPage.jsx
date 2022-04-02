@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import RICE from '../artifacts/contracts/Token.sol/RICE.json'
 import WMATIC from '../artifacts/contracts/WMatic.sol/WMATIC.json'
 import PoolFactory from '../artifacts/contracts/PoolFactory.sol/PoolFactory.json'
+import axios from 'axios';
 
 import '../assets/Admin.css';
 // import '../assets/SwapPage.css';
@@ -20,8 +21,8 @@ import { NFTStorage, Blob } from 'nft.storage'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
 import { AddressContext } from '../context/AddressContextProvider';
 
-const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
+const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
 
 const AdminPage = () => {
@@ -232,6 +233,32 @@ function onGetSessionAddress(e){
 
 
 
+function testAlchemy(e){
+  e.preventDefault()
+  const baseURL = `${process.env.REACT_APP_ALCHEMY}/getNFTs/`
+  // replace with the wallet address you want to query for NFTs
+  const ownerAddr = "0xbb78Ebf787951CF921783163Be1B8423A4Dc752e";
+
+  var config = {
+    method: 'get',
+    url: `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${network.nftAddress}`
+  };
+
+  axios(config)
+  .then((response) => {
+    let temp =[]
+    response.data.ownedNfts.forEach((e)=>{
+      temp.push(e.metadata)
+    })
+    // console.log(JSON.stringify(response.data.ownedNfts[0].metadata, null, 2))
+    console.log(temp)
+  
+  
+  })
+  .catch(error => console.log(error));
+}
+
+
 
 
 
@@ -254,6 +281,11 @@ function onGetSessionAddress(e){
         </form>
 
       
+        <form onSubmit={testAlchemy}>
+          test ALCHEMY<br/>
+
+          <button className='adminSubmit'>submit</button>
+        </form>
    
 
 

@@ -9,6 +9,7 @@ import checkMetaMask from '../utils/CheckMetaMask';
 import '../assets/NFT.css';
 import { AddressContext } from '../context/AddressContextProvider';
 import h2d from '../utils/H2D';
+import axios from 'axios';
 
 
 const NFT = () => {
@@ -26,15 +27,9 @@ const NFT = () => {
   let [status, setStatus] = useState(checkMetaMask())
 
   useEffect(() => {
-  // create candidate details list from candidate id
+
   fetchNftList(1)
-  fetchNFT().then((list)=>{
-    console.log("inventory",list)
-    list.forEach((e)=>{
-      console.log("e=",e)
-      fetchNftInventory(e).then(()=>{ setInventoryImg(inventoryImg)})
-    })
-  })
+  testAlchemy();
  
 
  
@@ -112,6 +107,36 @@ const NFT = () => {
 
   }
 
+
+  async function testAlchemy(){
+    if (typeof window.ethereum !== 'undefined') {
+      // await requestAccount()
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner()
+
+    const baseURL = `${process.env.REACT_APP_ALCHEMY}/getNFTs/`
+    // replace with the wallet address you want to query for NFTs
+    const ownerAddr = await  signer.getAddress()
+  
+    var config = {
+      method: 'get',
+      url: `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${network.nftAddress}`
+    };
+  
+    axios(config)
+    .then((response) => {
+      let temp =[]
+      response.data.ownedNfts.forEach((e)=>{
+        temp.push(e.metadata)
+      })
+      // console.log(JSON.stringify(response.data.ownedNfts[0].metadata, null, 2))
+      console.log(temp)
+      setInventory(temp)
+    
+    })
+    .catch(error => console.log(error));
+  }
+}
 
 
 
@@ -209,21 +234,12 @@ async function onSending(e){
       </div>}
 
 
-      {/* {inventory && inventory.map((index, i) => {     
-           console.log("index");      
-           const img = fetchNftList(index)           
-           // Return the element. Also pass key     
-           return (<img src={img}/>) 
-        })} */}
-
-
-      inventory<br/>
-      {inventoryImg && inventoryImg.map((img, i) => {  
-          console.log(inventoryImg)   
-           console.log("index");               
+      {inventory && inventory.map((index, i) => {         
+           const img = index.image         
            // Return the element. Also pass key     
            return (<img src={img}/>) 
         })}
+
 
 
 
