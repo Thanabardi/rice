@@ -116,6 +116,7 @@ const NFT = () => {
       // await requestAccount()
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner()
+      
 
     const baseURL = `${process.env.REACT_APP_ALCHEMY}/getNFTs/`
     // replace with the wallet address you want to query for NFTs
@@ -139,6 +140,13 @@ const NFT = () => {
     })
     .catch(error => console.log(error));
   }
+
+
+
+
+
+
+
 }
 
 async function fetchNftList(number){
@@ -173,6 +181,15 @@ async function fetchNftList(number){
    setImage()
    setLoadStatus(false)
   });
+
+  if (typeof window.ethereum !== 'undefined') {
+  const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+  const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider)
+      let data = await contract.ownerOf(number)
+          // console.log('owner: ',data)
+          setOwner(data)
+  }
+
 }
 
 
