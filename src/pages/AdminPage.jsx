@@ -349,12 +349,12 @@ function testAlchemy(e){
 {/* Open
 <form onSubmit={onOpen}>
    <button type='submit' className='adminSubmit'> Open</button>
-</form>
+</form> */}
 
 EndVote
 <form onSubmit={onEndVote}>
    <button type='submit' className='adminSubmit'> End</button>
-</form> */}
+</form>
 
 
 
