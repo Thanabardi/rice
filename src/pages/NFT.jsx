@@ -283,8 +283,8 @@ async function onSending(e){
               <img className='nft-img' src={inventory[(current+inventory.length)%(inventory.length)].metadata.image} alt="preview image" style={{}}/>
             </div>
             <div>
-              <div className='nft-des'>"{inventory[(current-1+inventory.length)%(inventory.length)].metadata.description}"</div>
-              <div className='nft-owner'>ID {h2d(inventory[(current-1+inventory.length)%(inventory.length)].id.tokenId)}</div>
+              <div className='nft-des'>"{inventory[(current+inventory.length)%(inventory.length)].metadata.description}"</div>
+              <div className='nft-owner'>ID {h2d(inventory[(current+inventory.length)%(inventory.length)].id.tokenId)}</div>
             </div>
           </div>}
           </td>
