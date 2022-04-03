@@ -29,6 +29,7 @@ const AdminPage = () => {
 
   const [image, setImage] = useState(null)
   const [fileUrl, setFileUrl] = useState(null)
+  const [nftUploadStatus, setNftUploadStatus,l] = useState(false)
   const {network} = useContext(AddressContext);
 
   async function requestAccount() {
@@ -192,6 +193,8 @@ function onGetSessionAddress(e){
       const url = `https://ipfs.infura.io/ipfs/${added.path}`
       setFileUrl(url)
       console.log('url',added.path)
+      document.getElementById("upload-nft-btn").disabled = false;
+
     } catch (error) {
       console.log('Error uploading file: ', error)
     }  
@@ -206,7 +209,7 @@ function onGetSessionAddress(e){
         const signer = provider.getSigner()
      
         const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, signer)
-        const transaction = contract.award(uploadJson(e.target[0].value,e.target[1].value))
+        const transaction = contract.award(uploadJson(e.target[0].value.toUpperCase(),e.target[1].value))
     }
   }
 
@@ -342,7 +345,7 @@ getSessionAddress
         />
 
 
-<button >
+<button id="upload-nft-btn" disabled>
           Create NFT
         </button>
     </form>

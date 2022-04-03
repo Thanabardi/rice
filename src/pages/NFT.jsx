@@ -30,7 +30,7 @@ const NFT = () => {
 
   useEffect(() => {
 
-  fetchNftList(1)
+  fetchNftList(0)
   testAlchemy();
  
 
@@ -162,7 +162,9 @@ async function fetchNftList(number){
   .then((response) => {
     if (response.data.error){
       console.log(response.data.error)
-      setErrorMsg("NFT Not found")
+      if (number !== 0){
+        setErrorMsg("NFT Not found")
+      }
       setImage()
       setLoadStatus(false)
     }else{
@@ -175,7 +177,10 @@ async function fetchNftList(number){
     })
   .catch((error) => {
     console.log(error)
-   setErrorMsg("NFT Not found")
+    if (number !== 0){
+      setErrorMsg("NFT Not found")
+    }
+   
    setImage()
    setLoadStatus(false)
   });
@@ -205,13 +210,15 @@ async function onSending(e){
 
         const address = await  signer.getAddress()
      
-
+      console.log(select.id.tokenId)
+      console.log(select.metadata.image)
+      console.log(e.target[0].value)
         const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, signer)
-          const transaction = contract.approve(e.target[1].value,1)
+          const transaction = contract.approve(network.nftAddress,select.id.tokenId)
 
         setTimeout(function () {
           const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, signer)
-          const transaction = contract.transferFrom(address,e.target[0].value,e.target[1].value)
+          const transaction = contract.transferFrom(address,e.target[0].value,select.id.tokenId)
         }, 20000);
        
     }
@@ -250,50 +257,51 @@ async function onSending(e){
       <div>
         {inventory.length > 0 &&
       <div>
-        <div style={{paddingTop: "40px", fontSize: "30px"}}>Your NFT</div>
+        <div style={{paddingTop: "40px", fontSize: "30px"}}>Your NFT{inventory.length>1 ? "s":""} ({inventory.length})</div>
         <table className='nft-table'>
           <tr>
-          <td>{current > 0 && <button className='nft-inventory-button' onClick={() => setCurrent(current-1)}>{"<"}</button>}</td>
+          {/* current > 0 && */}
+          <td>{inventory.length > 1 &&  <button className='nft-inventory-button-left' onClick={() => setCurrent((current-1+inventory.length)%(inventory.length))}>{"<"}</button>}</td>
           <td style={{position: "relative"}}>
-          {inventory[current-1] &&
+          {(inventory[(current-1+inventory.length)%(inventory.length)] )&& inventory.length!= 1&&
           <div className='nft-inventory-0'>
-            <div className='nft-name'>{inventory[current-1].metadata.name}</div>
-            <div className={inventory[current-1] === select ? 'nft-div-img-select':'nft-div-img-in'} onClick={() => handleSelect(inventory[current-1])} style={{cursor: "pointer"}}>
-              <img className='nft-img' src={inventory[current-1].metadata.image} alt="preview image"/>
+            <div className='nft-name'>{inventory[(current-1+inventory.length)%(inventory.length)].metadata.name}</div>
+            <div className={inventory[(current-1+inventory.length)%(inventory.length)] === select ? 'nft-div-img-select':'nft-div-img-in'} onClick={() => handleSelect(inventory[current-1])} style={{cursor: "pointer"}}>
+              <img className='nft-img' src={inventory[(current-1+inventory.length)%(inventory.length)].metadata.image} alt="preview image"/>
             </div>
             <div>
-              <div className='nft-des'>"{inventory[current-1].metadata.description}"</div>
-              <div className='nft-owner'>ID {h2d(inventory[current-1].id.tokenId)}</div>
+              <div className='nft-des'>"{inventory[(current-1+inventory.length)%(inventory.length)].metadata.description}"</div>
+              <div className='nft-owner'>ID {h2d(inventory[(current-1+inventory.length)%(inventory.length)].id.tokenId)}</div>
             </div>
           </div>}
           </td>
           <td>
-          {inventory[current] &&
+          {inventory[(current+inventory.length)%(inventory.length)] &&
           <div className='nft-inventory-1'>
-            <div className='nft-name'>{inventory[current].metadata.name}</div>
-            <div className={inventory[current] === select ? 'nft-div-img-select':'nft-div-img-in'} onClick={() => handleSelect(inventory[current])} style={{cursor: "pointer"}}>
-              <img className='nft-img' src={inventory[current].metadata.image} alt="preview image" style={{}}/>
+            <div className='nft-name'>{inventory[(current+inventory.length)%(inventory.length)].metadata.name}</div>
+            <div className={inventory[(current+inventory.length)%(inventory.length)] === select ? 'nft-div-img-select':'nft-div-img-in'} onClick={() => handleSelect(inventory[current])} style={{cursor: "pointer"}}>
+              <img className='nft-img' src={inventory[(current+inventory.length)%(inventory.length)].metadata.image} alt="preview image" style={{}}/>
             </div>
             <div>
-              <div className='nft-des'>"{inventory[current].metadata.description}"</div>
-              <div className='nft-owner'>ID {h2d(inventory[current].id.tokenId)}</div>
+              <div className='nft-des'>"{inventory[(current-1+inventory.length)%(inventory.length)].metadata.description}"</div>
+              <div className='nft-owner'>ID {h2d(inventory[(current-1+inventory.length)%(inventory.length)].id.tokenId)}</div>
             </div>
           </div>}
           </td>
           <td>
-          {inventory[current+1] &&
+          {inventory[(current+1+inventory.length)%(inventory.length)] && inventory.length!= 1 &&
           <div className='nft-inventory-2'>
-            <div className='nft-name'>{inventory[current+1].metadata.name}</div>
-            <div className={inventory[current+1] === select ? 'nft-div-img-select':'nft-div-img-in'} onClick={() => handleSelect(inventory[current+1])} style={{cursor: "pointer"}}>
-              <img className='nft-img' src={inventory[current+1].metadata.image} alt="preview image"/>
+            <div className='nft-name'>{inventory[(current+1+inventory.length)%(inventory.length)].metadata.name}</div>
+            <div className={inventory[(current+1+inventory.length)%(inventory.length)] === select ? 'nft-div-img-select':'nft-div-img-in'} onClick={() => handleSelect(inventory[current+1])} style={{cursor: "pointer"}}>
+              <img className='nft-img' src={inventory[(current+1+inventory.length)%(inventory.length)].metadata.image} alt="preview image"/>
             </div>
             <div>
-              <div className='nft-des'>"{inventory[current+1].metadata.description}"</div>
-              <div className='nft-owner'>ID {h2d(inventory[current+1].id.tokenId)}</div>
+              <div className='nft-des'>"{inventory[(current+1+inventory.length)%(inventory.length)].metadata.description}"</div>
+              <div className='nft-owner'>ID {h2d(inventory[(current+1+inventory.length)%(inventory.length)].id.tokenId)}</div>
             </div>
           </div>}
           </td>
-          <td>{current < inventory.length-1 && <button className='nft-inventory-button' onClick={() => setCurrent(current+1)}>{">"}</button>}</td>
+          <td>{ inventory.length > 1 && <button className='nft-inventory-button-right' onClick={() => setCurrent((current+1+inventory.length)%(inventory.length))}>{">"}</button>}</td>
           </tr>
         </table>
       {/* {inventory.map((index, i) => {         
