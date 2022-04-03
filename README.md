@@ -15,12 +15,12 @@ A reward for people who participated in the vote session is to have a chance to 
 
 # Tools <br/>
 we use lots of tools in this projects which we'll describe briefly what do we use it for.<br/>
-**Chainlink VRF** It provide a randomness that can be reliable to give us random person who get nft.
-**ALCHEMY** It is place where we will connect to real chain. In chain it is kinda mess a bit so we will let alchemy handle task in chain for us.
-**ALCHEMY NFT API** It manage data from chain about your NFT which really robust, orderly and faster. We use it to fetch all ours nft that user own.
-**IPFS** to managing and holding our NFT's metadata.
-**Spheron** for deploy ours website.
-[readmore](https://skdue-ethernals.github.io/rice-docs/#/tools)
+**Chainlink VRF** It provide a randomness that can be reliable to give us random person who get nft.<br/>
+**ALCHEMY** It is place where we will connect to real chain. In chain it is kinda mess a bit so we will let alchemy handle task in chain for us.<br/>
+**ALCHEMY NFT API** It manage data from chain about your NFT which really robust, orderly and faster. We use it to fetch all ours nft that user own.<br/>
+**IPFS** to managing and holding our NFT's metadata.<br/>
+**Spheron** for deploy ours website.<br/>
+[readmore](https://skdue-ethernals.github.io/rice-docs/#/tools)<br/>
 
 
 
