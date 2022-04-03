@@ -23,6 +23,7 @@ import { AddressContext } from '../context/AddressContextProvider';
 
 const SwapPage = () => {
   const {network} = useContext(AddressContext);
+  const [riceAddress,setRiceAddress] = useState() 
 
   // TODO: change address Rice and Matic
   const coinOption  = [
@@ -32,6 +33,16 @@ const SwapPage = () => {
   async function requestAccount() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
   }
+
+  function onClickRiceAddress(e){
+    e.preventDefault()
+    setRiceAddress(riceAddress ==coinOption[1].value? null : coinOption[1].value)
+  }
+  function onClickMaticAddress(e){
+    e.preventDefault()
+    setRiceAddress((riceAddress ==coinOption[0].value)? null : coinOption[0].value)
+  }
+
 
   async function onSwap(e){
     e.preventDefault()
@@ -189,6 +200,14 @@ const SwapPage = () => {
         </form>
         <p className='swap-alert' id="Alert"></p>
       </div>}
+
+      <br/><br/>
+      <div get-address>
+      <img className='rice-address-icon'src={rice} onClick={onClickRiceAddress}/>
+      <img className='wmatic-address-icon'src={matic} onClick={onClickMaticAddress}/><br/>
+      </div>
+      {riceAddress && <p className='rice-address'>{riceAddress==coinOption[0].value? "Matic: " : "Rice: "}{riceAddress}</p>}
+     
     </div>
   );
 }
