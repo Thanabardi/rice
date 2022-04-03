@@ -1,94 +1,124 @@
 .swap-alert {
-    color: red;
-    /* font-size: 20px; */
+  color: red;
+  /* font-size: 20px; */
 }
 
 .swap-inform {
-	background: radial-gradient(circle at 50%, rgb(20, 20, 40), rgb(20, 20, 40) 75%, rgb(199, 199, 199) 78%, rgb(20, 20, 40) 90%);
-	color: rgb(255, 255, 255);
-	line-height: 30px;
-	padding: 20px;
-	display: inline-block;
-	min-width: 25%;
-    margin-top: 2%;
-	border-radius: 18px;
-	margin-bottom: 20px;
-	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+  background: radial-gradient(
+    circle at 50%,
+    rgb(20, 20, 40),
+    rgb(20, 20, 40) 75%,
+    rgb(199, 199, 199) 78%,
+    rgb(20, 20, 40) 90%
+  );
+  color: rgb(255, 255, 255);
+  line-height: 30px;
+  padding: 20px;
+  display: inline-block;
+  min-width: 25%;
+  margin-top: 2%;
+  border-radius: 18px;
+  margin-bottom: 20px;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .swap {
-	margin-top: 2%;
-	margin-left: auto;
-	margin-right: auto;
-    background-color: white;
-    display: inline-block;
-    min-width: 28%;
-    height: 100%;
-	border-radius: 18px;
-	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 2%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
+  display: inline-block;
+  min-width: 28%;
+  height: 100%;
+  border-radius: 18px;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .swap-div {
-    background-color: rgba(0, 0, 0, 0.05);
-    display: flex;
-    width: 93%;
-	padding: 2%;
-	border-radius: 15px;
-    margin: 5px;
+  background-color: rgba(0, 0, 0, 0.05);
+  display: flex;
+  width: 93%;
+  padding: 2%;
+  border-radius: 15px;
+  margin: 5px;
 }
 
 .swap-input {
-    border: none;
-	background: none;
-	padding: 10px;
-    border-radius: 18px;
-	width: 200%;
-    font-size: 20px;
+  border: none;
+  background: none;
+  padding: 10px;
+  border-radius: 18px;
+  width: 200%;
+  font-size: 20px;
 }
 .swap-input:focus {
-    outline: none;
+  outline: none;
 }
 
 .swap-img {
-    max-width: 25px;
-    border-radius: 100%;
+  max-width: 25px;
+  border-radius: 100%;
 }
 
-.swap-button{
-    background: rgb(123, 182, 97);
-    text-decoration: none;
-    width: 95%;
-    height: 50px;
-    color: white;
-    border: none;
-    margin: 10px;
-    font-size: 17px;
-    border-radius: 18px;
-    margin-top: 10px;
-    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+.swap-button {
+  background: rgb(123, 182, 97);
+  text-decoration: none;
+  width: 95%;
+  height: 50px;
+  color: white;
+  border: none;
+  margin: 10px;
+  font-size: 17px;
+  border-radius: 18px;
+  margin-top: 10px;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .swap-button:hover {
-    color: rgb(150, 90, 62);
-	background: rgb(255, 237, 121);
-	cursor: pointer;
+  color: rgb(150, 90, 62);
+  background: rgb(255, 237, 121);
+  cursor: pointer;
 }
 
-.swap-button-dis{
-    background: rgb(123, 182, 97);
-    text-decoration: none;
-    width: 95%;
-    height: 50px;
-    color: white;
-    border: none;
-    margin: 10px;
-    font-size: 17px;
-    border-radius: 18px;
-    margin-top: 10px;
-    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+.swap-button-dis {
+  background: rgba(123, 182, 97, 0.5);
+  text-decoration: none;
+  width: 95%;
+  height: 50px;
+  color: white;
+  border: none;
+  margin: 10px;
+  font-size: 17px;
+  border-radius: 18px;
+  margin-top: 10px;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.swap-button :disabled{
-    pointer-events: none;
-    background-color: transparent;
+.swap-button :disabled {
+  pointer-events: none;
+  background-color: transparent;
+}
+
+.rice-address {
+  font-size: 14px;
+  opacity: 70%;
+}
+
+.rice-address-icon {
+  width: 45px;
+  height: 45px;
+  position: relative;
+  padding: 5px;
+}
+
+.wmatic-address-icon {
+  width: 45px;
+  height: 45px;
+  position: relative;
+  padding: 5px;
+}
+
+.get-address {
+  display: flex;
+  flex-direction: row;
 }

@@ -1,10 +1,15 @@
 body {
   font-family: Tahoma;
   font-size: 20px;
-  background: radial-gradient(ellipse at top, rgba(255, 240, 137, 0.2), transparent),
-              rgb(255, 254, 248);
+  background: radial-gradient(
+      ellipse at top,
+      rgba(255, 240, 137, 0.2),
+      transparent
+    ),
+    rgb(255, 254, 248);
   /* background: radial-gradient(farthest-side at 50% 0%,rgb(253, 253, 203) 0%, rgb(241, 241, 229) 50%); */
   background-attachment: fixed;
+  overflow-y: overlay;
 }
 
 .App {

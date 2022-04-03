@@ -23,7 +23,7 @@ async function onCreateSession(e){
     if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider })
+        
         const signer = provider.getSigner()
      
         const contract = new ethers.Contract(factoryAddress, voteFactory.abi, signer)
@@ -37,7 +37,7 @@ async function onCreateSession(e){
         await requestAccount()
         const sessionAddress = getSessionAddress()
           const provider = new ethers.providers.Web3Provider(window.ethereum);
-          console.log({ provider })
+          
           const signer = provider.getSigner()
        
           const contract = new ethers.Contract(sessionAddress, voteSession.abi, signer)
@@ -51,7 +51,7 @@ async function onCreateSession(e){
       await requestAccount()
       const sessionAddress = getSessionAddress()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider })
+        
         const signer = provider.getSigner()
      
         const contract = new ethers.Contract(sessionAddress, voteSession.abi, signer)
@@ -64,7 +64,7 @@ async function onCreateSession(e){
     if (typeof window.ethereum !== 'undefined') {
         await requestAccount()
           const provider = new ethers.providers.Web3Provider(window.ethereum);
-          console.log({ provider })
+          
           const signer = provider.getSigner()
 
           const rice = new ethers.Contract(tokenAddress, RICE.abi, signer)
@@ -83,7 +83,7 @@ async function onWithdraw(e){
     if (typeof window.ethereum !== 'undefined') {
         await requestAccount()
           const provider = new ethers.providers.Web3Provider(window.ethereum);
-          console.log({ provider })
+          
           const signer = provider.getSigner()
         const contract = new ethers.Contract(exchangeAddress, voteExchange.abi, signer)
         const transaction = contract.withdraw(e.target[0].value + "000000000000000000")
@@ -97,7 +97,7 @@ async function onOpen(e){
     if (typeof window.ethereum !== 'undefined') {
         await requestAccount()
           const provider = new ethers.providers.Web3Provider(window.ethereum);
-          console.log({ provider })
+          
           const signer = provider.getSigner()
        
           const contract = new ethers.Contract(exchangeAddress, voteExchange.abi, signer)
@@ -108,7 +108,7 @@ async function onOpen(e){
 async function getSessionAddress(){
     if (typeof window.ethereum !== 'undefined') {
         const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
-        console.log({ provider })
+        
         const contract = new ethers.Contract(factoryAddress, voteFactory.abi, provider)
         try {
           const data = await contract.getLatestSession()
@@ -125,7 +125,7 @@ async function onfetchVote(e){
     e.preventDefault()
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
-      console.log({ provider })
+      
       const sessionAddress = getSessionAddress()
       const contract = new ethers.Contract(factoryAddress, voteFactory.abi, provider)
         const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)

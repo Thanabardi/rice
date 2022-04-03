@@ -12,10 +12,12 @@ import NavBar from './components/NavBar'
 import CallMetaMask from './components/CallMetaMask'
 
 import NFT from './pages/NFT';
+import { AddressContextProvider } from './context/AddressContextProvider';
 
 function App() {
   return (
     <div className="App">
+      <AddressContextProvider>
       <NavBar />
       <CallMetaMask />
       <Routes>
@@ -26,6 +28,7 @@ function App() {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<Navigate to="swap" />} />
       </Routes>
+      </AddressContextProvider>
     </div>
   );
 }

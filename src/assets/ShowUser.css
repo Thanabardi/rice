@@ -1,9 +1,10 @@
-.show-button{
+.show-button {
 	border: none;
 	background: none;
 	text-decoration: none;
 	padding: 0;
 	color: rgb(29,155,240);
+	font-size: 15px;
 }
 
 .show-button:hover {
@@ -15,10 +16,12 @@
 	color: white;
 	border-radius: 10px;
 	background-color: rgb(13,17,23);
-	padding: 20px;
+	padding: 30px 30px 20px 30px;
 	text-align: center;
 	position: absolute;
-	min-width: 220px;
+	min-width: max-content;
 	display: inline-block;
 	margin-left: 20px;
+	z-index: 10;
+	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.4);
 }

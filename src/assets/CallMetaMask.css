@@ -1,13 +1,24 @@
-.metamask-button-dis{
-	background: rgb(123, 182, 97);
-	text-decoration: none;
-	padding: 10px 20px 10px 20px;
-	color: white;
-  border: 2px solid white;
-	font-size: 17px;
-	border-radius: 18px;
-	margin-top: 10px;
+.metamask-top-right {
+  right: 0%;
+  top: 1%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap-reverse;
+  justify-content: flex-end;
+  width: 30%;
   position: absolute;
+}
+
+.metamask-button-dis {
+  background: rgb(123, 182, 97);
+  text-decoration: none;
+  padding: 10px 20px 10px 20px;
+  color: white;
+  border: 2px solid white;
+  font-size: 17px;
+  border-radius: 18px;
+  margin-top: 10px;
+  position: relative;
   top: 1%;
   right: 2%;
   box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
@@ -15,21 +26,59 @@
 
 .metamask-button-dis:hover {
   color: rgb(150, 90, 62);
-	background: rgb(255, 237, 121);
-	cursor: pointer;
+  background: rgb(255, 237, 121);
+  cursor: pointer;
 }
 
-.metamask-button-con{
+.metamask-button-con {
   color: rgb(150, 90, 62);
-	background: rgb(255, 237, 121);
-	text-decoration: none;
-	padding: 10px 20px 10px 20px;
+  background: rgb(255, 237, 121);
+  text-decoration: none;
+  padding: 10px 20px 10px 20px;
   border: 2px solid white;
-	font-size: 17px;
-	border-radius: 18px;
-	margin-top: 10px;
-  position: absolute;
+  font-size: 17px;
+  border-radius: 18px;
+  margin-top: 10px;
+  position: relative;
   top: 1%;
   right: 2%;
   box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.maticmum {
+  color: rgb(150, 72, 163);
+  background: rgb(192, 180, 238);
+  text-decoration: none;
+  padding: 10px 20px 10px 20px;
+  border: 2px solid white;
+  font-size: 17px;
+  border-radius: 18px;
+  margin-top: 10px;
+  margin-right: 20px;
+  position: relative;
+  top: 1%;
+  right: 0%;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.others {
+  color: rgb(148, 60, 60);
+  background: rgb(238, 180, 180);
+  text-decoration: none;
+  padding: 10px 20px 10px 20px;
+  border: 2px solid white;
+  font-size: 17px;
+  border-radius: 18px;
+  margin-top: 10px;
+  margin-right: 20px;
+  position: relative;
+  top: 1%;
+  right: 0%;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.others:hover {
+  color: rgb(150, 62, 62);
+  background: rgb(231, 195, 240);
+  cursor: pointer;
 }

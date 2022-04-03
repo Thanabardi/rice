@@ -37,9 +37,7 @@
 	min-width: 90%;
     font-size: 20px;
 }
-/* .stake-input:focus {
-    outline: none;
-} */
+
 .stake-input-stake {
     border: none;
 	background: rgba(0, 0, 0, 0.05);
@@ -81,7 +79,7 @@
 }
 
 .stake-button-dis{
-    background: rgb(123, 182, 97);
+    background: rgba(123, 182, 97, 0.5);
     text-decoration: none;
     width: 95%;
     height: 50px;
@@ -101,7 +99,8 @@
 
 .stake-p {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
+    padding: 10px;
 }
 
 .stake-input-img {

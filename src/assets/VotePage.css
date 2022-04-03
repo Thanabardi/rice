@@ -1,91 +1,110 @@
 .vote {
-	margin-top: 2%;
-	margin-left: auto;
-	margin-right: auto;
-	padding-bottom: 10%;
-	border-radius: 18px;
-	margin-bottom: 22%;
+  margin-top: 2%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 6%;
+  border-radius: 18px;
+  /* margin-bottom: 10%; */
 }
 
 .vote-div {
-	background-color: white;
-	padding: 20px;
-	display: inline-block;
-	min-width: 25%;
-	margin: auto;
-	border-radius: 18px;
-	margin-bottom: 20px;
-	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 20px;
+  display: inline-block;
+  min-width: 25%;
+  margin: auto;
+  border-radius: 18px;
+  margin-bottom: 20px;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .vote-inform {
-	background: radial-gradient(circle at 50%, rgb(20, 20, 40), rgb(20, 20, 40) 75%, rgb(199, 199, 199) 78%, rgb(20, 20, 40) 90%);
-	color: rgb(255, 255, 255);
-	line-height: 30px;
-	padding: 20px;
-	display: inline-block;
-	min-width: 25%;
-	margin: auto;
-	border-radius: 18px;
-	margin-bottom: 20px;
-	box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+  background: radial-gradient(
+    circle at 50%,
+    rgb(20, 20, 40),
+    rgb(20, 20, 40) 75%,
+    rgb(199, 199, 199) 78%,
+    rgb(20, 20, 40) 90%
+  );
+  color: rgb(255, 255, 255);
+  line-height: 30px;
+  padding: 20px;
+  display: inline-block;
+  min-width: 25%;
+  margin: auto;
+  border-radius: 18px;
+  margin-bottom: 20px;
+  box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 .vote-winner {
-	display: inline-block;
-	min-width: 40%;
-	border-radius: 10px;
-	padding: 20px;
-	margin: 20px 0 20px 0;
-	color: black;
-	background: white;
-	box-shadow: 2px 0px 30px white;
+  display: inline-block;
+  min-width: 40%;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0 10px 0;
+  color: black;
+  background: white;
+  animation: voteColorRotate 4s linear 0s infinite;
 }
 
-.vote-winner-button{
-	border: none;
-	background: none;
-	text-decoration: none;
-	padding: 0;
-	color: rgb(29,155,240);
+@keyframes voteColorRotate {
+  from {
+    box-shadow: 2px 0px 100px white;
+  }
+  50% {
+    box-shadow: 2px 0px 100px rgba(255, 255, 255, 0.5);
+  }
+  to {
+    box-shadow: 2px 0px 100px white;
+  }
+}
+
+.vote-winner-button {
+  border: none;
+  background: none;
+  text-decoration: none;
+  padding: 0;
+  color: rgb(29, 155, 240);
 }
 
 .vote-winner-button:hover {
-	color: rgba(29, 156, 240, 0.5);
-	cursor: pointer;
+  color: rgba(29, 156, 240, 0.5);
+  cursor: pointer;
 }
 
 .vote-table {
-	margin: auto;
-	border-collapse: collapse;
-	min-width: 100%;
+  margin: auto;
+  border-collapse: collapse;
+  /* display: inline-block; */
+  min-width: 100%;
 }
 
 .vote-td {
-	text-align: left;
-	padding: 10px;
-	font-weight: 500;
-	border-bottom: 1px solid #ddd;
-	vertical-align: top;
+  text-align: left;
+  padding: 10px;
+  font-weight: 500;
+  border-bottom: 1px solid #ddd;
+  vertical-align: top;
 }
 
-.vote-td:first-child{
-	width: 50px;
+.vote-td:first-child {
+  width: 50px;
 }
 
-.vote-tr:hover{
-	background-color: rgba(0, 0, 0, 0.05);
-	cursor: pointer;
+.vote-tr:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
 }
 
 /* tr:nth-child(even) {background-color: #f2f2f2;} */
 
-.vote-select{
-	background-color: rgb(233, 255, 224);
+.vote-select {
+  background-color: rgb(233, 255, 224);
 }
 
-.vote-select:hover{
-	cursor: pointer;
+.vote-select:hover {
+  cursor: pointer;
 }
 
 /* .vote-select-button{

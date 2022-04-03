@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ethers } from 'ethers'
 import RICE from '../artifacts/contracts/Token.sol/RICE.json'
 import WMATIC from '../artifacts/contracts/WMatic.sol/WMATIC.json'
 import PoolFactory from '../artifacts/contracts/PoolFactory.sol/PoolFactory.json'
+import MoneyBall from '../artifacts/contracts/MoneyBall.sol/MoneyBall.json'
+import axios from 'axios';
 
 import '../assets/Admin.css';
 // import '../assets/SwapPage.css';
@@ -18,22 +20,18 @@ import { NFTStorage, Blob } from 'nft.storage'
 // const client = new NFTStorage({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDgwMWMwQjY3ZDRmMjM4OTM2ZjYxMTI3MDQxQjc5RDU0OGQ4NjEyMDciLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY0ODMwOTUwOTA1MSwibmFtZSI6InRlc3QifQ.Yv6GxXbPirOLm8mSzxVokQtHP9VglIPswqfKK3IAM0Y" })
 
 import { create as ipfsHttpClient } from 'ipfs-http-client'
+import { AddressContext } from '../context/AddressContextProvider';
+
 
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
-
-const nftAddress = "0xbcEE5365B749cd4A0c25DBecCAA6a840D12fCC9D"
-const exchangeAddress = "0x21513F5Ead7DBDD75fc1166A19cd8C2c395ca385"
-const factoryAddress = "0xa674321C98C13889936113Aac266227ab8E0c21a"
-const tokenAddress = '0x87C2EBffe6C50eE034b4D05D2d3c2EC7b325e346'
-const poolFactoryAddress = '0x4D03044Ee7f8f228a7A9D1C6f33d361C08CfBD61'
-  const wMaticAddress ='0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'
 
 const AdminPage = () => {
 
   const [image, setImage] = useState(null)
   const [fileUrl, setFileUrl] = useState(null)
-
+  const [nftUploadStatus, setNftUploadStatus,l] = useState(false)
+  const {network} = useContext(AddressContext);
 
   async function requestAccount() {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -43,27 +41,89 @@ const AdminPage = () => {
     e.preventDefault()
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
-      console.log({ provider })
-      const contract = new ethers.Contract(poolFactoryAddress, PoolFactory.abi, provider)
+      
+      const contract = new ethers.Contract(network.poolFactoryAddress, PoolFactory.abi, provider)
       try {
-        const data = await contract.getTotalAmountInPool(tokenAddress,wMaticAddress)
+        const data = await contract.getTotalAmountInPool(network.tokenAddress,network.wMaticAddress)
 
-        console.log('RICE: ',h2d(data[0]._hex)/10**18,'wMatic: ',h2d(data[1]._hex))
+        console.log('RICE: ',h2d(data[0]._hex),'wMatic: ',h2d(data[1]._hex))
+      } catch (err) {
+        console.log("Error: ", err)
+      }
+
+    }  
+  }
+  async function fetchMoneyBall(e){
+    e.preventDefault()
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+      
+      const contract = new ethers.Contract(network.moneyballAddress, MoneyBall.abi, provider)
+      try {
+        const data1 = await contract.getTotal(network.tokenAddress)
+        const data2 = await contract.getTotal(network.wMaticAddress)
+        console.log('RICE: ',h2d(data1._hex)/10**18)
+        console.log('wMatic: ',h2d(data2._hex)/10**18)
+      } catch (err) {
+        console.log("Error: ", err)
+      }
+
+
+    }  
+  }
+
+
+  async function sendMoneyBall(e){
+    e.preventDefault()
+
+    if (typeof window.ethereum !== 'undefined') {
+      await requestAccount()
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        
+        const signer = provider.getSigner()
+    
+        const contract = new ethers.Contract(network.moneyballAddress, MoneyBall.abi, signer)
+        const transaction = contract.send(e.target.value)
+
+    }
+
+    }  
+
+
+
+
+
+  async function fetchAward(e){
+    e.preventDefault()
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+      
+      const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider)
+      try {
+        const data = await contract.recentAward()
+        console.log('award: ',data)
       } catch (err) {
         console.log("Error: ", err)
       }
     }  
   }
 
-  async function fetchAward(e){
+
+  async function fetchNFT(e){
     e.preventDefault()
     if (typeof window.ethereum !== 'undefined') {
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
-      console.log({ provider })
-      const contract = new ethers.Contract(nftAddress, riceNFT.abi, provider)
+      await requestAccount()
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner()
+      const address = await  signer.getAddress()
+
+      const provider2 = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+      const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider2)
+     
+      
       try {
-        const data = await contract.recentAward()
-        console.log('award: ',data)
+        const data = await contract.getInventory(address)
+        console.log('Have NFT: ',data)
       } catch (err) {
         console.log("Error: ", err)
       }
@@ -75,94 +135,57 @@ const AdminPage = () => {
     if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider })
+        
         const signer = provider.getSigner()
-     
-        const contract = new ethers.Contract(factoryAddress, voteFactory.abi, signer)
+    
+        const contract = new ethers.Contract(network.factoryAddress, voteFactory.abi, signer)
         const transaction = contract.createVoteSession()
+
     }
   }
-
-  async function onVote(e){
-    e.preventDefault()
-    if (typeof window.ethereum !== 'undefined') {
-      await requestAccount()
-      const sessionAddress = getSessionAddress(factoryAddress)
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider })
-        const signer = provider.getSigner()
-     
-        const contract = new ethers.Contract(sessionAddress, voteSession.abi, signer)
-        const transaction = contract.vote(e.target[0].value, e.target[1].value)
-    }
-}
 
 
 async function onEndVote(e){
   e.preventDefault()
   if (typeof window.ethereum !== 'undefined') {
     await requestAccount()
-    const sessionAddress = getSessionAddress(factoryAddress)
+    const sessionAddress = getSessionAddress(network.factoryAddress)
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      console.log({ provider })
+      
       const signer = provider.getSigner()
-   
-      const contract = new ethers.Contract(sessionAddress, voteSession.abi, signer)
-      const transaction = contract.endVote()
+
+      const link = new ethers.Contract(network.linkAddress, RICE.abi, signer)
+      await link.approve(sessionAddress, "100000000000000")
+
+      setTimeout(function () {
+        const contract = new ethers.Contract(sessionAddress, voteSession.abi, signer)
+        const transaction = contract.endVote()
+      }, 20000);
   }
 }
 
 
 
 
-async function onDeposit(e){
-  e.preventDefault()
-  if (typeof window.ethereum !== 'undefined') {
-      await requestAccount()
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner()
 
-        const rice = new ethers.Contract(tokenAddress, RICE.abi, signer)
-        await rice.approve(exchangeAddress, e.target[0].value*100000 + "0000000000000")
 
-        setTimeout(function () {
-          const contract = new ethers.Contract(exchangeAddress, voteExchange.abi, signer)
-          const transaction = contract.deposit( e.target[0].value*100000 + "0000000000000")
-      }, 20000);
-       
-    }
-}
-
-async function onWithdraw(e){
-  e.preventDefault()
-  if (typeof window.ethereum !== 'undefined') {
-      await requestAccount()
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider })
-        const signer = provider.getSigner()
-      const contract = new ethers.Contract(exchangeAddress, voteExchange.abi, signer)
-      const transaction = contract.withdraw(e.target[0].value + "000000000000000000")
-
-       
-    }
-}
 
 async function onOpen(e){
   e.preventDefault()
   if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider })
+        
         const signer = provider.getSigner()
      
-        const contract = new ethers.Contract(exchangeAddress, voteExchange.abi, signer)
+        const contract = new ethers.Contract(network.exchangeAddress, voteExchange.abi, signer)
         const transaction = contract.openExchange()
     }
 }
 
 function onGetSessionAddress(e){
   e.preventDefault()
-  getSessionAddress(factoryAddress).then((data)=>{
+  getSessionAddress(network.factoryAddress).then((data)=>{
     console.log(data)
   })
   
@@ -173,22 +196,22 @@ function onGetSessionAddress(e){
     if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider })
+        
         const signer = provider.getSigner()
      
-      const rice = new ethers.Contract(tokenAddress, RICE.abi, signer)
-      await rice.approve(poolFactoryAddress, '500000000000000000000000')
+      const rice = new ethers.Contract(network.tokenAddress, RICE.abi, signer)
+      await rice.approve(network.poolFactoryAddress, '5000000000000000000000')
 
-      const wMatic = new ethers.Contract(wMaticAddress, WMATIC.abi, signer)
-      await wMatic.approve(poolFactoryAddress, '5000000000000000000')
+      const wMatic = new ethers.Contract(network.wMaticAddress, WMATIC.abi, signer)
+      await wMatic.approve(network.poolFactoryAddress, '5000000000000000000')
 
       setTimeout(function () {
-        const contract = new ethers.Contract(poolFactoryAddress, PoolFactory.abi, signer)
+        const contract = new ethers.Contract(network.poolFactoryAddress, PoolFactory.abi, signer)
         const transaction = contract.createNewPool(
-          tokenAddress, //rice
-          wMaticAddress, // matic
-              '500000000000000000000000',
-              '5000000000000000000')
+          network.tokenAddress, //rice
+          network.wMaticAddress, // matic
+          '5000000000000000000000',
+          '5000000000000000000')
       }, 20000);
     }
   }
@@ -207,6 +230,8 @@ function onGetSessionAddress(e){
       const url = `https://ipfs.infura.io/ipfs/${added.path}`
       setFileUrl(url)
       console.log('url',added.path)
+      document.getElementById("upload-nft-btn").disabled = false;
+
     } catch (error) {
       console.log('Error uploading file: ', error)
     }  
@@ -217,11 +242,11 @@ function onGetSessionAddress(e){
     if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider })
+        
         const signer = provider.getSigner()
      
-        const contract = new ethers.Contract(nftAddress, riceNFT.abi, signer)
-        const transaction = contract.award(uploadJson(e.target[0].value,e.target[1].value))
+        const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, signer)
+        const transaction = contract.award(uploadJson(e.target[0].value.toUpperCase(),e.target[1].value))
     }
   }
 
@@ -248,17 +273,46 @@ function onGetSessionAddress(e){
 
 
 
+function testAlchemy(e){
+  e.preventDefault()
+  const baseURL = `${process.env.REACT_APP_ALCHEMY}/getNFTs/`
+  // replace with the wallet address you want to query for NFTs
+  const ownerAddr = "0xbb78Ebf787951CF921783163Be1B8423A4Dc752e";
+
+  var config = {
+    method: 'get',
+    url: `${baseURL}?owner=${ownerAddr}&contractAddresses[]=${network.nftAddress}`
+  };
+
+  axios(config)
+  .then((response) => {
+    let temp =[]
+    response.data.ownedNfts.forEach((e)=>{
+      temp.push(e.metadata)
+    })
+    // console.log(JSON.stringify(response.data.ownedNfts[0].metadata, null, 2))
+    console.log(temp)
+  
+  
+  })
+  .catch(error => console.log(error));
+}
+
+
 
 
 
 
   return (
     <div className='admin'>
-      ADMIN's THING
-      <form onSubmit={createPool}>
-        create pool<br/>
+  
+      <h1>ADMIN's Panel</h1>
 
-        <button className='adminSubmit'>submit</button>
+
+      <form onSubmit={createPool}>
+      create pool<br/>
+
+        <button className='adminSubmit'>create</button>
       </form>
 
 
@@ -266,51 +320,57 @@ function onGetSessionAddress(e){
       <form onSubmit={fetchAward}>
           fetch award<br/>
 
-          <button className='adminSubmit'>submit</button>
+          <button className='adminSubmit'>fetch</button>
         </form>
 
-   
+        <form onSubmit={fetchMoneyBall}>
+          fetch MoneyBall<br/>
+
+          <button className='adminSubmit'>fetch</button>
+        </form>
+
+        <form onSubmit={sendMoneyBall}>
+          send Prize<br/>
+          <input placeholder='address'></input><br/><br/>
+          <button className='adminSubmit'>send</button>
+        </form>
+    
 
 
 
       <form onSubmit={fetchPool}>
           fetch pool<br/>
 
-          <button className='adminSubmit'>submit</button>
+          <button className='adminSubmit'>fetch</button>
         </form>
 
 
-        Vote
 
-Open
+{/* Open
 <form onSubmit={onOpen}>
    <button type='submit' className='adminSubmit'> Open</button>
 </form>
 
 EndVote
 <form onSubmit={onEndVote}>
-   <button type='submit'> End</button>
-</form>
-getSessionAddress
-<form onSubmit={onGetSessionAddress}>
-   <button type='submit'> get</button>
-</form>
+   <button type='submit' className='adminSubmit'> End</button>
+</form> */}
 
 
 
 
 <form onSubmit={onCreateSession}>
-   
-    <button type='submit'> create vote session</button>
+   Create Vote Session <br/>
+    <button type='submit' className='adminSubmit'> create vote session</button>
 </form>
 
 
 
 <form onSubmit={mintSendNft}>
-    
+    Mint NFT<br/>
      
-<input type="text" placeholder='name'/>
-<input type="text" name="" id=""  placeholder='desc'/>
+<input type="text" placeholder='name'required/><br/>
+<input type="text" name="" id=""  placeholder='desc' required/><br/>
 <input
           type="file"
           name="Asset"
@@ -318,8 +378,8 @@ getSessionAddress
           onChange={onChange}
         />
 
-
-<button >
+<br/><br/>
+<button  id="upload-nft-btn" disabled>
           Create NFT
         </button>
     </form>

@@ -19,7 +19,6 @@ describe("RiceNFT contract", function() {
     it("okay?", async function() {
         let metadata = "ipfs://QmVwzBZnWdZYomS1PPxVBtFpSoDdPed8pdVdvxpHXX9E6y";
 
-        console.log("meta", metadata);
 
         await nft.openNFT();
 
