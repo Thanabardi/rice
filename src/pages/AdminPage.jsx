@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import RICE from '../artifacts/contracts/Token.sol/RICE.json'
 import WMATIC from '../artifacts/contracts/WMatic.sol/WMATIC.json'
 import PoolFactory from '../artifacts/contracts/PoolFactory.sol/PoolFactory.json'
+import MoneyBall from '../artifacts/contracts/MoneyBall.sol/MoneyBall.json'
 import axios from 'axios';
 
 import '../assets/Admin.css';
@@ -50,11 +51,47 @@ const AdminPage = () => {
         console.log("Error: ", err)
       }
 
-      console.log(network)
+    }  
+  }
+  async function fetchMoneyBall(e){
+    e.preventDefault()
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+      
+      const contract = new ethers.Contract(network.moneyballAddress, MoneyBall.abi, provider)
+      try {
+        const data1 = await contract.getTotal(network.tokenAddress)
+        const data2 = await contract.getTotal(network.wMaticAddress)
+        console.log('RICE: ',h2d(data1._hex)/10**18)
+        console.log('wMatic: ',h2d(data2._hex)/10**18)
+      } catch (err) {
+        console.log("Error: ", err)
+      }
 
 
     }  
   }
+
+
+  async function sendMoneyBall(e){
+    e.preventDefault()
+
+    if (typeof window.ethereum !== 'undefined') {
+      await requestAccount()
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        
+        const signer = provider.getSigner()
+    
+        const contract = new ethers.Contract(network.moneyballAddress, MoneyBall.abi, signer)
+        const transaction = contract.send(e.target.value)
+
+    }
+
+    }  
+
+
+
+
 
   async function fetchAward(e){
     e.preventDefault()
@@ -286,6 +323,17 @@ function testAlchemy(e){
           <button className='adminSubmit'>fetch</button>
         </form>
 
+        <form onSubmit={fetchMoneyBall}>
+          fetch MoneyBall<br/>
+
+          <button className='adminSubmit'>fetch</button>
+        </form>
+
+        <form onSubmit={sendMoneyBall}>
+          send Prize<br/>
+          <input placeholder='address'></input><br/><br/>
+          <button className='adminSubmit'>send</button>
+        </form>
     
 
 

@@ -37,11 +37,35 @@ const SwapPage = () => {
   function onClickRiceAddress(e){
     e.preventDefault()
     setRiceAddress(riceAddress ==coinOption[1].value? null : coinOption[1].value)
-  }
+    window.ethereum.request({
+    method: 'wallet_watchAsset',
+    params: {
+      type: 'ERC20', // Initially only supports ERC20, but eventually more!
+      options: {
+        address: coinOption[1].value, // The address that the token is at.
+        symbol: "RICE", // A ticker symbol or shorthand, up to 5 chars.
+        decimals: 18, // The number of decimals in the token
+        image: "https://i.imgur.com/wrYftrf.png", // A string url of the token logo
+      },
+  }})
+}
+
   function onClickMaticAddress(e){
     e.preventDefault()
     setRiceAddress((riceAddress ==coinOption[0].value)? null : coinOption[0].value)
+    window.ethereum.request({
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20', // Initially only supports ERC20, but eventually more!
+        options: {
+          address: coinOption[0].value, // The address that the token is at.
+          symbol: "wMatic", // A ticker symbol or shorthand, up to 5 chars.
+          decimals: 18, // The number of decimals in the token
+          image: "https://i.imgur.com/lezATCj.png", // A string url of the token logo
+        },
+    }})
   }
+
 
 
   async function onSwap(e){
