@@ -40,7 +40,7 @@ const AdminPage = () => {
     e.preventDefault()
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
-      console.log({ provider })
+      
       const contract = new ethers.Contract(network.poolFactoryAddress, PoolFactory.abi, provider)
       try {
         const data = await contract.getTotalAmountInPool(network.tokenAddress,network.wMaticAddress)
@@ -60,7 +60,7 @@ const AdminPage = () => {
     e.preventDefault()
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
-      console.log({ provider })
+      
       const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider)
       try {
         const data = await contract.recentAward()
@@ -98,7 +98,7 @@ const AdminPage = () => {
     if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider })
+        
         const signer = provider.getSigner()
     
         const contract = new ethers.Contract(network.factoryAddress, voteFactory.abi, signer)
@@ -114,7 +114,7 @@ async function onEndVote(e){
     await requestAccount()
     const sessionAddress = getSessionAddress(network.factoryAddress)
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      console.log({ provider })
+      
       const signer = provider.getSigner()
 
       const link = new ethers.Contract(network.linkAddress, RICE.abi, signer)
@@ -138,7 +138,7 @@ async function onOpen(e){
   if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider })
+        
         const signer = provider.getSigner()
      
         const contract = new ethers.Contract(network.exchangeAddress, voteExchange.abi, signer)
@@ -159,7 +159,7 @@ function onGetSessionAddress(e){
     if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider })
+        
         const signer = provider.getSigner()
      
       const rice = new ethers.Contract(network.tokenAddress, RICE.abi, signer)
@@ -205,7 +205,7 @@ function onGetSessionAddress(e){
     if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider })
+        
         const signer = provider.getSigner()
      
         const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, signer)

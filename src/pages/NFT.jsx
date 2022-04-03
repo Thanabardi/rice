@@ -69,7 +69,6 @@ const NFT = () => {
       
       try {
         const data = await contract.getInventory(address)
-        console.log('Have NFT: ',data)
         let list = []
         data.forEach(element => {
           list.push(h2d(element._hex))
@@ -85,21 +84,16 @@ const NFT = () => {
   async function fetchNftInventory(number){
       if (typeof window.ethereum !== 'undefined') {
         const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
-        console.log({ provider })
+        
         const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider)
-        console.log("n",number)
         try {
           let data = await contract.ownerOf(number)
-          // console.log('owner: ',data)
           setOwner(data)
           let url = await contract.tokenURI(number)
-          // console.log('award: ',url)
           fetch(url).then(res => res.json())
           .then((out) =>{
-            // inventoryImg.push(out.image);
           
             setInventoryImg(oldArray => [ out.image, ...oldArray]);
-            console.log("time",inventoryImg)
           })
         }catch (err) {
           console.log("Error: ", err)
@@ -130,14 +124,9 @@ const NFT = () => {
     .then((response) => {
       
       let temp =[]
-      // response.data.ownedNfts.id.forEach((e)=>{
-      //   temp.push(e)
-      // })
       response.data.ownedNfts.forEach((e)=>{
         temp.push({"metadata":e.metadata, "id":e.id})
       })
-      // console.log(JSON.stringify(response.data.ownedNfts[0].metadata, null, 2))
-      console.log(temp)
       setInventory(temp)
     
     })
@@ -168,7 +157,6 @@ async function fetchNftList(number){
       setImage()
       setLoadStatus(false)
     }else{
-      console.log(JSON.stringify(response.data.metadata, null, 2))
       setImage(response.data.metadata.image)
             setName(response.data.metadata.name)
             setDescription(response.data.metadata.description)
@@ -187,7 +175,7 @@ async function fetchNftList(number){
 
 
   const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
-      console.log({ provider })
+      
       const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider)
       try {
         let data = await contract.ownerOf(number)
@@ -205,14 +193,11 @@ async function onSending(e){
   if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider })
+        
         const signer = provider.getSigner()
 
         const address = await  signer.getAddress()
      
-      console.log(select.id.tokenId)
-      console.log(select.metadata.image)
-      console.log(e.target[0].value)
         const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, signer)
           const transaction = contract.approve(network.nftAddress,select.id.tokenId)
 

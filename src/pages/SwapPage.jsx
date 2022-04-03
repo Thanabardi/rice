@@ -39,7 +39,7 @@ const SwapPage = () => {
     if (typeof window.ethereum !== 'undefined') {
       await requestAccount()
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log({ provider })
+        
         const signer = provider.getSigner()
      
       const token1 = new ethers.Contract(coinState1, RICE.abi, signer)
@@ -61,11 +61,9 @@ const SwapPage = () => {
   async function  onGetOdds(amount){
     if (typeof window.ethereum !== 'undefined') {
       const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
-      console.log({ provider })
+      
       const contract = new ethers.Contract(network.swapAddress, Swap.abi, provider)
           try {
-            console.log("amountState", amount*100000 + "0000000000000")
-            console.log("coinstate",coinState1,coinState2)
             const data = await contract.getTokenOdds(coinState1, coinState2,  amount*100000 + "0000000000000")
             setHex(data._hex);
             const hexToDec = h2d(data._hex);
@@ -76,7 +74,6 @@ const SwapPage = () => {
               document.getElementById("Alert").innerHTML = ""
             }
             setCalculateState((hexToDec/Math.pow(10, 18)).toFixed(4));
-            console.log('Total: ', data)
           } catch (err) {
             console.log("Error: ", err)
           }
@@ -112,7 +109,6 @@ const SwapPage = () => {
 
   const handleChange1 = (event) => {
     setState1(event.target.value);
-    console.log(event.target.value)
   };
 
   const handleChange2 = (event) => {
