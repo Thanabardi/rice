@@ -268,11 +268,14 @@ function testAlchemy(e){
 
   return (
     <div className='admin'>
-      ADMIN's THING
-      <form onSubmit={createPool}>
-        create pool<br/>
+  
+      <h1>ADMIN's Panel</h1>
 
-        <button className='adminSubmit'>submit</button>
+
+      <form onSubmit={createPool}>
+      create pool<br/>
+
+        <button className='adminSubmit'>create</button>
       </form>
 
 
@@ -280,63 +283,46 @@ function testAlchemy(e){
       <form onSubmit={fetchAward}>
           fetch award<br/>
 
-          <button className='adminSubmit'>submit</button>
+          <button className='adminSubmit'>fetch</button>
         </form>
 
-      
-        <form onSubmit={testAlchemy}>
-          test ALCHEMY<br/>
-
-          <button className='adminSubmit'>submit</button>
-        </form>
-   
+    
 
 
 
       <form onSubmit={fetchPool}>
           fetch pool<br/>
 
-          <button className='adminSubmit'>submit</button>
-        </form>
-
-        <form onSubmit={fetchNFT}>
-          fetch NFT<br/>
-
           <button className='adminSubmit'>fetch</button>
         </form>
 
 
-        Vote
 
-Open
+{/* Open
 <form onSubmit={onOpen}>
    <button type='submit' className='adminSubmit'> Open</button>
 </form>
 
 EndVote
 <form onSubmit={onEndVote}>
-   <button type='submit'> End</button>
-</form>
-getSessionAddress
-<form onSubmit={onGetSessionAddress}>
-   <button type='submit'> get</button>
-</form>
+   <button type='submit' className='adminSubmit'> End</button>
+</form> */}
 
 
 
 
 <form onSubmit={onCreateSession}>
-   
-    <button type='submit'> create vote session</button>
+   Create Vote Session <br/>
+    <button type='submit' className='adminSubmit'> create vote session</button>
 </form>
 
 
 
 <form onSubmit={mintSendNft}>
-    
+    Mint NFT<br/>
      
-<input type="text" placeholder='name'/>
-<input type="text" name="" id=""  placeholder='desc'/>
+<input type="text" placeholder='name'required/><br/>
+<input type="text" name="" id=""  placeholder='desc' required/><br/>
 <input
           type="file"
           name="Asset"
@@ -344,8 +330,8 @@ getSessionAddress
           onChange={onChange}
         />
 
-
-<button id="upload-nft-btn" disabled>
+<br/><br/>
+<button  id="upload-nft-btn" disabled>
           Create NFT
         </button>
     </form>
