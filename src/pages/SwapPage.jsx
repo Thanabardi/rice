@@ -36,7 +36,7 @@ const SwapPage = () => {
 
   function onClickRiceAddress(e){
     e.preventDefault()
-    setRiceAddress(riceAddress ==coinOption[1].value? null : coinOption[1].value)
+    setRiceAddress(riceAddress === coinOption[1].value? null : coinOption[1].value)
     window.ethereum.request({
     method: 'wallet_watchAsset',
     params: {
@@ -52,7 +52,7 @@ const SwapPage = () => {
 
   function onClickMaticAddress(e){
     e.preventDefault()
-    setRiceAddress((riceAddress ==coinOption[0].value)? null : coinOption[0].value)
+    setRiceAddress((riceAddress ===coinOption[0].value)? null : coinOption[0].value)
     window.ethereum.request({
       method: 'wallet_watchAsset',
       params: {
@@ -169,6 +169,7 @@ const SwapPage = () => {
 			</div>}
       <p />
       {(status !== "Install MetaMask") &&
+      <div>
       <div className='swap'> 
         <div style={{padding: "20px", fontSize: "30px"}}>Swap</div>
         <form onSubmit={onSwap}> 
@@ -223,15 +224,15 @@ const SwapPage = () => {
             disabled={amountHex==="0x00" || status !== "Connected"?true :false}>Swap</button>
         </form>
         <p className='swap-alert' id="Alert"></p>
-      </div>}
+      </div>
 
       <br/><br/>
       <div get-address>
-      <img className='rice-address-icon'src={rice} onClick={onClickRiceAddress}/>
-      <img className='wmatic-address-icon'src={matic} onClick={onClickMaticAddress}/><br/>
+        <img className='rice-address-icon' alt='rice address icon' src={rice} onClick={onClickRiceAddress}/>
+        <img className='wmatic-address-icon'alt='wmatic address icon' src={matic} onClick={onClickMaticAddress}/><br/>
       </div>
-      {riceAddress && <p className='rice-address'>{riceAddress==coinOption[0].value? "Matic: " : "Rice: "}{riceAddress}</p>}
-     
+        {riceAddress && <p className='rice-address'>{riceAddress===coinOption[0].value? "Matic: " : "Rice: "}{riceAddress}</p>}
+      </div>}
     </div>
   );
 }

@@ -297,7 +297,12 @@ const Vote = () => {
 				</div>
 				<VotePopup voteAccount={select}/>
 				</div>:<div />}
-			</div>:<div className='vote-inform' style={{fontSize: "25px"}}><div style={{opacity: "80%"}}>Loading...</div></div>}
+			</div>:
+				<div className='vote-inform' style={{fontSize: "25px"}}>
+					{window.ethereum.networkVersion === '80001' ? 
+						<div style={{opacity: "80%"}}>Loading...</div>:
+						<div style={{fontSize: "22px"}}>Connect Polygon Mumbai required</div>}
+				</div>}
 			</div>:<div className='vote-inform' style={{fontSize: "25px"}}>MetaMask installation required</div>}
 		</div>
   );
