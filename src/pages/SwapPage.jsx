@@ -95,7 +95,7 @@ const SwapPage = () => {
 
   async function  onGetOdds(amount){
     if (typeof window.ethereum !== 'undefined') {
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+      const provider = new ethers.providers.AlchemyProvider("maticmum")
       
       const contract = new ethers.Contract(network.swapAddress, Swap.abi, provider)
           try {

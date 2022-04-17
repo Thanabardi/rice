@@ -107,7 +107,7 @@ async function onOpen(e){
 
 async function getSessionAddress(){
     if (typeof window.ethereum !== 'undefined') {
-        const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+        const provider = new ethers.providers.AlchemyProvider("maticmum")
         
         const contract = new ethers.Contract(factoryAddress, voteFactory.abi, provider)
         try {
@@ -124,7 +124,8 @@ async function getSessionAddress(){
 async function onfetchVote(e){
     e.preventDefault()
     if (typeof window.ethereum !== 'undefined') {
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+      const provider = new ethers.providers.AlchemyProvider("maticmum")
+      
       
       const sessionAddress = getSessionAddress()
       const contract = new ethers.Contract(factoryAddress, voteFactory.abi, provider)

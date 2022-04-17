@@ -40,7 +40,8 @@ const AdminPage = () => {
   async function fetchPool(e){
     e.preventDefault()
     if (typeof window.ethereum !== 'undefined') {
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+      const provider = new ethers.providers.AlchemyProvider("maticmum")
+      
       
       const contract = new ethers.Contract(network.poolFactoryAddress, PoolFactory.abi, provider)
       try {
@@ -56,7 +57,8 @@ const AdminPage = () => {
   async function fetchMoneyBall(e){
     e.preventDefault()
     if (typeof window.ethereum !== 'undefined') {
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+      const provider = new ethers.providers.AlchemyProvider("maticmum")
+      
       
       const contract = new ethers.Contract(network.moneyballAddress, MoneyBall.abi, provider)
       try {
@@ -96,7 +98,8 @@ const AdminPage = () => {
   async function fetchAward(e){
     e.preventDefault()
     if (typeof window.ethereum !== 'undefined') {
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+      const provider = new ethers.providers.AlchemyProvider("maticmum")
+      
       
       const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider)
       try {
@@ -117,7 +120,8 @@ const AdminPage = () => {
       const signer = provider.getSigner()
       const address = await  signer.getAddress()
 
-      const provider2 = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+      const provider2 = new ethers.providers.AlchemyProvider("maticmum")
+      
       const contract = new ethers.Contract(network.nftAddress, riceNFT.abi, provider2)
      
       

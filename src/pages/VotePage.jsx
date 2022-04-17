@@ -79,12 +79,13 @@ const Vote = () => {
 
   async function getCandidateList(){
     if (typeof window.ethereum !== 'undefined') {
-      const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com')
+      const provider = new ethers.providers.AlchemyProvider("maticmum")
       const sessionAddress = getSessionAddress(network.factoryAddress)
-      const contract = new ethers.Contract(network.factoryAddress, voteFactory.abi, provider)
+
 			const contractVote = new ethers.Contract( sessionAddress, voteSession.abi, provider)
 			try {
 				await contractVote.getCandidateName().then((data)=>{
+					console.log(data)
 					setCandidateIDs(data)
 					getAccountProfile(data)
 					getVoteCount(data)
